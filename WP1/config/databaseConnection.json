@@ -1,0 +1,6 @@
+{
+  "user" : "root",
+  "password" : "root",
+  "database" : "web",
+  "hostname" : "127.0.0.1"
+}
