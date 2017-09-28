@@ -4,7 +4,8 @@
     "autoload": {
         "psr-4": {
           "controller\\": "controller/",
-          "model\\": "model/"
+          "model\\": "model/",
+          "config\\": "config/"
         }
     },
     "require-dev": {
