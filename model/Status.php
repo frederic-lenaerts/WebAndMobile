@@ -2,8 +2,8 @@
 
 namespace model;
 
-class Event implements \JsonSerializable
-{
+class Event implements \JsonSerializable {
+    
     private $id;
 	private $location_id;
 	private $status;

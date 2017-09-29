@@ -2,8 +2,8 @@
 
 namespace model;
 
-class Location implements \JsonSerializable
-{
+class Location implements \JsonSerializable {
+    
     private $id;
 	private $name;
 

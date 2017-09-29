@@ -2,8 +2,8 @@
 
 namespace model;
 
-class Report implements \JsonSerializable
-{
+class Report implements \JsonSerializable {
+    
     private $id;
 	private $location_id;
 	private $date;
