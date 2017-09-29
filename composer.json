@@ -5,6 +5,7 @@
         "psr-4": {
           "controller\\": "controller/",
           "model\\": "model/",
+          "model\\repositories\\": "model/repositories/",
           "config\\": "config/"
         }
     },
