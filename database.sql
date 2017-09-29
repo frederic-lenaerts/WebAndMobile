@@ -72,14 +72,14 @@ CREATE TABLE `reports` (
   `date` date NOT NULL,
   `handled` tinyint(4) NOT NULL DEFAULT '0',
   `technician_id` int(11) DEFAULT NULL,
-  `actions_id` int(11) DEFAULT NULL
+  `action_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Gegevens worden geëxporteerd voor tabel `reports`
 --
 
-INSERT INTO `reports` (`id`, `location_id`, `date`, `handled`, `technician_id`, `actions_id`) VALUES
+INSERT INTO `reports` (`id`, `location_id`, `date`, `handled`, `technician_id`, `action_id`) VALUES
 (1, 2, '2017-09-28', 1, 3, 1),
 (4, 3, '2017-08-13', 0, 4, NULL),
 (5, 1, '2016-02-23', 1, NULL, NULL);
