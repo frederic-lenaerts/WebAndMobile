@@ -8,10 +8,6 @@ class Action implements JsonSerializable {
     private $action;
     private $date;
 
-    public function __construct() {
-
-    }
-
     public function __construct( $id, $action, $date ) {
         $this->setId( $id );
         $this->setAction( $action );
@@ -44,7 +40,9 @@ class Action implements JsonSerializable {
 
     public function jsonSerialize() {
         return [
-            'id' => $this->getId()
+            'id' => $this->getId(),
+            'action' => $this->getAction(),
+            'date' => $this->getDate()
         ];
     }
 }
