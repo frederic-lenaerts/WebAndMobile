@@ -2,15 +2,11 @@
 
 namespace model;
 
-class Action implements JsonSerializable {
+class Action implements \JsonSerializable {
 
     private $id;
     private $action;
     private $date;
-
-    public function __construct() {
-
-    }
 
     public function __construct( $id, $action, $date ) {
         $this->setId( $id );
@@ -44,7 +40,9 @@ class Action implements JsonSerializable {
 
     public function jsonSerialize() {
         return [
-            'id' => $this->getId()
+            'id' => $this->getId(),
+            'action' => $this->getAction(),
+            'date' => $this->getDate()
         ];
     }
 }

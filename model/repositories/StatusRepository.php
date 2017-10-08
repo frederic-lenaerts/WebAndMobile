@@ -1,6 +1,5 @@
 <?php
-require "vendor/autoload.php";
 
-class StatusRepository {
+class StatusRepository implements IStatusRepository {
     
 }

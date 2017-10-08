@@ -6,6 +6,7 @@
           "controller\\": "controller/",
           "model\\": "model/",
           "model\\repositories\\": "model/repositories/",
+          "model\\interfaces\\": "model/interfaces/",
           "config\\": "config/"
         }
     },
