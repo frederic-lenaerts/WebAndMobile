@@ -2,22 +2,18 @@
 
 require_once('vendor/autoload.php');
 
-use model\repositories\ActionRepository;
 use controller\ActionController;
 
 $router = new AltoRouter();
 $router->setBasePath('/');
 
-$pdo = null;
 try {
 	//$dbData = json_decode(file_get_contents('config/dbconfig.json'));
-	$pdo = new PDO('mysql:host=localhost;dbname=web', 'root', 'root');
 
 	# curl -X GET http://192.168.1.250/action/
 	$router->map('GET','action/', 
 		function() {
-			$repository = new ActionRepository( $pdo );
-			$controller = new ActionController( $repository );
+			$controller = new ActionController();
 			$controller->handleFindAll();
 		}
 	);

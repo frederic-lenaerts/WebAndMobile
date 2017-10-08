@@ -2,7 +2,7 @@
 
 namespace model;
 
-class Action implements JsonSerializable {
+class Action implements \JsonSerializable {
 
     private $id;
     private $action;

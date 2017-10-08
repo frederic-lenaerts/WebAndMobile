@@ -8,12 +8,16 @@ use \PDO;
 use PDOException;
 use model\interfaces\IActionRepository;
 use model\Action;
+use config\DependencyInjector;
 
 class ActionRepository implements IActionRepository {
     
     private $connection = null;
 
-    public function __construct( PDO $connection ) {
+    public function __construct( PDO $connection = null) {
+        if ( !isset( $connection ) )
+            $connection = DependancyInjector::getContainer()['pdo'];
+
         $this->connection = $connection;
     }
 
@@ -24,7 +28,7 @@ class ActionRepository implements IActionRepository {
             $rows = $statement->fetchAll( PDO::FETCH_ASSOC );
 
             $actions = array();
-            if ( count( $row ) > 0 ) {
+            if ( count( $rows ) > 0 ) {
 
                 for ( $i = 0; $i < count( $rows ); $i++ ) {
                     $actions[$i] = new Action( $rows[$i]['id'], $rows[$i]['action'], $rows[$i]['date'] );
@@ -34,7 +38,7 @@ class ActionRepository implements IActionRepository {
         } catch ( PDOException $e ) {
             throw new Exception( 'Caught exception: ' . $e->getMessage() );
         } finally {
-            $connection = null;
+            $this->connection = null;
         }
     }
 
@@ -54,7 +58,7 @@ class ActionRepository implements IActionRepository {
         } catch ( PDOException $e ) {
             throw new Exception( 'Caught exception: ' . $e->getMessage() );
         } finally {
-            $connection = null;
+            $this->connection = null;
         }
     }
 
@@ -67,7 +71,7 @@ class ActionRepository implements IActionRepository {
         } catch ( PDOException $e ) {
             throw new Exception( 'Caught exception: ' . $e->getMessage() );
         } finally {
-            $pdo = null;
+            $this->connection = null;
         }
     }
 
@@ -76,7 +80,7 @@ class ActionRepository implements IActionRepository {
     }
 
     public function delete( $id ) {
-        try{
+        try {
             $statement = $this->connection->prepare( 'DELETE FROM actions WHERE id = :id ' );
             $statement->setFetchMode( PDO::FETCH_ASSOC );
             $statement->bindParam( ':id', $id, PDO::PARAM_INT );
@@ -84,7 +88,7 @@ class ActionRepository implements IActionRepository {
         } catch ( PDOException $e ) {
             throw new Exception( 'Caught exception: ' . $e->getMessage() );
         } finally {
-            $connection = null;
+            $this->connection = null;
         }
     }
 }
