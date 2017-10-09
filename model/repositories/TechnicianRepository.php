@@ -49,10 +49,10 @@ class TechnicianRepository implements ITechnicianRepository {
             $statement->setFetchMode( PDO::FETCH_ASSOC );
             $statement->bindParam( ':id', $id, PDO::PARAM_INT );
             $statement->execute();
-            $row = $statement->fetch();
+            $technician = $statement->fetch();
 
-            if ( count( $row ) === 1 ) {
-                return new Technician( $row[0]['id'], $row[0]['name'], $row[0]['location_id'] );
+            if ( count( $technician ) === 1 ) {
+                return new Technician( $technician[0]['id'], $technician[0]['name'], $technician[0]['location_id'] );
             } else {
                 return null;
             }
@@ -74,8 +74,8 @@ class TechnicianRepository implements ITechnicianRepository {
             $statement->execute();
             $results = $statement->fetch();
 
-            if ( count( $row ) === 1 ) {
-                return new Technician( $row[0]['id'], $row[0]['name'], $row[0]['location_id'] );
+            if ( count( $technician ) === 1 ) {
+                return new Technician( $technician[0]['id'], $technician[0]['name'], $technician[0]['location_id'] );
             } else {
                 return null;
             }
@@ -98,10 +98,10 @@ class TechnicianRepository implements ITechnicianRepository {
             $statement->setFetchMode( PDO::FETCH_ASSOC );
             $statement->bindParam( ':id', $id, PDO::PARAM_INT );
             $statement->execute();
-            $row = $statement->fetch();
+            $technician = $statement->fetch();
 
-            if ( count( $row ) === 1 ) {
-                return new Technician( $row[0]['id'], $row[0]['name'], $row[0]['location_id'] );
+            if ( count( $technician ) === 1 ) {
+                return new Technician( $technician[0]['id'], $technician[0]['name'], $technician[0]['location_id'] );
             } else {
                 return null;
             }
