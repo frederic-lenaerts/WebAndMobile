@@ -4,16 +4,22 @@ namespace model\repositories;
 
 use \PDO;
 use PDOException;
+use model\interfaces\ITechnicianRepository;
+use model\Technician;
+use config\DependencyInjector;
 
 class TechnicianRepository implements ITechnicianRepository {
     
     private $connection = null;
 
     public function __construct( PDO $connection ) {
+        if ( !isset( $connection ) )
+            $connection = DependancyInjector::getContainer()['pdo'];
+
         $this->connection = $connection;
     }
 
-    public function getTechnicians() {
+    public function findAll() {
         try {
             $statement = $this->connection->prepare( 'SELECT * FROM technicians' );
             $statement->execute();
@@ -23,7 +29,7 @@ class TechnicianRepository implements ITechnicianRepository {
                 $technicians = array();
 
                 for ( $i = 0; $i < count( $rows ); $i++ ) {
-                    $technicians[] = new Event( $rows[$i]['id'], $rows[$i]['name'], $rows[$i]['location_id'] );
+                    $technicians[] = new Technician( $rows[$i]['id'], $rows[$i]['name'], $rows[$i]['location_id'] );
                 }
 
                 return $technicians;
@@ -33,11 +39,11 @@ class TechnicianRepository implements ITechnicianRepository {
         } catch ( PDOException $e ) {
             throw new Exception( 'Caught exception: ' . $e->getMessage() );
         } finally {
-            $connection = null;
+            $this->connection = null;
         }
     }
 
-    public function getTechnicianById( $id ) {
+    public function find( $id ) {
         try {
             $statement = $this->connection->prepare( 'SELECT * FROM technicians WHERE id = :id' );
             $statement->setFetchMode( PDO::FETCH_ASSOC );
@@ -53,11 +59,11 @@ class TechnicianRepository implements ITechnicianRepository {
         } catch ( PDOException $e ) {
             throw new Exception( 'Caught exception: ' . $e->getMessage() );
         } finally {
-            $connection = null;
+            $this->connection = null;
         }
     }
 
-    public function createTechnician( $name, $location_id ) {
+    public function create( $name, $location_id ) {
         try {
             $statement = $this->connection->prepare( 'INSERT INTO technicians (name, location_id) VALUES (:name, :location_id)' );
             $statement->bindParam( ':name', $name, \PDO::PARAM_INT );
@@ -76,11 +82,11 @@ class TechnicianRepository implements ITechnicianRepository {
         } catch ( PDOException $e ) {
             throw new Exception( 'Caught exception: ' . $e->getMessage() );
         } finally {
-            $connection = null;
+            $this->connection = null;
         }
     }
 
-    public function updateTechnician( $id, $name, $location_id ) {
+    public function update( $id, $name, $location_id ) {
         try {
             $statement = $this->connection->prepare( 'INSERT INTO technicians (id, name, location_id) VALUES (:id, :name, :location_id)' );
             $statement->bindParam( ':id', $id, \PDO::PARAM_INT );
@@ -102,13 +108,14 @@ class TechnicianRepository implements ITechnicianRepository {
         } catch ( PDOException $e ) {
             throw new Exception( 'Caught exception: ' . $e->getMessage() );
         } finally {
-            $connection = null;
+            $this->connection = null;
         }
     }
 
-    public function deleteTechnician( $id ) {
+    public function delete( $id ) {
         try {
             $statement = $this->connection->prepare( 'DELETE FROM technicians WHERE id = :id' );
+            $statement->setFetchMode( PDO::FETCH_ASSOC );
             $statement->bindParam( ':id', $id, \PDO::PARAM_INT );
             $statement->execute();
 
@@ -116,7 +123,7 @@ class TechnicianRepository implements ITechnicianRepository {
         } catch ( PDOException $e ) {
             throw new Exception( 'Caught exception: ' . $e->getMessage() );
         } finally {
-            $connection = null;
+            $this->connection = null;
         }
     }
 }
