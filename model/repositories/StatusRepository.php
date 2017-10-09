@@ -119,9 +119,8 @@ class StatusRepository implements IStatusRepository {
             $statement = $this->connection->prepare( 'DELETE FROM status WHERE id = :id' );
             $statement->setFetchMode( PDO::FETCH_ASSOC );
             $statement->bindParam( ':id', $id, \PDO::PARAM_INT );
-            $statement->execute();
-
-            return 'Deleted';
+            
+            return $statement->execute();
         } catch ( PDOException $e ) {
             throw new Exception( 'Caught exception: ' . $e->getMessage() );
         } finally {
