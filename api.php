@@ -2,6 +2,7 @@
 
 require_once('vendor/autoload.php');
 
+use model\Action;
 use controller\ActionController;
 
 $router = new AltoRouter();
@@ -27,7 +28,8 @@ try {
 	$router->map('POST', 'action/',
 		function() {
 			$json = file_get_contents( 'php://input' );
-			$action = json_decode( $json );
+			$data = json_decode( $json, true );
+			$action = new Action( 0, $data['action'], $data['date']);
 			$controller = new ActionController();
 			$controller->handleCreate( $action );
 		}

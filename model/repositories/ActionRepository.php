@@ -26,13 +26,13 @@ class ActionRepository implements IActionDAO {
     public function find( $id ) {
         $action = null;
         if ($this->isValidId($id)) {
-                $action = $this->actionDAO->find($id);
+                $action = $this->actionDAO->find( $id );
         }
         return $action;
     }
 
     public function create( $action ) {
-        
+        return $this->actionDAO->create( $action );
     }
 
     public function update( $id, $action, $date ) {

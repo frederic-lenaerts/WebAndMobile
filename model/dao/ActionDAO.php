@@ -60,8 +60,8 @@ class ActionDAO implements IActionDAO {
     public function create( $action ) {
         try {
             $statement = $this->connection->prepare( 'INSERT INTO actions (action, date) VALUES (:action, :date)' );
-            $statement->bindParam( ':action', $action, PDO::PARAM_STR );
-            $statement->bindParam( ':date', $date, PDO::PARAM_STR );
+            $statement->bindParam( ':action', $action->action, PDO::PARAM_STR );
+            $statement->bindParam( ':date', $action->date, PDO::PARAM_STR );
             $success = $statement->execute();
 
             if ( $success ) {
