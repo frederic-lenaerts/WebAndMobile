@@ -29,7 +29,7 @@ try {
 		function() {
 			$json = file_get_contents( 'php://input' );
 			$data = json_decode( $json, true );
-			$action = new Action( 0, $data['action'], $data['date']);
+			$action = Action::deserialize( $data );
 			$controller = new ActionController();
 			$controller->handleCreate( $action );
 		}

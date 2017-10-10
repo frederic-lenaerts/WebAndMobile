@@ -27,7 +27,7 @@ class ActionDAO implements IActionDAO {
 
             $actions = array();
             for ( $i = 0; $i < count( $rows ); $i++ ) {
-                $actions[$i] = new Action( $rows[$i]['id'], $rows[$i]['action'], $rows[$i]['date'] );
+                $actions[$i] = Action::deserialize( $rows[ $i ]);
             } 
             return $actions;
         } catch ( PDOException $e ) {
@@ -46,7 +46,7 @@ class ActionDAO implements IActionDAO {
             $row = $statement->fetchAll();
 
             if ( count( $row ) > 0 ) {
-                return new Action( $row[0]['id'], $row[0]['action'], $row[0]['date'] );
+                return Action::deserialize( $row[0] );
             } else {
                 return null;
             }
