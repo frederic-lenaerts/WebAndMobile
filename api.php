@@ -8,8 +8,6 @@ $router = new AltoRouter();
 $router->setBasePath('/');
 
 try {
-	//$dbData = json_decode(file_get_contents('config/dbconfig.json'));
-
 	# curl -X GET http://192.168.1.250/action/
 	$router->map('GET','action/', 
 		function() {
@@ -17,6 +15,26 @@ try {
 			$controller->handleFindAll();
 		}
 	);
+
+	# curl -X GET http://192.168.1.250/action/1
+	$router->map('GET','action/[i:getal]', 
+		function( $id ) {
+			$controller = new ActionController();
+			$controller->handleFind( $id );
+		}
+	);
+
+	$router->map('POST', 'action/',
+		function() {
+			$json = file_get_contents( 'php://input' );
+			$action = json_decode( $json );
+			$controller = new ActionController();
+			$controller->handleCreate( $action );
+		}
+	);
+
+
+
 
 	# curl -X GET http://192.168.1.250/a/1
 	$router->map('GET','a/[i:getal]', 

@@ -6,6 +6,7 @@ require_once('vendor/autoload.php');
 
 use PDO;
 use Pimple\Container;
+use model\dao\ActionDAO;
 use model\repositories\ActionRepository;
 
 class DependencyInjector {
@@ -19,12 +20,16 @@ class DependencyInjector {
             ob_end_clean();
             $db = json_decode( $json, true );
             $dsn = 'mysql:host=' . $db['hostname'] . ';dbname=' . $db['database'];
-
+            
             return new PDO( $dsn, $db['user'], $db['password'] );
         });
 
+        $container['actionDAO'] = $container->factory( function($c) {
+            return new ActionDAO( $c['pdo'] );
+        });
+
         $container['actionRepository'] =  $container->factory( function($c) {
-            return new ActionRepository( $c['pdo'] );
+            return new ActionRepository( $c['actionDAO'] );
         });
 
         return $container;

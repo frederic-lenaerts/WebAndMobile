@@ -4,10 +4,6 @@ namespace model;
 
 class Action implements \JsonSerializable {
 
-    private $id;
-    private $action;
-    private $date;
-
     public function __construct( $id, $action, $date ) {
         $this->setId( $id );
         $this->setAction( $action );
