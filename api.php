@@ -13,7 +13,12 @@ use controller\LocationController;
 use model\factories\ReportFactory;
 use controller\ReportController;
 
-$root = "webandmobile/";
+// Dirty hack to allow Yannick to work without Vagrant
+if ( file_exists( 'C:\dontvagrant.txt' ) ) {
+	$root = "webandmobile/";
+} else {
+	$root = "";
+}
 
 $router = new AltoRouter();
 $router->setBasePath('/');
