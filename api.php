@@ -4,13 +4,13 @@ require_once('vendor/autoload.php');
 
 use model\factories\ActionFactory;
 use controller\ActionController;
-use model\Status;
+use model\factories\StatusFactory;
 use controller\StatusController;
-use model\Technician;
+use model\factories\TechnicianFactory;
 use controller\TechnicianController;
-use model\Location;
+use model\factories\LocatioinFactory;
 use controller\LocationController;
-use model\Report;
+use model\factories\ReportFactory;
 use controller\ReportController;
 
 $router = new AltoRouter();
@@ -75,9 +75,6 @@ try {
 		}
 	);
 
-
-
-
 	# curl -X GET http://192.168.1.250/a/1
 	$router->map('GET','a/[i:getal]', 
 		function($getal) {
@@ -105,14 +102,12 @@ try {
 		}
 	);
 
-
 	$match = $router->match();
 
 	if( $match && is_callable( $match['target'] ) ){
 		call_user_func_array( $match['target'], $match['params'] ); 
-	}
-	else{
-		echo 'geen match';
+	} else {
+		echo 'Geen match';
 	}
 
 } catch (Exception $e) {

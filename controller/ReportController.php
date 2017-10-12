@@ -5,7 +5,7 @@ namespace controller;
 require_once('vendor/autoload.php');
 
 use model\report;
-use model\interfaces\IReportRepository;
+use model\interfaces\repostories\IReportRepository;
 use config\DependencyInjector;
 
 class reportController {

@@ -2,9 +2,9 @@
 
 namespace model\interfaces\repositories;
 
-interface IStatusRepository {
+interface ITechnicianRepository {
 
     public function findAll();
     public function find( $id );
-    public function create( $status );
+    public function create( $technician );
 }

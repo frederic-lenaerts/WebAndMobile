@@ -5,7 +5,7 @@ namespace controller;
 require_once( 'vendor/autoload.php' );
 
 use model\Technician;
-use model\interfaces\ITechnicianRepository;
+use model\interfaces\repostories\ITechnicianRepository;
 use config\DependencyInjector;
 
 class TechnicianController {

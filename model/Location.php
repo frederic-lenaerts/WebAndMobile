@@ -7,7 +7,7 @@ class Location implements \JsonSerializable {
     private $id;
 	private $name;
 
-    function __construct( $id, $name ) {
+    function __construct( $name, $id = null ) {
         $this->setId( $id );
         $this->setName( $name );
     }

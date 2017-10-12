@@ -8,7 +8,7 @@ class Tecnnician implements \JsonSerializable {
     private $name;
     private $location_id;
 
-    function __construct( $id, $name, $location_id ) {
+    function __construct( $name, $location_id, $id = null ) {
         $this->setId( $id );
         $this->setName( $name );
         $this->setLocationId( $location_id );

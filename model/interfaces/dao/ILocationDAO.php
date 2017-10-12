@@ -2,9 +2,9 @@
 
 namespace model\interfaces\dao;
 
-interface IReportDAO {
+interface ILocationDAO {
 
     public function findAll();
     public function find( $id );
-    public function create( $report );
+    public function create( $location );
 }

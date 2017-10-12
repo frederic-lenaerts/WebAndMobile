@@ -34,21 +34,13 @@ class TechnicianRepository implements ITechnicianRepository {
         return $technician;
     }
 
-    public function create( $name, $location_id ) {
+    public function create( $technician ) {
         $createdTechnician = null;
 
         if ( isset( $technician ) )
             $createdTechnician = $this->technicianDAO->create( $technician );
 
         return $createdTechnician;
-    }
-
-    public function update( $id, $name, $location_id ) {
-        
-    }
-
-    public function delete( $id ) {
-        
     }
     
     private function isValidId( $id ) {

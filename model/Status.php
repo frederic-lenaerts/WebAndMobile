@@ -9,7 +9,7 @@ class Event implements \JsonSerializable {
 	private $status;
 	private $date;
 
-    function __construct( $id, $location_id, $status, $date ) {
+    function __construct( $location_id, $status, $date, $id = null ) {
         $this->setId( $id );
         $this->setLocationId( $location_id );
         $this->setDate( $date );

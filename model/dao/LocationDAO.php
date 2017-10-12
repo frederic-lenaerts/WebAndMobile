@@ -6,11 +6,11 @@ require_once('vendor/autoload.php');
 
 use \PDO;
 use PDOException;
-use model\factories\TechnicianFactory;
-use model\interfaces\dao\ITechnicianDAO;
+use model\factories\LocationFactory;
+use model\interfaces\dao\ILocatoinDAO;
 use config\DependencyInjector;
 
-class TechnicianDAO implements ITechnicianDAO {
+class LocatoinDAO implements ILocatoinDAO {
     
     private $connection = null;
 
@@ -23,17 +23,17 @@ class TechnicianDAO implements ITechnicianDAO {
 
     public function findAll() {
         try {
-            $statement = $this->connection->prepare( 'SELECT * FROM technicians' );
+            $statement = $this->connection->prepare( 'SELECT * FROM locations' );
             $statement->execute();
             $rows = $statement->fetch();
             
-            $technicians = array();
+            $locations = array();
 
             for ( $i = 0; $i < count( $rows ); $i++ ) {
-                $technicians[$i] = TechnicianFactory::CreateFromArray( $rows[ $i ]);
+                $locations[$i] = LocationFactory::CreateFromArray( $rows[$i] );
             } 
 
-            return $technicians;
+            return $locations;
         } catch ( PDOException $e ) {
             throw new Exception( 'Caught exception: ' . $e->getMessage() );
         } finally {
@@ -43,14 +43,14 @@ class TechnicianDAO implements ITechnicianDAO {
 
     public function find( $id ) {
         try {
-            $statement = $this->connection->prepare( 'SELECT * FROM technicians WHERE id = :id' );
+            $statement = $this->connection->prepare( 'SELECT * FROM locations WHERE id = :id' );
             $statement->setFetchMode( PDO::FETCH_ASSOC );
             $statement->bindParam( ':id', $id, PDO::PARAM_INT );
             $statement->execute();
             $technician = $statement->fetch();
 
             if ( count( $row ) > 0 ) {
-                return TechnicianFactory::CreateFromArray( $technician[0] );
+                return LocationFactory::CreateFromArray( $technician[0] );
             } else {
                 return null;
             }
@@ -63,17 +63,16 @@ class TechnicianDAO implements ITechnicianDAO {
 
     public function create( $name, $location_id ) {
         try {
-            $statement = $this->connection->prepare( 'INSERT INTO technicians (name, location_id) VALUES (:name, :location_id)' );
+            $statement = $this->connection->prepare( 'INSERT INTO locations (name) VALUES (:name)' );
             $statement->bindParam( ':name', $name, \PDO::PARAM_INT );
-            $statement->bindParam( ':location_id', $location_id, \PDO::PARAM_INT );
             $statement->execute();
 
-            $statement = $this->connection->prepare( 'SELECT * FROM technicians ORDER BY id DESC LIMIT 1' );
+            $statement = $this->connection->prepare( 'SELECT * FROM locations ORDER BY id DESC LIMIT 1' );
             $statement->execute();
             $results = $statement->fetch();
 
             if ( count( $row ) > 0 ) {
-                return TechnicianFactory::CreateFromArray( $technician[0] );
+                return LocationFactory::CreateFromArray( $technician[0] );
             } else {
                 return null;
             }
@@ -86,20 +85,20 @@ class TechnicianDAO implements ITechnicianDAO {
 /*
     public function update( $id, $name, $location_id ) {
         try {
-            $statement = $this->connection->prepare( 'INSERT INTO technicians (id, name, location_id) VALUES (:id, :name, :location_id)' );
+            $statement = $this->connection->prepare( 'INSERT INTO locations (id, name, location_id) VALUES (:id, :name, :location_id)' );
             $statement->bindParam( ':id', $id, \PDO::PARAM_INT );
             $statement->bindParam( ':name', $name, \PDO::PARAM_INT );
             $statement->bindParam( ':location_id', $location_id, \PDO::PARAM_INT );
             $statement->execute();
 
-            $statement = $this->connection->prepare( 'SELECT * FROM technicians WHERE id = :id' );
+            $statement = $this->connection->prepare( 'SELECT * FROM locations WHERE id = :id' );
             $statement->setFetchMode( PDO::FETCH_ASSOC );
             $statement->bindParam( ':id', $id, PDO::PARAM_INT );
             $statement->execute();
             $technician = $statement->fetch();
 
             if ( count( $row ) > 0 ) {
-                return TechnicianFactory::CreateFromArray( $technician[0] );
+                return LocationFactory::CreateFromArray( $technician[0] );
             } else {
                 return null;
             }
@@ -112,7 +111,7 @@ class TechnicianDAO implements ITechnicianDAO {
 
     public function delete( $id ) {
         try {
-            $statement = $this->connection->prepare( 'DELETE FROM technicians WHERE id = :id' );
+            $statement = $this->connection->prepare( 'DELETE FROM locations WHERE id = :id' );
             $statement->setFetchMode( PDO::FETCH_ASSOC );
             $statement->bindParam( ':id', $id, \PDO::PARAM_INT );
 

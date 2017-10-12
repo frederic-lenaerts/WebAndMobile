@@ -7,9 +7,9 @@ use model\Technician;
 abstract class TechnicianFactory {
     public static function CreateFromArray( $array ) {
         return new Technician(
-            $data['id'],
             $data['name'],
-            $data['location_id']
+            $data['location_id'],
+            $data['id']
         );
     }
 }
