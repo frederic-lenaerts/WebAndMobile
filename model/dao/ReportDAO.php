@@ -4,13 +4,13 @@ namespace model\dao;
 
 use \PDO;
 use PDOException;
-use model\factories\ActionFactory;
-use model\interfaces\dao\IActionDAO;
+use model\factories\ReportFactory;
+use model\interfaces\dao\IReportDAO;
 use config\DependencyInjector;
 
-class ActionDAO implements IActionDAO {
+class ReportDAO implements IReportDAO {
 
-    public function __construct( PDO $connection = null ) {
+    public function __construct( PDO $connection = null) {
         if ( !isset( $connection ) )
             $connection = DependancyInjector::getContainer()['pdo'];
 
@@ -19,15 +19,15 @@ class ActionDAO implements IActionDAO {
 
     public function findAll() {
         try {
-            $statement = $this->connection->prepare( 'SELECT * FROM actions' );
+            $statement = $this->connection->prepare( 'SELECT * FROM reports' );
             $statement->execute();
             $rows = $statement->fetchAll( PDO::FETCH_ASSOC );
 
-            $actions = array();
+            $reports = array();
             for ( $i = 0; $i < count( $rows ); $i++ ) {
-                $actions[ $i ] = ActionFactory::CreateFromArray( $rows[ $i ]);
+                $reports[ $i ] = ReportFactory::CreateFromArray( $rows[ $i ]);
             } 
-            return $actions;
+            return $reports;
         } catch ( PDOException $e ) {
             throw new Exception( 'Caught exception: ' . $e->getMessage() );
         } finally {
@@ -37,14 +37,14 @@ class ActionDAO implements IActionDAO {
 
     public function find( $id ) {
         try {
-            $statement = $this->connection->prepare( 'SELECT * FROM actions WHERE id = :id' );
+            $statement = $this->connection->prepare( 'SELECT * FROM reports WHERE id = :id' );
             $statement->setFetchMode( PDO::FETCH_ASSOC );
             $statement->bindParam( ':id', $id, PDO::PARAM_INT );
             $statement->execute();
             $row = $statement->fetchAll();
 
             if ( count( $row ) > 0 ) {
-                return ActionFactory::CreateFromArray( $row[0] );
+                return ReportFactory::CreateFromArray( $row[0] );
             } else {
                 return null;
             }
@@ -55,17 +55,21 @@ class ActionDAO implements IActionDAO {
         }
     }
 
-    public function create( $action ) {
+    public function create( $report ) {
         try {
-            $statement = $this->connection->prepare( 'INSERT INTO actions (action, date) VALUES (:action, :date)' );
-            $statement->bindParam( ':action', $action->action, PDO::PARAM_STR );
-            $statement->bindParam( ':date', $action->date, PDO::PARAM_STR );
+            $statement = $this->connection->prepare( 
+                'INSERT INTO reports (location_id, date, handled, technician_id) 
+                VALUES (:location_id, :date)', ':handled', ':technician_id' );
+            $statement->bindParam( ':location_id', $report->getLoctionId, PDO::PARAM_INT );
+            $statement->bindParam( ':date', $report->getDate, PDO::PARAM_STR );
+            $statement->bindParam( ':handled', $report->getHandled, PDO::PARAM_BOOL);
+            $statement->bindParam( ':technician_id', $report->getTechnicianId, PDO::PARAM_INT );
             $success = $statement->execute();
 
             if ( $success ) {
                 $id = $this->connection->lastInsertId();
-                $action->setId( $id );
-                return $action;
+                $report->setId( $id );
+                return $report;
             }
             return null;
         } catch ( PDOException $e ) {
@@ -74,23 +78,4 @@ class ActionDAO implements IActionDAO {
             $this->connection = null;
         }
     }
-
-    /*
-    public function update( $id, $action, $date ) {
-        
-    }
-
-    public function delete( $id ) {
-        try {
-            $statement = $this->connection->prepare( 'DELETE FROM actions WHERE id = :id ' );
-            $statement->setFetchMode( PDO::FETCH_ASSOC );
-            $statement->bindParam( ':id', $id, PDO::PARAM_INT );
-            $statement->execute();
-        } catch ( PDOException $e ) {
-            throw new Exception( 'Caught exception: ' . $e->getMessage() );
-        } finally {
-            $this->connection = null;
-        }
-    }
-    */
 }

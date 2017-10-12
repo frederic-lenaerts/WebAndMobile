@@ -10,7 +10,7 @@ class Report implements \JsonSerializable {
 	private $handled;
 	private $technician_id;
 
-    function __construct( $id, $location_id, $date, $handled, $technician_id = null ) {
+    function __construct( $location_id, $date, $handled, $id = null, $technician_id = null ) {
         $this->setId( $id );
         $this->setLocationId( $location_id );
         $this->setDate( $date );

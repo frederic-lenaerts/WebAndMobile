@@ -5,7 +5,7 @@ namespace controller;
 require_once('vendor/autoload.php');
 
 use model\Action;
-use model\interfaces\IActionRepository;
+use model\interfaces\repostories\IActionRepository;
 use config\DependencyInjector;
 
 class ActionController {

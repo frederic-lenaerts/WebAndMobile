@@ -9,11 +9,11 @@ use Pimple\Container;
 use model\dao\ActionDAO;
 use model\repositories\ActionRepository;
 
-class DependencyInjector {
+abstract class DependencyInjector {
     public static function getContainer() {
         $container = new Container();
 
-        $container['pdo'] = $container->factory( function($c) {
+        $container['pdo'] = $container->factory( function() {
             ob_start();
             require 'dbconfig.json';           
             $json = ob_get_contents();
@@ -30,6 +30,14 @@ class DependencyInjector {
 
         $container['actionRepository'] =  $container->factory( function($c) {
             return new ActionRepository( $c['actionDAO'] );
+        });
+
+        $container['reportDAO'] = $container->factory( function() {
+            return new ReportDAO( $c['pdo'] );
+        });
+
+        $container['reportRepository'] =  $container->factory( function($c) {
+            return new ReportRepository( $c['reportDAO'] );
         });
 
         return $container;

@@ -2,7 +2,7 @@
 
 require_once('vendor/autoload.php');
 
-use model\Action;
+use model\factories\ActionFactory;
 use controller\ActionController;
 use model\Status;
 use controller\StatusController;
@@ -69,7 +69,7 @@ try {
 		function() {
 			$json = file_get_contents( 'php://input' );
 			$data = json_decode( $json, true );
-			$action = Action::deserialize( $data );
+			$action = ActionFactory::CreateFromArray( $data );
 			$controller = new ActionController();
 			$controller->handleCreate( $action );
 		}

@@ -2,16 +2,15 @@
 
 namespace model\repositories;
 
-require_once('vendor/autoload.php');
-
 use model\Action;
 use model\dao\ActionDAO;
-use model\interfaces\IActionDAO;
+use model\interfaces\dao\IActionDAO;
+use model\interfaces\repositories\IActionRepository;
 use config\DependencyInjector;
 
-class ActionRepository implements IActionDAO {
+class ActionRepository implements IActionRepository{
 
-    public function __construct( ActionDAO $actionDAO = null) {
+    public function __construct( IActionDAO $actionDAO = null) {
         if ( !isset( $actionDAO ) )
             $actionDAO = DependancyInjector::getContainer()['actionDAO'];
 
@@ -32,19 +31,16 @@ class ActionRepository implements IActionDAO {
     }
 
     public function create( $action ) {
-        return $this->actionDAO->create( $action );
+        $createdAction = null;
+        if ( isset( $action )) {
+            $createdAction = $this->actionDAO->create( $action );
+        }
+        return $createdAction;
     }
-
-    public function update( $id, $action, $date ) {
-        
-    }
-
-    public function delete( $id ) {
-
-    }
-
-    private function isValidId( $id ) {
-        if ( is_string( $id ) && ctype_digit( trim( $id ) ) )
+    
+    private function isValidId( $id )
+    {
+        if ( is_string( $id ) && ctype_digit( trim( $id ))) {
             $id = (int) $id;
             
         return is_integer( $id ) && $id >= 0;
