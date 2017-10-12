@@ -43,11 +43,10 @@ class ActionRepository implements IActionDAO {
 
     }
 
-    private function isValidId( $id )
-    {
-        if ( is_string( $id ) && ctype_digit( trim( $id ))) {
+    private function isValidId( $id ) {
+        if ( is_string( $id ) && ctype_digit( trim( $id ) ) )
             $id = (int) $id;
-        }
+            
         return is_integer( $id ) && $id >= 0;
     }
 }

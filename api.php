@@ -4,6 +4,14 @@ require_once('vendor/autoload.php');
 
 use model\Action;
 use controller\ActionController;
+use model\Status;
+use controller\StatusController;
+use model\Technician;
+use controller\TechnicianController;
+use model\Location;
+use controller\LocationController;
+use model\Report;
+use controller\ReportController;
 
 $router = new AltoRouter();
 $router->setBasePath('/');

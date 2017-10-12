@@ -12,7 +12,7 @@ use config\DependencyInjector;
 
 class ActionDAO implements IActionDAO {
 
-    public function __construct( PDO $connection = null) {
+    public function __construct( PDO $connection = null ) {
         if ( !isset( $connection ) )
             $connection = DependancyInjector::getContainer()['pdo'];
 

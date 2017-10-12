@@ -40,12 +40,19 @@ class Tecnnician implements \JsonSerializable {
         return $this->location_id;
     }
 
-    public function jsonSerialize()
-    {
+    public function jsonSerialize() {
         return [
             'id' => $this->getId(),
             'name' => $this->getName(),
             'location_id' => $this->getLocationId()
         ];
+    }
+    
+    public static function deserialize( $data ) {
+        return new self( 
+            $data['id'], 
+            $data['name'], 
+            $data['location_id'] 
+        );
     }
 }

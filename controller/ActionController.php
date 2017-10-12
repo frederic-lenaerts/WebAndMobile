@@ -22,7 +22,7 @@ class ActionController {
         $actions = array();
         try {
             $actions = $this->repository->findAll();
-        } catch (Exception $e) {
+        } catch ( Exception $e ) {
             $statuscode=500;
         }
         $this->returnJSON( $actions, $statuscode );
@@ -36,7 +36,7 @@ class ActionController {
             if ( $action == null ) {
                  $statuscode = 204;
             }
-        } catch (Exception $e) {
+        } catch ( Exception $e ) {
             $statuscode = 500;
         }
         $this->returnJSON( $action, $statuscode );
@@ -51,7 +51,7 @@ class ActionController {
                 if ( !isset( $createdAction )) {
                     $statuscode = 500;
                 }
-            } catch (Exception $e) {
+            } catch ( Exception $e ) {
                 $statuscode = 500;
             }   
         }

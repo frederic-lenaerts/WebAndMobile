@@ -2,7 +2,7 @@
 
 namespace controller;
 
-require_once('vendor/autoload.php');
+require_once( 'vendor/autoload.php' );
 
 use model\Status;
 use model\interfaces\IStatusRepository;
