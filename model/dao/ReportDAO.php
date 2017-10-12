@@ -59,9 +59,7 @@ class ReportDAO implements IReportDAO {
 
     public function create( $report ) {
         try {
-            $statement = $this->connection->prepare( 
-                'INSERT INTO reports (location_id, date, handled, technician_id) 
-                VALUES ( :location_id, :date, :handled, :technician_id )' );
+            $statement = $this->connection->prepare( 'INSERT INTO reports (location_id, date, handled, technician_id) VALUES ( :location_id, :date, :handled, :technician_id )' );
             $locationId = $report->getLocationId();
             $statement->bindParam( ':location_id', $locationId, PDO::PARAM_INT );
             $date = $report->getDate();
@@ -75,8 +73,10 @@ class ReportDAO implements IReportDAO {
             if ( $success ) {
                 $id = $this->connection->lastInsertId();
                 $report->setId( $id );
+
                 return $report;
             }
+            
             return null;
         } catch ( PDOException $e ) {
             throw new Exception( 'Caught exception: ' . $e->getMessage() );

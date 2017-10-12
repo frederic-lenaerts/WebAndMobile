@@ -59,17 +59,22 @@ class StatusDAO implements IStatusDAO {
 
     public function create( $status ) {
         try {
-            $statement = $this->connection->prepare( 'INSERT INTO status (location_id, status, date) VALUES (:location_id, :status, :date)' );
-            $statement->bindParam( ':location_id', $status->location_id, PDO::PARAM_INT );
-            $statement->bindParam( ':status', $status->status, PDO::PARAM_STR );
-            $statement->bindParam( ':date', $status->date, PDO::PARAM_BOOL);
+            $statement = $this->connection->prepare( 'INSERT INTO locations (location_id, status, date) VALUES (:location_id, :status, :date)' );
+            $locationId = $status->getLocationId();
+            $statement->bindParam( ':location_id', $locationId, PDO::PARAM_STR );
+            $statusInteger = $status->getStatus();
+            $statement->bindParam( ':status', $statusInteger, PDO::PARAM_INT );
+            $date = $status->getDate();
+            $statement->bindParam( ':date', $date, PDO::PARAM_STR );
             $success = $statement->execute();
 
             if ( $success ) {
                 $id = $this->connection->lastInsertId();
                 $status->setId( $id );
+
                 return $status;
             }
+            
             return null;
         } catch ( PDOException $e ) {
             throw new Exception( 'Caught exception: ' . $e->getMessage() );

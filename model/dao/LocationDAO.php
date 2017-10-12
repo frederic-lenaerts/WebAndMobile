@@ -60,63 +60,22 @@ class LocationDAO implements ILocationDAO {
     public function create( $location ) {
         try {
             $statement = $this->connection->prepare( 'INSERT INTO locations (name) VALUES (:name)' );
-            $statement->bindParam( ':name', $name, \PDO::PARAM_INT );
-            $statement->execute();
+            $name = $location->getName();
+            $statement->bindParam( ':name', $name, PDO::PARAM_STR );
+            $success = $statement->execute();
 
-            $statement = $this->connection->prepare( 'SELECT * FROM locations ORDER BY id DESC LIMIT 1' );
-            $statement->execute();
-            $results = $statement->fetch();
+            if ( $success ) {
+                $id = $this->connection->lastInsertId();
+                $location->setId( $id );
 
-            if ( count( $location ) > 0 ) {
-                return LocationFactory::CreateFromArray( $location[0] );
-            } else {
-                return null;
+                return $location;
             }
+            
+            return null;
         } catch ( PDOException $e ) {
             throw new Exception( 'Caught exception: ' . $e->getMessage() );
         } finally {
             $this->connection = null;
         }
     }
-/*
-    public function update( $id, $name, $location_id ) {
-        try {
-            $statement = $this->connection->prepare( 'INSERT INTO locations (id, name, location_id) VALUES (:id, :name, :location_id)' );
-            $statement->bindParam( ':id', $id, \PDO::PARAM_INT );
-            $statement->bindParam( ':name', $name, \PDO::PARAM_INT );
-            $statement->bindParam( ':location_id', $location_id, \PDO::PARAM_INT );
-            $statement->execute();
-
-            $statement = $this->connection->prepare( 'SELECT * FROM locations WHERE id = :id' );
-            $statement->setFetchMode( PDO::FETCH_ASSOC );
-            $statement->bindParam( ':id', $id, PDO::PARAM_INT );
-            $statement->execute();
-            $location = $statement->fetch();
-
-            if ( count( $row ) > 0 ) {
-                return LocationFactory::CreateFromArray( $location[0] );
-            } else {
-                return null;
-            }
-        } catch ( PDOException $e ) {
-            throw new Exception( 'Caught exception: ' . $e->getMessage() );
-        } finally {
-            $this->connection = null;
-        }
-    }
-
-    public function delete( $id ) {
-        try {
-            $statement = $this->connection->prepare( 'DELETE FROM locations WHERE id = :id' );
-            $statement->setFetchMode( PDO::FETCH_ASSOC );
-            $statement->bindParam( ':id', $id, \PDO::PARAM_INT );
-
-            return $statement->execute();
-        } catch ( PDOException $e ) {
-            throw new Exception( 'Caught exception: ' . $e->getMessage() );
-        } finally {
-            $this->connection = null;
-        }
-    }
-    */
 }

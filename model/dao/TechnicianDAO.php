@@ -60,64 +60,24 @@ class TechnicianDAO implements ITechnicianDAO {
     public function create( $technician ) {
         try {
             $statement = $this->connection->prepare( 'INSERT INTO technicians (name, location_id) VALUES (:name, :location_id)' );
-            $statement->bindParam( ':name', $name, \PDO::PARAM_INT );
-            $statement->bindParam( ':location_id', $location_id, \PDO::PARAM_INT );
-            $statement->execute();
+            $name = $technician->getName();
+            $statement->bindParam( ':name', $name, PDO::PARAM_STR );
+            $locationId = $technician->getLocationId();
+            $statement->bindParam( ':location_id', $locationId, PDO::PARAM_INT );
+            $success = $statement->execute();
 
-            $statement = $this->connection->prepare( 'SELECT * FROM technicians ORDER BY id DESC LIMIT 1' );
-            $statement->execute();
-            $technicians = $statement->fetch();
+            if ( $success ) {
+                $id = $this->connection->lastInsertId();
+                $technician->setId( $id );
 
-            if ( count( $technicians ) > 0 ) {
-                return TechnicianFactory::CreateFromArray( $technician[0] );
-            } else {
-                return null;
+                return $technician;
             }
+            
+            return null;
         } catch ( PDOException $e ) {
             throw new Exception( 'Caught exception: ' . $e->getMessage() );
         } finally {
             $this->connection = null;
         }
     }
-/*
-    public function update( $id, $name, $location_id ) {
-        try {
-            $statement = $this->connection->prepare( 'INSERT INTO technicians (id, name, location_id) VALUES (:id, :name, :location_id)' );
-            $statement->bindParam( ':id', $id, \PDO::PARAM_INT );
-            $statement->bindParam( ':name', $name, \PDO::PARAM_INT );
-            $statement->bindParam( ':location_id', $location_id, \PDO::PARAM_INT );
-            $statement->execute();
-
-            $statement = $this->connection->prepare( 'SELECT * FROM technicians WHERE id = :id' );
-            $statement->setFetchMode( PDO::FETCH_ASSOC );
-            $statement->bindParam( ':id', $id, PDO::PARAM_INT );
-            $statement->execute();
-            $technician = $statement->fetch();
-
-            if ( count( $row ) > 0 ) {
-                return TechnicianFactory::CreateFromArray( $technician[0] );
-            } else {
-                return null;
-            }
-        } catch ( PDOException $e ) {
-            throw new Exception( 'Caught exception: ' . $e->getMessage() );
-        } finally {
-            $this->connection = null;
-        }
-    }
-
-    public function delete( $id ) {
-        try {
-            $statement = $this->connection->prepare( 'DELETE FROM technicians WHERE id = :id' );
-            $statement->setFetchMode( PDO::FETCH_ASSOC );
-            $statement->bindParam( ':id', $id, \PDO::PARAM_INT );
-
-            return $statement->execute();
-        } catch ( PDOException $e ) {
-            throw new Exception( 'Caught exception: ' . $e->getMessage() );
-        } finally {
-            $this->connection = null;
-        }
-    }
-    */
 }

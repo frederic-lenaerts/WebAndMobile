@@ -8,7 +8,7 @@ use model\factories\StatusFactory;
 use controller\StatusController;
 use model\factories\TechnicianFactory;
 use controller\TechnicianController;
-use model\factories\LocatioinFactory;
+use model\factories\LocationFactory;
 use controller\LocationController;
 use model\factories\ReportFactory;
 use controller\ReportController;
@@ -109,33 +109,43 @@ try {
 		}
 	);
 
-
-
-
-	# curl -X GET http://192.168.1.250/a/1
-	$router->map('GET','a/[i:getal]', 
-		function($getal) {
-			print("GET a/getal ");
-			var_dump($getal);
-		}
-	);
-
-	# curl -X GET http://192.168.1.250/a/1
-	$router->map('GET','a/[a:tekst]', 
-		function($tekst) {
-			print("GET a/tekst ");
-			var_dump($tekst);
-		}
-	);
-
-	#  curl -X POST -d "{'a':1}" http://192.168.1.250/b/
-	$router->map('POST','b/', 
+	$router->map('POST', $root.'status/',
 		function() {
-			print("POST b/ ");
-			$requestBody = file_get_contents('php://input');
-			var_dump($requestBody);
-			var_dump(json_decode($requestBody));
-
+			$json = file_get_contents( 'php://input' );
+			$data = json_decode( $json, true );
+			$status = StatusFactory::CreateFromArray( $data );
+			$controller = new StatusController();
+			$controller->handleCreate( $status );
+		}
+	);
+	
+	$router->map('POST', $root.'report/',
+		function() {
+			$json = file_get_contents( 'php://input' );
+			$data = json_decode( $json, true );
+			$report = ReportFactory::CreateFromArray( $data );
+			$controller = new ReportController();
+			$controller->handleCreate( $report );
+		}
+	);
+		
+	$router->map('POST', $root.'location/',
+		function() {
+			$json = file_get_contents( 'php://input' );
+			$data = json_decode( $json, true );
+			$location = LocationFactory::CreateFromArray( $data );
+			$controller = new LocationController();
+			$controller->handleCreate( $location );
+		}
+	);
+			
+	$router->map('POST', $root.'technician/',
+		function() {
+			$json = file_get_contents( 'php://input' );
+			$data = json_decode( $json, true );
+			$technician = TechnicianFactory::CreateFromArray( $data );
+			$controller = new TechnicianController();
+			$controller->handleCreate( $technician );
 		}
 	);
 
