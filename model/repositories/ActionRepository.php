@@ -10,7 +10,7 @@ use config\DependencyInjector;
 
 class ActionRepository implements IActionRepository{
 
-    public function __construct( IActionDAO $actionDAO = null) {
+    public function __construct( IActionDAO $actionDAO = null ) {
         if ( !isset( $actionDAO ) )
             $actionDAO = DependancyInjector::getContainer()['actionDAO'];
 
@@ -42,6 +42,7 @@ class ActionRepository implements IActionRepository{
     {
         if ( is_string( $id ) && ctype_digit( trim( $id ))) {
             $id = (int) $id;
+        }
             
         return is_integer( $id ) && $id >= 0;
     }

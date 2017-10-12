@@ -2,21 +2,19 @@
 
 namespace model\repositories;
 
-use \PDO;
-use PDOException;
-use model\interfaces\ILocationRepository;
 use model\Location;
+use model\dao\LocationDAO;
+use model\interfaces\dao\ILocationDAO;
+use model\interfaces\repositories\ILocationRepository;
 use config\DependencyInjector;
 
 class LocationRepository implements ILocationRepository {
     
-    private $connection = null;
+    public function __construct( ILocationDAO $locationDAO = null ) {
+        if ( !isset( $locationDAO ) )
+            $locationDAO = DependancyInjector::getContainer()['locationDAO'];
 
-    public function __construct( PDO $connection ) {
-        if ( !isset( $connection ) )
-            $connection = DependancyInjector::getContainer()['locationDAO'];
-
-        $this->connection = $connection;
+        $this->locationDAO = $locationDAO;
     }
 
     public function findAll() {

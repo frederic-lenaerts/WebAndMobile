@@ -1,6 +1,6 @@
 <?php
 
-namespace model\interfaces\deao;
+namespace model\interfaces\dao;
 
 interface ITechnicianDAO {
 

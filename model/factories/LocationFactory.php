@@ -7,8 +7,8 @@ use model\Location;
 abstract class LocationFactory {
     public static function CreateFromArray( $array ) {
         return new Location(
-            $data['name'],
-            $data['id']
+            $array['name'],
+            $array['id']
         );
     }
 }

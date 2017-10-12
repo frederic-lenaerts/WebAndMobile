@@ -2,7 +2,7 @@
 
 namespace model;
 
-class Tecnnician implements \JsonSerializable {
+class Technician implements \JsonSerializable {
     
     private $id;
     private $name;

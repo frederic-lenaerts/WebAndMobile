@@ -13,12 +13,14 @@ use controller\LocationController;
 use model\factories\ReportFactory;
 use controller\ReportController;
 
+$root = "webandmobile/";
+
 $router = new AltoRouter();
 $router->setBasePath('/');
 
 try {
 	# curl -X GET http://192.168.1.250/action/
-	$router->map('GET','action/', 
+	$router->map('GET', $root.'action/', 
 		function() {
 			$controller = new ActionController();
 			$controller->handleFindAll();
@@ -26,7 +28,7 @@ try {
 	);
 	
 	# curl -X GET http://192.168.1.250/status/
-	$router->map('GET','status/', 
+	$router->map('GET', $root.'status/', 
 		function() {
 			$controller = new StatusController();
 			$controller->handleFindAll();
@@ -34,7 +36,7 @@ try {
 	);
 
 	# curl -X GET http://192.168.1.250/technician/
-	$router->map('GET','technician/', 
+	$router->map('GET', $root.'technician/', 
 		function() {
 			$controller = new TechnicianController();
 			$controller->handleFindAll();
@@ -42,7 +44,7 @@ try {
 	);
 	
 	# curl -X GET http://192.168.1.250/location/
-	$router->map('GET','location/', 
+	$router->map('GET', $root.'location/', 
 		function() {
 			$controller = new LocationController();
 			$controller->handleFindAll();
@@ -50,7 +52,7 @@ try {
 	);
 	
 	# curl -X GET http://192.168.1.250/report/
-	$router->map('GET','report/', 
+	$router->map('GET', $root.'report/', 
 		function() {
 			$controller = new ReportController();
 			$controller->handleFindAll();
@@ -58,14 +60,14 @@ try {
 	);
 
 	# curl -X GET http://192.168.1.250/action/1
-	$router->map('GET','action/[i:getal]', 
+	$router->map('GET', $root.'action/[i:getal]', 
 		function( $id ) {
 			$controller = new ActionController();
 			$controller->handleFind( $id );
 		}
 	);
 
-	$router->map('POST', 'action/',
+	$router->map('POST', $root.'action/',
 		function() {
 			$json = file_get_contents( 'php://input' );
 			$data = json_decode( $json, true );

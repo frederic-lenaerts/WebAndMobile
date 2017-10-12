@@ -5,55 +5,55 @@ namespace controller;
 require_once( 'vendor/autoload.php' );
 
 use model\Technician;
-use model\interfaces\repostories\ITechnicianRepository;
+use model\interfaces\repositories\ITechnicianRepository;
 use config\DependencyInjector;
 
 class TechnicianController {
 
     public function __construct( ITechnicianRepository $repository = null ) {
         if ( !isset( $repository ) )
-            $repository = DependencyInjector::getContainer()['techinicianRepository'];
+            $repository = DependencyInjector::getContainer()['technicianRepository'];
 
         $this->repository = $repository;
     }
 
     public function handleFindAll() {
         $statuscode = 200;
-        $techinicians = array();
+        $technicians = array();
 
         try {
-            $techinicians = $this->repository->findAll();
+            $technicians = $this->repository->findAll();
         } catch ( Exception $e ) {
             $statuscode=500;
         }
 
-        $this->returnJSON( $techinicians, $statuscode );
+        $this->returnJSON( $technicians, $statuscode );
     }
 
     public function handleFind( $id ) {
         $statuscode = 200;
-        $techinician = null;
+        $technician = null;
 
         try {
-            $techinician = $this->repository->find( $id );
+            $technician = $this->repository->find( $id );
 
-            if ( $techinician == null ) {
+            if ( $technician == null ) {
                  $statuscode = 204;
             }
         } catch ( Exception $e ) {
             $statuscode = 500;
         }
 
-        $this->returnJSON( $techinician, $statuscode );
+        $this->returnJSON( $technician, $statuscode );
     }
 
-    public function handleCreate( $techinician ) {
+    public function handleCreate( $technician ) {
         $createdTechnician = null;
         $statuscode = 201;
 
-        if ( isset( $techinician ) ) {
+        if ( isset( $technician ) ) {
             try {
-                $createdTechnician = $this->repository->create( $techinician );
+                $createdTechnician = $this->repository->create( $technician );
 
                 if ( !isset( $createdTechnician ) ) {
                     $statuscode = 500;

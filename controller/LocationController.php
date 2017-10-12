@@ -5,10 +5,10 @@ namespace controller;
 require_once( 'vendor/autoload.php' );
 
 use model\Location;
-use model\interfaces\repostories\ILocationRepository;
+use model\interfaces\repositories\ILocationRepository;
 use config\DependencyInjector;
 
-class LocationController implements ILocationRepository {
+class LocationController {
 
     public function __construct( ILocationRepository $repository = null ) {
         if ( !isset( $repository ) )

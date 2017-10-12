@@ -1,8 +1,6 @@
 <?php
 
-namespace model\repositories;
-
-require_once('vendor/autoload.php');
+namespace model\dao;
 
 use \PDO;
 use PDOException;
@@ -61,7 +59,7 @@ class TechnicianDAO implements ITechnicianDAO {
         }
     }
 
-    public function create( $name, $location_id ) {
+    public function create( $technician ) {
         try {
             $statement = $this->connection->prepare( 'INSERT INTO technicians (name, location_id) VALUES (:name, :location_id)' );
             $statement->bindParam( ':name', $name, \PDO::PARAM_INT );

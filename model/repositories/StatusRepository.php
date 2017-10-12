@@ -2,129 +2,48 @@
 
 namespace model\repositories;
 
-use \PDO;
-use PDOException;
-use model\interfaces\IStatusRepository;
-use model\Technician;
+use model\Status;
+use model\dao\StatusDAO;
+use model\interfaces\dao\IStatusDAO;
+use model\interfaces\repositories\IStatusRepository;
 use config\DependencyInjector;
 
-class StatusRepository implements IStatusRepository {
-    
-    private $connection = null;
+class StatusRepository implements IStatusRepository{
 
-    public function __construct( PDO $connection ) {
-        if ( !isset( $connection ) )
-            $connection = DependancyInjector::getContainer()['pdo'];
+    public function __construct( IStatusDAO $statusDAO = null ) {
+        if ( !isset( $statusDAO ) )
+            $statusDAO = DependancyInjector::getContainer()['actionDAO'];
 
-        $this->connection = $connection;
+        $this->actionDAO = $statusDAO;
     }
 
     public function findAll() {
-        try {
-            $statement = $this->connection->prepare( 'SELECT * FROM status' );
-            $statement->execute();
-            $status = $statement->fetch();
-
-            if ( count( $status ) > 0 ) {
-                $status = array();
-
-                for ( $i = 0; $i < count( $status ); $i++ ) {
-                    $status[] = new Status( $status[$i]['id'], $status[$i]['location_id'], $status[$i]['status'], $status[$i]['date'] );
-                }
-
-                return $status;
-            } else {
-                return null;
-            }
-        } catch ( PDOException $e ) {
-            throw new Exception( 'Caught exception: ' . $e->getMessage() );
-        } finally {
-            $this->connection = null;
-        }
+        $statuss = $this->actionDAO->findAll();
+        return $statuss;
     }
 
     public function find( $id ) {
-        try {
-            $statement = $this->connection->prepare( 'SELECT * FROM status WHERE id = :id' );
-            $statement->setFetchMode( PDO::FETCH_ASSOC );
-            $statement->bindParam( ':id', $id, PDO::PARAM_INT );
-            $statement->execute();
-            $status = $statement->fetch();
+        $status = null;
 
-            if ( count( $status ) === 1 ) {
-                return new Status( $status[0]['id'], $status[0]['location_id'], $status[0]['status'], $status[0]['date'] );
-            } else {
-                return null;
-            }
-        } catch ( PDOException $e ) {
-            throw new Exception( 'Caught exception: ' . $e->getMessage() );
-        } finally {
-            $this->connection = null;
-        }
+        if ( $this->isValidId( $id ) )
+            $status = $this->actionDAO->find( $id );
+                
+        return $status;
     }
 
-    public function create( $location_id, $status, $date ) {
-        try {
-            $statement = $this->connection->prepare( 'INSERT INTO status (location_id, status, date) VALUES (:location_id, :status, :date)' );
-            $statement->bindParam( ':location_id', $location_id, \PDO::PARAM_INT );
-            $statement->bindParam( ':status', $status, \PDO::PARAM_INT );
-            $statement->bindParam( ':date', $date, \PDO::PARAM_INT );
-            $statement->execute();
+    public function create( $status ) {
+        $createdAction = null;
 
-            $statement = $this->connection->prepare( 'SELECT * FROM events ORDER BY id DESC LIMIT 1' );
-            $statement->execute();
-            $results = $statement->fetch();
+        if ( isset( $status ) )
+            $createdAction = $this->actionDAO->create( $status );
 
-            if ( count( $status ) === 1 ) {
-                return new Status( $status[0]['id'], $status[0]['location_id'], $status[0]['status'], $status[0]['date'] );
-            } else {
-                return null;
-            }
-        } catch ( PDOException $e ) {
-            throw new Exception( 'Caught exception: ' . $e->getMessage() );
-        } finally {
-            $this->connection = null;
-        }
+        return $createdAction;
     }
-
-    public function update( $id, $location_id, $status, $date ) {
-        try {
-            $statement = $this->connection->prepare( 'INSERT INTO status (id, location_id, status, dat) VALUES (:location_id, :status, :date)' );
-            $statement->bindParam( ':id', $id, \PDO::PARAM_INT );
-            $statement->bindParam( ':location_id', $location_id, \PDO::PARAM_INT );
-            $statement->bindParam( ':status', $status, \PDO::PARAM_INT );
-            $statement->bindParam( ':date', $date, \PDO::PARAM_INT );
-            $statement->execute();
-
-            $statement = $this->connection->prepare( 'SELECT * FROM status WHERE id = :id' );
-            $statement->setFetchMode( PDO::FETCH_ASSOC );
-            $statement->bindParam( ':id', $id, PDO::PARAM_INT );
-            $statement->execute();
-            $row = $statement->fetch();
-
-            if ( count( $status ) === 1 ) {
-                return new Status( $status[0]['id'], $status[0]['location_id'], $status[0]['status'], $status[0]['date'] );
-            } else {
-                return null;
-            }
-        } catch ( PDOException $e ) {
-            throw new Exception( 'Caught exception: ' . $e->getMessage() );
-        } finally {
-            $this->connection = null;
-        }
-    }
-
-    public function delete( $id ) {
-        try {
-            $statement = $this->connection->prepare( 'DELETE FROM status WHERE id = :id' );
-            $statement->setFetchMode( PDO::FETCH_ASSOC );
-            $statement->bindParam( ':id', $id, \PDO::PARAM_INT );
+    
+    private function isValidId( $id ) {
+        if ( is_string( $id ) && ctype_digit( trim( $id ) ) )
+            $id = (int) $id;
             
-            return $statement->execute();
-        } catch ( PDOException $e ) {
-            throw new Exception( 'Caught exception: ' . $e->getMessage() );
-        } finally {
-            $this->connection = null;
-        }
+        return is_integer( $id ) && $id >= 0;
     }
 }

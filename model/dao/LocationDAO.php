@@ -1,16 +1,14 @@
 <?php
 
-namespace model\repositories;
-
-require_once('vendor/autoload.php');
+namespace model\dao;
 
 use \PDO;
 use PDOException;
 use model\factories\LocationFactory;
-use model\interfaces\dao\ILocatoinDAO;
+use model\interfaces\dao\ILocationDAO;
 use config\DependencyInjector;
 
-class LocatoinDAO implements ILocatoinDAO {
+class LocationDAO implements ILocationDAO {
     
     private $connection = null;
 
@@ -61,7 +59,7 @@ class LocatoinDAO implements ILocatoinDAO {
         }
     }
 
-    public function create( $name, $location_id ) {
+    public function create( $location ) {
         try {
             $statement = $this->connection->prepare( 'INSERT INTO locations (name) VALUES (:name)' );
             $statement->bindParam( ':name', $name, \PDO::PARAM_INT );

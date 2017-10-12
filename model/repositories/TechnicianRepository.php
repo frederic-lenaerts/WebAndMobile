@@ -2,21 +2,19 @@
 
 namespace model\repositories;
 
-use \PDO;
-use PDOException;
-use model\interfaces\ITechnicianRepository;
 use model\Technician;
+use model\dao\TechnicianDAO;
+use model\interfaces\dao\ITechnicianDAO;
+use model\interfaces\repositories\ITechnicianRepository;
 use config\DependencyInjector;
 
 class TechnicianRepository implements ITechnicianRepository {
-    
-    private $connection = null;
 
-    public function __construct( PDO $connection ) {
-        if ( !isset( $connection ) )
-            $connection = DependancyInjector::getContainer()['technicianDAO'];
+    public function __construct( ITechnicianDAO $technicianDAO = null ) {
+        if ( !isset( $technicianDAO ) )
+            $technicianDAO = DependancyInjector::getContainer()['technicianDAO'];
 
-        $this->connection = $connection;
+        $this->technicianDAO = $technicianDAO;
     }
 
     public function findAll() {

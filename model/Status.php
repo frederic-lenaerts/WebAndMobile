@@ -2,7 +2,7 @@
 
 namespace model;
 
-class Event implements \JsonSerializable {
+class Status implements \JsonSerializable {
     
     private $id;
 	private $location_id;
@@ -12,9 +12,10 @@ class Event implements \JsonSerializable {
     function __construct( $location_id, $status, $date, $id = null ) {
         $this->setId( $id );
         $this->setLocationId( $location_id );
+        $this->setStatus( $status );
         $this->setDate( $date );
-        $this->setHandled( $handled );
-        $this->setTechnicianId( $technician_id );
+        //$this->setHandled( $handled );
+        //$this->setTechnicianId( $technician_id );
     }
 
     // Setters
