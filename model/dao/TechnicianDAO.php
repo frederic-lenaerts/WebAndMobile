@@ -21,7 +21,7 @@ class TechnicianDAO implements ITechnicianDAO {
         try {
             $statement = $this->connection->prepare( 'SELECT * FROM technicians' );
             $statement->execute();
-            $rows = $statement->fetch();
+            $rows = $statement->fetchAll( PDO::FETCH_ASSOC );
             
             $technicians = array();
 
@@ -43,9 +43,9 @@ class TechnicianDAO implements ITechnicianDAO {
             $statement->setFetchMode( PDO::FETCH_ASSOC );
             $statement->bindParam( ':id', $id, PDO::PARAM_INT );
             $statement->execute();
-            $technician = $statement->fetch();
+            $technician = $statement->fetchAll();
 
-            if ( count( $row ) > 0 ) {
+            if ( count( $technician ) > 0 ) {
                 return TechnicianFactory::CreateFromArray( $technician[0] );
             } else {
                 return null;
@@ -66,9 +66,9 @@ class TechnicianDAO implements ITechnicianDAO {
 
             $statement = $this->connection->prepare( 'SELECT * FROM technicians ORDER BY id DESC LIMIT 1' );
             $statement->execute();
-            $results = $statement->fetch();
+            $technicians = $statement->fetch();
 
-            if ( count( $row ) > 0 ) {
+            if ( count( $technicians ) > 0 ) {
                 return TechnicianFactory::CreateFromArray( $technician[0] );
             } else {
                 return null;

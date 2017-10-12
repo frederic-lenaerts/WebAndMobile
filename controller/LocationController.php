@@ -2,9 +2,6 @@
 
 namespace controller;
 
-require_once( 'vendor/autoload.php' );
-
-use model\Location;
 use model\interfaces\repositories\ILocationRepository;
 use config\DependencyInjector;
 

@@ -2,9 +2,6 @@
 
 namespace controller;
 
-require_once( 'vendor/autoload.php' );
-
-use model\Status;
 use model\interfaces\repositories\IStatusRepository;
 use config\DependencyInjector;
 

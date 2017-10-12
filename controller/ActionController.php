@@ -17,17 +17,20 @@ class ActionController {
     public function handleFindAll() {
         $statuscode = 200;
         $actions = array();
+
         try {
             $actions = $this->repository->findAll();
         } catch ( Exception $e ) {
             $statuscode=500;
         }
+
         $this->returnJSON( $actions, $statuscode );
     }
 
     public function handleFind( $id ) {
         $statuscode = 200;
         $action = null;
+
         try {
             $action = $this->repository->find( $id );
             if ( $action == null ) {
@@ -36,25 +39,27 @@ class ActionController {
         } catch ( Exception $e ) {
             $statuscode = 500;
         }
+
         $this->returnJSON( $action, $statuscode );
     }
 
     public function handleCreate( $action ) {
         $createdAction = null;
         $statuscode = 201;
-        if ( isset( $action )) {
+
+        if ( isset( $action ) ) {
             try {
                 $createdAction = $this->repository->create( $action );
-                if ( !isset( $createdAction )) {
+                if ( !isset( $createdAction ) ) {
                     $statuscode = 500;
                 }
             } catch ( Exception $e ) {
                 $statuscode = 500;
             }   
-        }
-        else {
+        } else {
             $statuscode = 400;
         }
+        
         $this->returnJSON( $createdAction, $statuscode );
     }
 

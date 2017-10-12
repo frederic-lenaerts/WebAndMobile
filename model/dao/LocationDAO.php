@@ -21,7 +21,7 @@ class LocationDAO implements ILocationDAO {
         try {
             $statement = $this->connection->prepare( 'SELECT * FROM locations' );
             $statement->execute();
-            $rows = $statement->fetch();
+            $rows = $statement->fetchAll( PDO::FETCH_ASSOC );
             
             $locations = array();
 
@@ -43,9 +43,9 @@ class LocationDAO implements ILocationDAO {
             $statement->setFetchMode( PDO::FETCH_ASSOC );
             $statement->bindParam( ':id', $id, PDO::PARAM_INT );
             $statement->execute();
-            $location = $statement->fetch();
+            $location = $statement->fetchAll();
 
-            if ( count( $row ) > 0 ) {
+            if ( count( $location ) > 0 ) {
                 return LocationFactory::CreateFromArray( $location[0] );
             } else {
                 return null;
@@ -67,7 +67,7 @@ class LocationDAO implements ILocationDAO {
             $statement->execute();
             $results = $statement->fetch();
 
-            if ( count( $row ) > 0 ) {
+            if ( count( $location ) > 0 ) {
                 return LocationFactory::CreateFromArray( $location[0] );
             } else {
                 return null;
