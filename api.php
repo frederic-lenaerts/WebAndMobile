@@ -66,6 +66,38 @@ try {
 			$controller->handleFind( $id );
 		}
 	);
+	
+	# curl -X GET http://192.168.1.250/location/1
+	$router->map('GET', $root.'location/[i:getal]', 
+		function( $id ) {
+			$controller = new LocationController();
+			$controller->handleFind( $id );
+		}
+	);
+	
+	# curl -X GET http://192.168.1.250/report/1
+	$router->map('GET', $root.'report/[i:getal]', 
+		function( $id ) {
+			$controller = new ReportController();
+			$controller->handleFind( $id );
+		}
+	);
+
+	# curl -X GET http://192.168.1.250/status/1
+	$router->map('GET', $root.'status/[i:getal]', 
+		function( $id ) {
+			$controller = new StatusController();
+			$controller->handleFind( $id );
+		}
+	);
+
+	# curl -X GET http://192.168.1.250/technician/1
+	$router->map('GET', $root.'technician/[i:getal]', 
+		function( $id ) {
+			$controller = new TechnicianController();
+			$controller->handleFind( $id );
+		}
+	);
 
 	$router->map('POST', $root.'action/',
 		function() {

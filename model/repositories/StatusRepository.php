@@ -18,8 +18,9 @@ class StatusRepository implements IStatusRepository{
     }
 
     public function findAll() {
-        $statuss = $this->actionDAO->findAll();
-        return $statuss;
+        $status = $this->actionDAO->findAll();
+
+        return $status;
     }
 
     public function find( $id ) {

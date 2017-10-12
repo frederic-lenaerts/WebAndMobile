@@ -24,9 +24,11 @@ class ReportDAO implements IReportDAO {
             $rows = $statement->fetchAll( PDO::FETCH_ASSOC );
 
             $reports = array();
+
             for ( $i = 0; $i < count( $rows ); $i++ ) {
-                $reports[ $i ] = ReportFactory::CreateFromArray( $rows[ $i ]);
-            } 
+                $reports[$i] = ReportFactory::CreateFromArray( $rows[$i]);
+            }
+
             return $reports;
         } catch ( PDOException $e ) {
             throw new Exception( 'Caught exception: ' . $e->getMessage() );

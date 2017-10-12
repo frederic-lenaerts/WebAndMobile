@@ -24,9 +24,11 @@ class StatusDAO implements IStatusDAO {
             $rows = $statement->fetchAll( PDO::FETCH_ASSOC );
 
             $status = array();
+
             for ( $i = 0; $i < count( $rows ); $i++ ) {
-                $status[ $i ] = StatusFactory::CreateFromArray( $rows[ $i ]);
-            } 
+                $status[$i] = StatusFactory::CreateFromArray( $rows[$i] );
+            }
+
             return $status;
         } catch ( PDOException $e ) {
             throw new Exception( 'Caught exception: ' . $e->getMessage() );

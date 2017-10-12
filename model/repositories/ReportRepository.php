@@ -27,7 +27,7 @@ class ReportRepository implements IReportRepository {
         $report = null;
 
         if ( $this->isValidId( $id ) )
-                $report = $this->reportDAO->find( $id );
+            $report = $this->reportDAO->find( $id );
 
         return $report;
     }

@@ -19,22 +19,25 @@ class ActionRepository implements IActionRepository{
 
     public function findAll() {
         $actions = $this->actionDAO->findAll();
+
         return $actions;
     }
 
     public function find( $id ) {
         $action = null;
-        if ($this->isValidId($id)) {
-                $action = $this->actionDAO->find( $id );
-        }
+
+        if ( $this->isValidId( $id ) )
+            $action = $this->actionDAO->find( $id );
+                
         return $action;
     }
 
     public function create( $action ) {
         $createdAction = null;
-        if ( isset( $action )) {
+
+        if ( isset( $action ) )
             $createdAction = $this->actionDAO->create( $action );
-        }
+            
         return $createdAction;
     }
     

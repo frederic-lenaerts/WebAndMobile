@@ -6,7 +6,6 @@ use model\Report;
 
 abstract class ReportFactory {
     public static function CreateFromArray( $array ) {
-
         return new Report(
             $array['location_id'], 
             $array['date'], 

@@ -24,9 +24,11 @@ class ActionDAO implements IActionDAO {
             $rows = $statement->fetchAll( PDO::FETCH_ASSOC );
 
             $actions = array();
+            
             for ( $i = 0; $i < count( $rows ); $i++ ) {
-                $actions[ $i ] = ActionFactory::CreateFromArray( $rows[ $i ]);
-            } 
+                $actions[$i] = ActionFactory::CreateFromArray( $rows[$i] );
+            }
+
             return $actions;
         } catch ( PDOException $e ) {
             throw new Exception( 'Caught exception: ' . $e->getMessage() );

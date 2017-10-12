@@ -9,8 +9,6 @@ use model\interfaces\dao\ITechnicianDAO;
 use config\DependencyInjector;
 
 class TechnicianDAO implements ITechnicianDAO {
-    
-    private $connection = null;
 
     public function __construct( PDO $connection = null ) {
         if ( !isset( $connection ) )
@@ -28,7 +26,7 @@ class TechnicianDAO implements ITechnicianDAO {
             $technicians = array();
 
             for ( $i = 0; $i < count( $rows ); $i++ ) {
-                $technicians[$i] = TechnicianFactory::CreateFromArray( $rows[ $i ]);
+                $technicians[$i] = TechnicianFactory::CreateFromArray( $rows[$i]);
             } 
 
             return $technicians;

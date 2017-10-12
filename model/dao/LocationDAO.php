@@ -9,8 +9,6 @@ use model\interfaces\dao\ILocationDAO;
 use config\DependencyInjector;
 
 class LocationDAO implements ILocationDAO {
-    
-    private $connection = null;
 
     public function __construct( PDO $connection = null ) {
         if ( !isset( $connection ) )
@@ -45,10 +43,10 @@ class LocationDAO implements ILocationDAO {
             $statement->setFetchMode( PDO::FETCH_ASSOC );
             $statement->bindParam( ':id', $id, PDO::PARAM_INT );
             $statement->execute();
-            $technician = $statement->fetch();
+            $location = $statement->fetch();
 
             if ( count( $row ) > 0 ) {
-                return LocationFactory::CreateFromArray( $technician[0] );
+                return LocationFactory::CreateFromArray( $location[0] );
             } else {
                 return null;
             }
@@ -70,7 +68,7 @@ class LocationDAO implements ILocationDAO {
             $results = $statement->fetch();
 
             if ( count( $row ) > 0 ) {
-                return LocationFactory::CreateFromArray( $technician[0] );
+                return LocationFactory::CreateFromArray( $location[0] );
             } else {
                 return null;
             }
@@ -93,10 +91,10 @@ class LocationDAO implements ILocationDAO {
             $statement->setFetchMode( PDO::FETCH_ASSOC );
             $statement->bindParam( ':id', $id, PDO::PARAM_INT );
             $statement->execute();
-            $technician = $statement->fetch();
+            $location = $statement->fetch();
 
             if ( count( $row ) > 0 ) {
-                return LocationFactory::CreateFromArray( $technician[0] );
+                return LocationFactory::CreateFromArray( $location[0] );
             } else {
                 return null;
             }

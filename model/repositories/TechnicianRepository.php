@@ -27,7 +27,7 @@ class TechnicianRepository implements ITechnicianRepository {
         $technician = null;
 
         if ( $this->isValidId( $id ) )
-                $technician = $this->technicianDAO->find( $id );
+            $technician = $this->technicianDAO->find( $id );
 
         return $technician;
     }

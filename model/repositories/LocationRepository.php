@@ -27,7 +27,7 @@ class LocationRepository implements ILocationRepository {
         $location = null;
 
         if ( $this->isValidId( $id ) )
-                $location = $this->locationDAO->find( $id );
+            $location = $this->locationDAO->find( $id );
 
         return $location;
     }
