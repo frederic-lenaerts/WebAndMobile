@@ -6,8 +6,8 @@ require_once('vendor/autoload.php');
 
 use \PDO;
 use PDOException;
-use model\interfaces\ITechnicianDAO;
-use model\Technician;
+use model\factories\TechnicianFactory;
+use model\interfaces\dao\ITechnicianDAO;
 use config\DependencyInjector;
 
 class TechnicianDAO implements ITechnicianDAO {
@@ -30,7 +30,7 @@ class TechnicianDAO implements ITechnicianDAO {
             $technicians = array();
 
             for ( $i = 0; $i < count( $rows ); $i++ ) {
-                $technicians[$i] = Technician::deserialize( $rows[ $i ]);
+                $technicians[$i] = TechnicianFactory::CreateFromArray( $rows[ $i ]);
             } 
 
             return $technicians;
@@ -50,7 +50,7 @@ class TechnicianDAO implements ITechnicianDAO {
             $technician = $statement->fetch();
 
             if ( count( $row ) > 0 ) {
-                return Technician::deserialize( $technician[0] );
+                return TechnicianFactory::CreateFromArray( $technician[0] );
             } else {
                 return null;
             }
@@ -73,7 +73,7 @@ class TechnicianDAO implements ITechnicianDAO {
             $results = $statement->fetch();
 
             if ( count( $row ) > 0 ) {
-                return Technician::deserialize( $technician[0] );
+                return TechnicianFactory::CreateFromArray( $technician[0] );
             } else {
                 return null;
             }
@@ -99,7 +99,7 @@ class TechnicianDAO implements ITechnicianDAO {
             $technician = $statement->fetch();
 
             if ( count( $row ) > 0 ) {
-                return Technician::deserialize( $technician[0] );
+                return TechnicianFactory::CreateFromArray( $technician[0] );
             } else {
                 return null;
             }

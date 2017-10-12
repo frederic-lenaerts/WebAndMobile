@@ -69,14 +69,4 @@ class Report implements \JsonSerializable {
             'technician_id' => $this->getTechnicianId()
         ];
     }
-    
-    public static function deserialize( $data ) {
-        return new self( 
-            $data['id'],
-            $data['location_id'],
-            $data['date'],
-            $data['handled'],
-            $data['technician_id']
-        );
-    }
 }

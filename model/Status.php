@@ -59,13 +59,4 @@ class Event implements \JsonSerializable {
             'date' => $this->getDate()
         ];
     }
-    
-    public static function deserialize( $data ) {
-        return new self( 
-            $data['id'],
-            $data['location_id'],
-            $data['status'], 
-            $data['date']
-        );
-    }
 }
