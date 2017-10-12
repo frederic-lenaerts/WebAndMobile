@@ -17,6 +17,38 @@ try {
 			$controller->handleFindAll();
 		}
 	);
+	
+	# curl -X GET http://192.168.1.250/status/
+	$router->map('GET','status/', 
+		function() {
+			$controller = new StatusController();
+			$controller->handleFindAll();
+		}
+	);
+
+	# curl -X GET http://192.168.1.250/technician/
+	$router->map('GET','technician/', 
+		function() {
+			$controller = new TechnicianController();
+			$controller->handleFindAll();
+		}
+	);
+	
+	# curl -X GET http://192.168.1.250/location/
+	$router->map('GET','location/', 
+		function() {
+			$controller = new LocationController();
+			$controller->handleFindAll();
+		}
+	);
+	
+	# curl -X GET http://192.168.1.250/report/
+	$router->map('GET','report/', 
+		function() {
+			$controller = new ReportController();
+			$controller->handleFindAll();
+		}
+	);
 
 	# curl -X GET http://192.168.1.250/a/1
 	$router->map('GET','a/[i:getal]', 
