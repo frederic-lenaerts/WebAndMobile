@@ -30,11 +30,17 @@ class Location implements \JsonSerializable {
 		return $this->name;
     }
 
-    public function jsonSerialize()
-    {
+    public function jsonSerialize() {
         return [
             'id' => $this->getId(),
             'name' => $this->getName()
         ];
+    }
+    
+    public static function deserialize( $data ) {
+        return new self( 
+            $data['id'],
+            $data['name']
+        );
     }
 }

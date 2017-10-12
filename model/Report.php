@@ -60,8 +60,7 @@ class Report implements \JsonSerializable {
         return $this->technician_id;
     }
 
-    public function jsonSerialize()
-    {
+    public function jsonSerialize() {
         return [
             'id' => $this->getId(),
             'location_id' => $this->getLocationId(),
@@ -69,5 +68,15 @@ class Report implements \JsonSerializable {
             'handled' => $this->getHandled(),
             'technician_id' => $this->getTechnicianId()
         ];
+    }
+    
+    public static function deserialize( $data ) {
+        return new self( 
+            $data['id'],
+            $data['location_id'],
+            $data['date'],
+            $data['handled'],
+            $data['technician_id']
+        );
     }
 }

@@ -50,9 +50,9 @@ class Tecnnician implements \JsonSerializable {
     
     public static function deserialize( $data ) {
         return new self( 
-            $data['id'], 
-            $data['name'], 
-            $data['location_id'] 
+            $data['id'],
+            $data['name'],
+            $data['location_id']
         );
     }
 }

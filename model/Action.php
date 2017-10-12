@@ -46,9 +46,9 @@ class Action implements \JsonSerializable {
 
     public static function deserialize( $data ) {
         return new self( 
-            $data['action'], 
-            $data['date'], 
-            $data['id'] 
+            $data['action'],
+            $data['date'],
+            $data['id']
         );
     }
 }
