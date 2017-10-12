@@ -4,12 +4,10 @@ namespace model;
 
 class Action implements \JsonSerializable {
 
-    private $id;
-    private $action;
-    private $date;
-
-    public function __construct( $id, $action, $date ) {
-        $this->setId( $id );
+    public function __construct( $action, $date, $id = null ) {
+        if ($id !== null) {
+            $this->setId( $id );
+        }
         $this->setAction( $action );
         $this->setDate( $date );
     }
@@ -44,5 +42,13 @@ class Action implements \JsonSerializable {
             'action' => $this->getAction(),
             'date' => $this->getDate()
         ];
+    }
+
+    public static function deserialize( $data ) {
+        return new self( 
+            $data['action'], 
+            $data['date'], 
+            $data['id'] 
+        );
     }
 }
