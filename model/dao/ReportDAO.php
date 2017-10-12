@@ -59,11 +59,15 @@ class ReportDAO implements IReportDAO {
         try {
             $statement = $this->connection->prepare( 
                 'INSERT INTO reports (location_id, date, handled, technician_id) 
-                VALUES (:location_id, :date)', ':handled', ':technician_id' );
-            $statement->bindParam( ':location_id', $report->getLoctionId, PDO::PARAM_INT );
-            $statement->bindParam( ':date', $report->getDate, PDO::PARAM_STR );
-            $statement->bindParam( ':handled', $report->getHandled, PDO::PARAM_BOOL);
-            $statement->bindParam( ':technician_id', $report->getTechnicianId, PDO::PARAM_INT );
+                VALUES ( :location_id, :date, :handled, :technician_id )' );
+            $locationId = $report->getLocationId();
+            $statement->bindParam( ':location_id', $locationId, PDO::PARAM_INT );
+            $date = $report->getDate();
+            $statement->bindParam( ':date', $date, PDO::PARAM_STR );
+            $handled =  $report->getHandled();
+            $statement->bindParam( ':handled', $handled, PDO::PARAM_INT);
+            $technicianId = $report->getTechnicianId();
+            $statement->bindParam( ':technician_id', $technicianId, PDO::PARAM_INT );
             $success = $statement->execute();
 
             if ( $success ) {

@@ -58,8 +58,10 @@ class ActionDAO implements IActionDAO {
     public function create( $action ) {
         try {
             $statement = $this->connection->prepare( 'INSERT INTO actions (action, date) VALUES (:action, :date)' );
-            $statement->bindParam( ':action', $action->action, PDO::PARAM_STR );
-            $statement->bindParam( ':date', $action->date, PDO::PARAM_STR );
+            $actionString = $action->getAction();
+            $statement->bindParam( ':action', $actionString, PDO::PARAM_STR );
+            $date = $action->getDate();
+            $statement->bindParam( ':date', $date, PDO::PARAM_STR );
             $success = $statement->execute();
 
             if ( $success ) {
@@ -74,23 +76,4 @@ class ActionDAO implements IActionDAO {
             $this->connection = null;
         }
     }
-
-    /*
-    public function update( $id, $action, $date ) {
-        
-    }
-
-    public function delete( $id ) {
-        try {
-            $statement = $this->connection->prepare( 'DELETE FROM actions WHERE id = :id ' );
-            $statement->setFetchMode( PDO::FETCH_ASSOC );
-            $statement->bindParam( ':id', $id, PDO::PARAM_INT );
-            $statement->execute();
-        } catch ( PDOException $e ) {
-            throw new Exception( 'Caught exception: ' . $e->getMessage() );
-        } finally {
-            $this->connection = null;
-        }
-    }
-    */
 }

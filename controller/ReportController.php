@@ -2,13 +2,10 @@
 
 namespace controller;
 
-require_once('vendor/autoload.php');
-
-use model\report;
 use model\interfaces\repositories\IReportRepository;
 use config\DependencyInjector;
 
-class reportController {
+class ReportController {
 
     public function __construct( IReportRepository $repository = null ) {
         if ( !isset( $repository ) )

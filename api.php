@@ -77,6 +77,9 @@ try {
 		}
 	);
 
+
+
+
 	# curl -X GET http://192.168.1.250/a/1
 	$router->map('GET','a/[i:getal]', 
 		function($getal) {

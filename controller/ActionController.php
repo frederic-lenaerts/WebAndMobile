@@ -2,10 +2,7 @@
 
 namespace controller;
 
-require_once('vendor/autoload.php');
-
-use model\Action;
-use model\interfaces\repositories\IActionRepository;
+use model\interfaces\repositories\IReportRepository;
 use config\DependencyInjector;
 
 class ActionController {
