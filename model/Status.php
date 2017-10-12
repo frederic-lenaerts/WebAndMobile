@@ -56,7 +56,7 @@ class Status implements \JsonSerializable {
         return [
             'id' => $this->getId(),
             'location_id' => $this->getLocationId(),
-            'handled' => $this->getStatus(),
+            'status' => $this->getStatus(),
             'date' => $this->getDate()
         ];
     }

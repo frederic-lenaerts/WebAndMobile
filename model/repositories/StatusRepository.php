@@ -12,13 +12,13 @@ class StatusRepository implements IStatusRepository{
 
     public function __construct( IStatusDAO $statusDAO = null ) {
         if ( !isset( $statusDAO ) )
-            $statusDAO = DependancyInjector::getContainer()['actionDAO'];
+            $statusDAO = DependancyInjector::getContainer()['statusDAO'];
 
-        $this->actionDAO = $statusDAO;
+        $this->statusDAO = $statusDAO;
     }
 
     public function findAll() {
-        $status = $this->actionDAO->findAll();
+        $status = $this->statusDAO->findAll();
 
         return $status;
     }
@@ -27,18 +27,18 @@ class StatusRepository implements IStatusRepository{
         $status = null;
 
         if ( $this->isValidId( $id ) )
-            $status = $this->actionDAO->find( $id );
+            $status = $this->statusDAO->find( $id );
                 
         return $status;
     }
 
     public function create( $status ) {
-        $createdAction = null;
+        $createdStatus = null;
 
         if ( isset( $status ) )
-            $createdAction = $this->actionDAO->create( $status );
+            $createdStatus = $this->statusDAO->create( $status );
 
-        return $createdAction;
+        return $createdStatus;
     }
     
     private function isValidId( $id ) {
