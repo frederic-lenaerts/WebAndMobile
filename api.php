@@ -65,6 +65,14 @@ try {
 		}
 	);
 
+	# curl -X GET http://192.168.1.250/report/1
+	$router->map('GET','report/[i:getal]', 
+		function( $id ) {
+			$controller = new ReportController();
+			$controller->handleFind( $id );
+		}
+	);
+
 	$router->map('POST', 'action/',
 		function() {
 			$json = file_get_contents( 'php://input' );
@@ -74,6 +82,9 @@ try {
 			$controller->handleCreate( $action );
 		}
 	);
+
+
+
 
 	# curl -X GET http://192.168.1.250/a/1
 	$router->map('GET','a/[i:getal]', 

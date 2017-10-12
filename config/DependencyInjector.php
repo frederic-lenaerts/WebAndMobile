@@ -7,7 +7,9 @@ require_once('vendor/autoload.php');
 use PDO;
 use Pimple\Container;
 use model\dao\ActionDAO;
+use model\dao\ReportDAO;
 use model\repositories\ActionRepository;
+use model\repositories\ReportRepository;
 
 abstract class DependencyInjector {
     public static function getContainer() {
@@ -24,19 +26,19 @@ abstract class DependencyInjector {
             return new PDO( $dsn, $db['user'], $db['password'] );
         });
 
-        $container['actionDAO'] = $container->factory( function($c) {
+        $container['actionDAO'] = $container->factory( function( $c ) {
             return new ActionDAO( $c['pdo'] );
         });
 
-        $container['actionRepository'] =  $container->factory( function($c) {
+        $container['actionRepository'] =  $container->factory( function( $c ) {
             return new ActionRepository( $c['actionDAO'] );
         });
 
-        $container['reportDAO'] = $container->factory( function() {
+        $container['reportDAO'] = $container->factory( function( $c ) {
             return new ReportDAO( $c['pdo'] );
         });
 
-        $container['reportRepository'] =  $container->factory( function($c) {
+        $container['reportRepository'] =  $container->factory( function( $c ) {
             return new ReportRepository( $c['reportDAO'] );
         });
 
