@@ -47,5 +47,4 @@ class Technician implements \JsonSerializable {
             'location_id' => $this->getLocationId()
         ];
     }
-    
 }

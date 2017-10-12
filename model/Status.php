@@ -15,7 +15,6 @@ class Status implements \JsonSerializable {
         $this->setStatus( $status );
         $this->setDate( $date );
         //$this->setHandled( $handled );
-        //$this->setTechnicianId( $technician_id );
     }
 
     // Setters
