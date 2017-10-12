@@ -20,20 +20,27 @@ class TechnicianRepository implements ITechnicianRepository {
     }
 
     public function findAll() {
-        $actions = $this->actionDAO->findAll();
-        return $actions;
+        $technicians = $this->technicianDAO->findAll();
+
+        return $technicians;
     }
 
     public function find( $id ) {
-        $action = null;
-        if ($this->isValidId($id)) {
-                $action = $this->actionDAO->find( $id );
-        }
-        return $action;
+        $technician = null;
+
+        if ( $this->isValidId( $id ) )
+                $technician = $this->technicianDAO->find( $id );
+
+        return $technician;
     }
 
     public function create( $name, $location_id ) {
-        return $this->actionDAO->create( $action );
+        $createdTechnician = null;
+
+        if ( isset( $technician ) )
+            $createdTechnician = $this->technicianDAO->create( $technician );
+
+        return $createdTechnician;
     }
 
     public function update( $id, $name, $location_id ) {

@@ -19,30 +19,32 @@ class ReportRepository implements IReportRepositories {
 
     public function findAll() {
         $reports = $this->reportDAO->findAll();
+
         return $reports;
     }
 
     public function find( $id ) {
         $report = null;
-        if ($this->isValidId($id)) {
+
+        if ( $this->isValidId( $id ) )
                 $report = $this->reportDAO->find( $id );
-        }
+
         return $report;
     }
 
     public function create( $report ) {
         $createdReport = null;
-        if ( isset( $report )) {
+
+        if ( isset( $report ) )
             $createdReport = $this->reportDAO->create( $report );
-        }
+
         return $createdReport;
     }
     
-    private function isValidId( $id )
-    {
-        if ( is_string( $id ) && ctype_digit( trim( $id ))) {
+    private function isValidId( $id ) {
+        if ( is_string( $id ) && ctype_digit( trim( $id ) ) )
             $id = (int) $id;
-        }
+
         return is_integer( $id ) && $id >= 0;
     }
 }
