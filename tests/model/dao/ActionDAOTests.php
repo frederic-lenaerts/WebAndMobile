@@ -83,7 +83,7 @@ class ActionDAOTests extends TestCase {
     public function testCreate_ValidActionObjectWithoutIdProvided_ActionObjectWithId() {
         //Arrange
         $action = $this->createAction();
-        $action->id = null;
+        $action->setId( null );
         $actionDAO = new ActionDAO($this->connection);
         //Act
         $createdAction = $actionDAO->create( $action );
