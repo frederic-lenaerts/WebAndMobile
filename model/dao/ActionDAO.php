@@ -62,6 +62,7 @@ class ActionDAO implements IActionDAO {
 
     public function create( $action ) {
         $query = function() use ( $action ) {
+            $id = null;
             $statement = $this->connection->prepare( 
                 'INSERT INTO actions (action, date) 
                 VALUES (:action, :date)' 
@@ -70,13 +71,15 @@ class ActionDAO implements IActionDAO {
             $statement->bindParam( ':action', $actionString, PDO::PARAM_STR );
             $date = $action->getDate();
             $statement->bindParam( ':date', $date, PDO::PARAM_STR );
-            return $statement->execute();
+            if ( $statement->execute() ) {
+                return $this->connection->lastInsertId();
+            };
+            return null;
         };
 
-        $hasSucceeded = $this->tryToExecute( $query() );
+        $id = $this->tryToExecute( $query() );
 
-        if ( $hasSucceeded ) {
-            $id = $this->connection->lastInsertId();
+        if ( $id ) {
             $action->setId( $id );
         } else {
             $action = null;
