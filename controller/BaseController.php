@@ -38,7 +38,7 @@ abstract class BaseController {
 
         if ( isset( $object ) ) {
             $createdObject = $this->tryToExecute( $this->repository->create( $object ));
-            if ( $createdObject === null || is_string( $createdObject )) {
+            if ( is_string( $createdObject ) || $createdObject === null ) {
                 $statuscode = 500;
             } 
         } else {
@@ -48,7 +48,7 @@ abstract class BaseController {
         $this->returnJSON( $createdObject, $statuscode );
     }
 
-    private function tryToExecute( $function ) {
+    protected function tryToExecute( $function ) {
         try {
             return $function;
         } catch ( Exception $e ) {
@@ -56,7 +56,7 @@ abstract class BaseController {
         }
     }
     
-    private function returnJSON( $object, $statuscode ) {
+    protected function returnJSON( $object, $statuscode ) {
         header( 'Content-Type: application/json' );
         http_response_code( $statuscode );
         echo json_encode( $object );

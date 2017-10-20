@@ -13,16 +13,4 @@ class ActionController extends BaseController {
 
         parent::__construct( $repository );
     }
-
-    public function handleFindAll() {
-        parent::handleFindAll();
-    }
-
-    public function handleFind( $id ) {
-        parent::handleFind( $id );
-    }
-
-    public function handleCreate( $action ) {
-        parent::handleCreate( $action );
-    }
 }
