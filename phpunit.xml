@@ -3,6 +3,9 @@
     <testsuites>
         <testsuite name="REST API Test Suite">
             <directory suffix=".php">./tests/</directory>
+            <directory suffix=".php">./tests/model/</directory>
+            <directory suffix=".php">./tests/dao/</directory>
+            <directory suffix=".php">./tests/repositories/</directory>
         </testsuite>
     </testsuites>
 </phpunit>  
