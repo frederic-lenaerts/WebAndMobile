@@ -2,8 +2,6 @@
 
 namespace model\repositories;
 
-use model\Location;
-use model\dao\LocationDAO;
 use model\interfaces\dao\ILocationDAO;
 use model\interfaces\repositories\ILocationRepository;
 use config\DependencyInjector;

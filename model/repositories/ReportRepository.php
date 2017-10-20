@@ -2,8 +2,6 @@
 
 namespace model\repositories;
 
-use model\Report;
-use model\dao\ReportDAO;
 use model\interfaces\dao\IReportDAO;
 use model\interfaces\repositories\IReportRepository;
 use config\DependencyInjector;

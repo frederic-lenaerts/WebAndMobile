@@ -2,8 +2,6 @@
 
 namespace model\repositories;
 
-use model\Status;
-use model\dao\StatusDAO;
 use model\interfaces\dao\IStatusDAO;
 use model\interfaces\repositories\IStatusRepository;
 use config\DependencyInjector;
