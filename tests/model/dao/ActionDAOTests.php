@@ -10,11 +10,12 @@ class ActionDAOTests extends TestCase {
 
     public function setUp() {
         $this->connection = new \PDO('sqlite::memory:');
-        $this->connection->exec('CREATE TABLE actions (
+        $this->connection->exec( 'CREATE TABLE actions (
                         id INTEGER, 
                         action TEXT,
                         date TEXT,
-                        PRIMARY KEY (id))');
+                        PRIMARY KEY (id))'
+        );
     }
 
     public function tearDown() {
@@ -26,31 +27,32 @@ class ActionDAOTests extends TestCase {
         $action = $this->createAction();
         $this->connection->exec(
             "INSERT INTO actions (id, action, date) 
-            VALUES (".$action->getId().",'".$action->getAction()."','".$action->getDate()."');");
+            VALUES (".$action->getId().",'".$action->getAction()."','".$action->getDate()."');"
+        );
         $actionDAO = new ActionDAO($this->connection);
         //Act
         $actualAction = $actionDAO->find( $action->getId() );
         //Assert
-        $this->assertEquals($action, $actualAction);
+        $this->assertEquals( $action, $actualAction );
     }
 
     public function testFind_IdDoesNotExist_Null() {
         //Arrange
         $action = $this->createAction();
-        $actionDAO=new ActionDAO($this->connection);
+        $actionDAO=new ActionDAO( $this->connection );
         //Act
-        $actualAction = $actionDAO->find($action->id);
+        $actualAction = $actionDAO->find( $action->id );
         //Assert
-        $this->assertNull($actualAction);
+        $this->assertNull( $actualAction );
     }
 
     public function testFind_TableActionsDoesntExist_Exception() {
         //Arrange
-        $this->expectException(Error::class);
-        $this->connection->exec("DROP TABLE actions");
-        $actionDAO = new ActionDAO($this->connection);
+        $this->expectException( Error::class );
+        $this->connection->exec( "DROP TABLE actions" );
+        $actionDAO = new ActionDAO( $this->connection );
         //Act
-        $actionDAO->find(1);
+        $actionDAO->find( 1 );
     }
 
     public function testFindAll_MultipleActionsExist_ActionObjectArray() {
@@ -59,23 +61,25 @@ class ActionDAOTests extends TestCase {
         $actions[0] = $action = $this->createAction();
         $this->connection->exec(
             "INSERT INTO actions (id, action, date) 
-            VALUES (".$actions[0]->getId().",'".$actions[0]->getAction()."','".$actions[0]->getDate()."');");
+            VALUES (".$actions[0]->getId().",'".$actions[0]->getAction()."','".$actions[0]->getDate()."');"
+        );
         $actions[1] = $action = $this->createAction();
         $this->connection->exec(
             "INSERT INTO actions (id, action, date) 
-            VALUES (".$actions[1]->getId().",'".$actions[1]->getAction()."','".$actions[1]->getDate()."');");
-        $actionDAO = new ActionDAO($this->connection);
+            VALUES (".$actions[1]->getId().",'".$actions[1]->getAction()."','".$actions[1]->getDate()."');"
+        );
+        $actionDAO = new ActionDAO( $this->connection );
         //Act
         $actualActions = $actionDAO->findAll();
         //Assert
-        $this->assertEquals( sort($actions), sort($actualActions) );
+        $this->assertEquals( sort( $actions ), sort( $actualActions ));
     }
     
     public function testFindAll_TableActionsDoesntExist_Exception() {
         //Arrange
-        $this->expectException(Error::class);
-        $this->connection->exec("DROP TABLE actions");
-        $actionDAO = new ActionDAO($this->connection);
+        $this->expectException( Error::class );
+        $this->connection->exec( "DROP TABLE actions" );
+        $actionDAO = new ActionDAO( $this->connection );
         //Act
         $actionDAO->findAll();
     }
@@ -84,7 +88,7 @@ class ActionDAOTests extends TestCase {
         //Arrange
         $action = $this->createAction();
         $action->setId( null );
-        $actionDAO = new ActionDAO($this->connection);
+        $actionDAO = new ActionDAO( $this->connection );
         //Act
         $createdAction = $actionDAO->create( $action );
         //Assert
@@ -95,9 +99,9 @@ class ActionDAOTests extends TestCase {
 
     public function testCreate_NullActionObject_Exception() {
         //Arrange
-        $this->expectException(Error::class);
+        $this->expectException( Error::class );
         $action = null;
-        $actionDAO = new ActionDAO($this->connection);
+        $actionDAO = new ActionDAO( $this->connection );
         //Act
         $createdAction = $actionDAO->create( $action );
     }
