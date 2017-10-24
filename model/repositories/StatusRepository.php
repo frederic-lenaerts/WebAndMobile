@@ -12,6 +12,6 @@ class StatusRepository extends BaseRepository implements IStatusRepository{
         if ( !isset( $statusDAO ) )
             $statusDAO = DependancyInjector::getContainer()['statusDAO'];
 
-            parent::__construct( $statusDAO );
+        parent::__construct( $statusDAO );
     }
 }
