@@ -48,8 +48,8 @@ class Status
         $this->id = $id;
     }
 
-    public function setLocationId( $location_id ) {
-        $this->location_id = $location_id;
+    public function setLocationId( $locationId ) {
+        $this->locationId = $locationId;
     }
     
     public function setStatus( $status ) {
@@ -66,11 +66,16 @@ class Status
     }
 
     public function getLocationId() {
-        return $this->location_id;
+        return $this->locationId;
     }
     
     public function getStatus() {
-        return $this->status;
+        switch ($this->status) {
+            case 0: return 'Bad';
+            case 1: return 'Average';
+            case 2: return 'Good';
+            default: return 'Unknown';
+        }
     }
 
     public function getDate() {

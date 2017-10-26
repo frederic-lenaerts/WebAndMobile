@@ -3,6 +3,8 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use AppBundle\Entity\Location;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Report
@@ -27,6 +29,12 @@ class Report
      * @ORM\Column(name="location_id", type="integer", nullable=false)
      */
     private $locationId;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="Location")
+     * @ORM\JoinColumn(name="location_id", referencedColumnName="id")
+     */
+    private $location;
 
     /**
      * @var \DateTime
@@ -54,8 +62,8 @@ class Report
         $this->id = $id;
     }
 
-    public function setLocationId( $location_id ) {
-        $this->location_id = $location_id;
+    public function setLocationId( $locationId ) {
+        $this->locationId = $locationId;
     }
 
     public function setDate( $date ) {
@@ -66,8 +74,12 @@ class Report
         $this->handled = $handled;
     }
 
-    public function setTechnicianId( $technician_id ) {
-        $this->technician_id = $technician_id;
+    public function setTechnicianId( $technicianId ) {
+        $this->technicianId = $technicianId;
+    }
+    
+    public function setLocation( $locationId ) {
+        $this->location = $location;
     }
 
     // Getters
@@ -76,7 +88,7 @@ class Report
     }
 
     public function getLocationId() {
-        return $this->location_id;
+        return $this->locationId;
     }
 
     public function getDate() {
@@ -84,10 +96,14 @@ class Report
     }
 
     public function getHandled() {
-        return $this->handled;
+        return ( $this->handled ) ? 'Handled' : 'Not handled';
     }
 
     public function getTechnicianId() {
-        return $this->technician_id;
+        return $this->technicianId;
+    }
+
+    public function getLocation() {
+        return $this->location;
     }
 }

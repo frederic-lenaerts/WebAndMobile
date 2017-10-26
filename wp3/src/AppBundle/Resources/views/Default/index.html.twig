@@ -1,0 +1,91 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="row">
+    <div class="col">
+        <h1>Backstage</h1>
+
+        {% if locations %}
+        <div class="dropdown show">
+            <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownLocationSelection" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Locations
+            </a>
+
+            <div class="dropdown-menu" aria-labelledby="dropdownLocationSelection">
+                {% for location in locations %}
+                    <a class="dropdown-item" href="{{ path( 'filter', {'location': location.id} ) }}">{{location.name}}</a>
+                {% endfor %}
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{{ path( 'home' ) }}">None</a>
+            </div>
+        </div>
+        {% else %}
+            <p>No locations found</p>
+        {% endif %}
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <h2>Reports</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Date</th>
+                    <th>Location</th>
+                    <th>Status</th>
+                <tr>
+            </thead>
+            <tbody>
+                {% if reports %}
+                    {% for report in reports %}
+                        <tr>
+                            <td>{{report.getId()}}</td>
+                            <td>{{report.getDate()|date('d-m-Y H:i')}}</td>
+                            <td>{{locations[report.getLocationId()].getName()}}</td>
+                            <td>{{report.getHandled()}}</td>
+                        </tr>			
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="4">No reports found</td>
+                    </tr>			
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-6">
+        <h2>Statuses</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Date</th>
+                    <th>Location</th>
+                    <th>Status</th>
+                <tr>
+            </thead>
+            <tbody>
+                {% if statuses %}
+                    {% for status in statuses %}
+                        <tr>
+                            <td>{{status.getId()}}</td>
+                            <td>{{status.getDate()|date('d-m-Y H:i')}}</td>
+                            <td>{{locations[status.getLocationId()].getName()}}</td>
+                            <td>{{status.getStatus()}}</td>
+                        </tr>			
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="4">No statuses found</td>
+                    </tr>			
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block stylesheets %}
+{% endblock %}
