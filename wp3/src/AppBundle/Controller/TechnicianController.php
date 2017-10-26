@@ -8,7 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 class TechnicianController extends Controller
 {
     /**
-     * @Route("/technician/add")
+     * @Route("/technician/add", name="technician_add")
      */
     public function addAction()
     {
@@ -18,7 +18,7 @@ class TechnicianController extends Controller
     }
 
     /**
-     * @Route("/technician/find")
+     * @Route("/technician/find", name="technician_find")
      */
     public function findAction()
     {
@@ -28,7 +28,7 @@ class TechnicianController extends Controller
     }
 
     /**
-     * @Route("/technician/all")
+     * @Route("/technician/all", name="technician_all")
      */
     public function allAction()
     {
@@ -38,7 +38,7 @@ class TechnicianController extends Controller
     }
 
     /**
-     * @Route("/technician/remove")
+     * @Route("/technician/remove", name="technician_remove")
      */
     public function removeAction()
     {

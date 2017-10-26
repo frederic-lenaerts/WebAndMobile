@@ -5,12 +5,12 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Technicians
+ * Technician
  *
  * @ORM\Table(name="technicians", uniqueConstraints={@ORM\UniqueConstraint(name="id_UNIQUE", columns={"id"})})
  * @ORM\Entity
  */
-class Technicians
+class Technician
 {
     /**
      * @var integer

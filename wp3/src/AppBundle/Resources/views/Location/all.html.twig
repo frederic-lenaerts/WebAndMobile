@@ -3,5 +3,15 @@
 {% block title %}AppBundle:Location:all{% endblock %}
 
 {% block body %}
-<h1>Welcome to the Location:all page</h1>
+    <h1>Welcome to the Location:all page</h1>
+
+    {% if locations %}
+        <ul>
+            {% for location in locations %}
+                <li><a href="{{ path( 'location_edit', {'location': location.id} ) }}">{{location.name}}</a></li>				
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No locations found</p>
+    {% endif %}
 {% endblock %}

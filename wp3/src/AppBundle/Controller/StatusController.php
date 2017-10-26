@@ -8,7 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 class StatusController extends Controller
 {
     /**
-     * @Route("/status/add")
+     * @Route("/status/add", name="status_add")
      */
     public function addAction()
     {
@@ -18,7 +18,7 @@ class StatusController extends Controller
     }
 
     /**
-     * @Route("/status/find")
+     * @Route("/status/find", name="status_find")
      */
     public function findAction()
     {
@@ -28,7 +28,7 @@ class StatusController extends Controller
     }
 
     /**
-     * @Route("/status/all")
+     * @Route("/status/all", name="status_all")
      */
     public function allAction()
     {
@@ -38,7 +38,7 @@ class StatusController extends Controller
     }
 
     /**
-     * @Route("/status/remove")
+     * @Route("/status/remove", name="status_remove")
      */
     public function removeAction()
     {

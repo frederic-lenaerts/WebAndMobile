@@ -8,7 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 class ReportController extends Controller
 {
     /**
-     * @Route("/report/add")
+     * @Route("/report/add", name="report_add")
      */
     public function addAction()
     {
@@ -18,7 +18,7 @@ class ReportController extends Controller
     }
 
     /**
-     * @Route("/report/find")
+     * @Route("/report/find", name="report_find")
      */
     public function findAction()
     {
@@ -28,7 +28,7 @@ class ReportController extends Controller
     }
 
     /**
-     * @Route("/report/all")
+     * @Route("/report/all", name="report_all")
      */
     public function allAction()
     {
@@ -38,7 +38,7 @@ class ReportController extends Controller
     }
 
     /**
-     * @Route("/report/remove")
+     * @Route("/report/remove", name="report_remove")
      */
     public function removeAction()
     {
