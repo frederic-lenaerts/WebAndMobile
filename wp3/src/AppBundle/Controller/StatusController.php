@@ -44,6 +44,38 @@ class StatusController extends Controller
     }
 
     /**
+     * @Route("/status/edit/{status}", name="status_edit")
+     */
+    public function editAction( $status, Request $request )
+    {
+        $em = $this->getDoctrine()->getManager();
+        $status = $em->getRepository( 'AppBundle:Status' )->findOneById( $status );
+
+        $form = $this->createFormBuilder( $status )
+        ->add( 'location_id', TextType::class )
+        ->add( 'status', TextType::class )
+        ->add( 'date', DateType::class )
+        ->add( 'save', SubmitType::class, array( 'label' => 'Add status' ) )
+        ->getForm();
+
+        $form->handleRequest( $request );
+
+        if ( $form->isSubmitted() && $form->isValid() ) {
+            $status = $form->getData();
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist( $status );
+            $em->flush();
+
+            return $this->redirectToRoute( 'status_saved' );
+        }
+
+        return $this->render( 'AppBundle:Status:add.html.twig', array(
+            'form' => $form->createView(),
+        ) );
+    }
+
+    /**
      * @Route("/status/find", name="status_find")
      */
     public function findAction()
@@ -58,9 +90,9 @@ class StatusController extends Controller
      */
     public function allAction()
     {
-        return $this->render('AppBundle:Status:all.html.twig', array(
-            // ...
-        ));
+        $statuses = $this->getDoctrine()->getRepository( 'AppBundle:Status' )->findAll();
+        
+        return $this->render( 'AppBundle:Status:all.html.twig', array( "statuses" => $statuses ) );
     }
 
     /**

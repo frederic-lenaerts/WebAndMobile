@@ -44,14 +44,21 @@ class Status
      * })
      */
     private $location;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="location_id", type="integer", nullable=true)
+     */
+    private $locationId;
 
     // Setters
     public function setId( $id ) {
         $this->id = $id;
     }
 
-    public function setLocationId( $location_id ) {
-        $this->location_id = $location_id;
+    public function setLocationId( $locationId ) {
+        $this->locationId = $locationId;
     }
     
     public function setStatus( $status ) {
@@ -68,20 +75,23 @@ class Status
     }
 
     public function getLocationId() {
-        return $this->location_id;
+        return $this->locationId;
     }
     
     public function getLocation() {
         return $this->location;
     }
     
-    public function getStatus() {
-        switch ( $this->status ) {
-            case 0: return 'Bad';
-            case 1: return 'Average';
-            case 2: return 'Good';
-            default: return 'Unknown';
-        }
+    public function getStatus( $readable = false ) {
+        if ( $readable )
+            switch ( $this->status ) {
+                case 0: return 'Bad';
+                case 1: return 'Average';
+                case 2: return 'Good';
+                default: return 'Unknown';
+            }
+        else
+            return $this->status;
     }
 
     public function getDate() {

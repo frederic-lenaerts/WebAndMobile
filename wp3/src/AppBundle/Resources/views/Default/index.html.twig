@@ -42,9 +42,9 @@
                     {% for report in reports %}
                         <tr>
                             <td>{{report.getId()}}</td>
-                            <td>{{report.getDate()|date('d-m-Y H:i')}}</td>
+                            <td>{{report.getDate()|date('H:i d-m-Y')}}</td>
                             <td>{{report.getLocation().getName()}}</td>
-                            <td>{{report.getHandled()}}</td>
+                            <td>{{report.getHandled( true )}}</td>
                         </tr>
                     {% endfor %}
                 {% else %}
@@ -71,9 +71,9 @@
                     {% for status in statuses %}
                         <tr>
                             <td>{{status.getId()}}</td>
-                            <td>{{status.getDate()|date('d-m-Y H:i')}}</td>
+                            <td>{{status.getDate()|date('H:i d-m-Y')}}</td>
                             <td>{{status.getLocation().getName()}}</td>
-                            <td>{{status.getStatus()}}</td>
+                            <td>{{status.getStatus( true )}}</td>
                         </tr>			
                     {% endfor %}
                 {% else %}

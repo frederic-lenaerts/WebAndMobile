@@ -58,14 +58,21 @@ class Report
      * })
      */
     private $location;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="location_id", type="integer", nullable=true)
+     */
+    private $locationId;
 
     // Setters
     public function setId( $id ) {
         $this->id = $id;
     }
 
-    public function setLocationId( $location_id ) {
-        $this->location_id = $location_id;
+    public function setLocationId( $locationId ) {
+        $this->locationId = $locationId;
     }
 
     public function setDate( $date ) {
@@ -86,7 +93,7 @@ class Report
     }
 
     public function getLocationId() {
-        return $this->location_id;
+        return $this->locationId;
     }
     
     public function getLocation() {
@@ -97,8 +104,11 @@ class Report
         return $this->date;
     }
 
-    public function getHandled() {
-        return ( $this->handled ) ? 'Handled' : 'Not handled';
+    public function getHandled( $readable = false ) {
+        if ( $readable )
+            return ( $this->handled ) ? 'Handled' : 'Not handled';
+        else
+            return $this->handled;
     }
 
     public function getTechnicianId() {

@@ -1,7 +1,35 @@
 {% extends "::base.html.twig" %}
 
-{% block title %}AppBundle:Status:all{% endblock %}
+{% block title %}Status{% endblock %}
 
 {% block body %}
-<h1>Welcome to the Status:all page</h1>
+<h1>Status</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Date</th>
+            <th>Location</th>
+            <th>Status</th>
+            <th>Options</th>
+        <tr>
+    </thead>
+    <tbody>
+        {% if statuses %}
+            {% for status in statuses %}
+                <tr>
+                    <td>{{status.getId()}}</td>
+                    <td>{{status.getDate()|date('H:i d-m-Y')}}</td>
+                    <td>{{status.getLocation().getName()}}</td>
+                    <td>{{status.getStatus()}}</td>
+                    <td><a class="btn btn-primary" href="{{ path( 'status_edit', {'status': status.id} ) }}">Edit</a></td>
+                </tr>			
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="4">No statuses found</td>
+            </tr>			
+        {% endif %}
+    </tbody>
+</table>
 {% endblock %}

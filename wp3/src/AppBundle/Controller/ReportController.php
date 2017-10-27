@@ -30,7 +30,7 @@ class ReportController extends Controller
         $report = $em->getRepository( 'AppBundle:Report' )->findOneById( $report );
 
         $form = $this->createFormBuilder( $report )
-            ->add( 'location_id', TextType::class )
+            ->add( 'location', TextType::class )
             ->add( 'date', DateType::class )
             ->add( 'handled', TextType::class )
             ->add( 'technician_id', TextType::class )
