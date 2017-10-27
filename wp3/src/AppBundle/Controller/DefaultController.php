@@ -19,8 +19,8 @@ class DefaultController extends Controller
         $locations = $this->getDoctrine()->getRepository( 'AppBundle:Location' )->findAll();
 
         if ( $location != null ) {
-            $statuses = $this->getDoctrine()->getRepository( 'AppBundle:Status' )->findByLocationId( $location );
-            $reports = $this->getDoctrine()->getRepository( 'AppBundle:Report' )->findByLocationId( $location );
+            $statuses = $this->getDoctrine()->getRepository( 'AppBundle:Status' )->findByLocation( $location );
+            $reports = $this->getDoctrine()->getRepository( 'AppBundle:Report' )->findByLocation( $location );
         } else {
             $statuses = $this->getDoctrine()->getRepository( 'AppBundle:Status' )->findAll();
             $reports = $this->getDoctrine()->getRepository( 'AppBundle:Report' )->findAll();
