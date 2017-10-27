@@ -32,8 +32,8 @@ class LocationDAO implements ILocationDAO {
 
         $locations = array();
         for ( $i = 0; $i < count( $rows ); $i++ ) {
-            $locations[$i] = new Location( $row[$i]["name"],
-                                           $row[$i]["id"] );
+            $locations[$i] = new Location( $rows[$i]["name"],
+                                           $rows[$i]["id"] );
         } 
 
         return $locations;
