@@ -18,11 +18,21 @@ class Technician
      * @ORM\Column(name="name", type="string", length=45, nullable=false)
      */
     private $name;
-
+    
+    /**
+     * @var \AppBundle\Entity\Location
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Location")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="location_id", referencedColumnName="id")
+     * })
+     */
+    private $location;
+    
     /**
      * @var integer
      *
-     * @ORM\Column(name="location_id", type="integer", nullable=false)
+     * @ORM\Column(name="location_id", type="integer", nullable=true)
      */
     private $locationId;
 
@@ -59,5 +69,9 @@ class Technician
     
     public function getLocationId() {
         return $this->locationId;
+    }
+    
+    public function getLocation() {
+        return $this->location;
     }
 }

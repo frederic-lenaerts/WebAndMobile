@@ -15,10 +15,10 @@
         <option name="fixed"/>
       </options>
     </field>
-    <field name="locationId" type="integer" column="location_id" nullable="false">
-      <options>
-        <option name="unsigned"/>
-      </options>
-    </field>
+    <many-to-one field="location" target-entity="Location" fetch="LAZY">
+      <join-columns>
+        <join-column name="location_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
   </entity>
 </doctrine-mapping>

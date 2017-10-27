@@ -106,5 +106,12 @@ class ReportController extends Controller
             // ...
         ));
     }
-
+    
+    /**
+     * @Route("/report/saved", name="report_saved")
+     */
+    public function savedAction()
+    {
+        return $this->render( 'AppBundle:Report:saved.html.twig' );
+    }
 }

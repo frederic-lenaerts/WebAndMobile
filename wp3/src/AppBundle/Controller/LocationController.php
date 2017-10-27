@@ -17,11 +17,10 @@ class LocationController extends Controller
     public function addAction( Request $request )
     {
         $location = new Location();
-        $location->setName( 'Bree' );
 
         $form = $this->createFormBuilder( $location )
             ->add( 'name', TextType::class )
-            ->add( 'save', SubmitType::class, array( 'label' => 'Add location' ) )
+            ->add( 'save', SubmitType::class, array( 'label' => 'Save location' ) )
             ->getForm();
 
         $form->handleRequest( $request );
@@ -106,8 +105,6 @@ class LocationController extends Controller
      */
     public function savedAction()
     {
-        return $this->render( 'AppBundle:Location:saved.html.twig', array(
-            // ...
-        ) );
+        return $this->render( 'AppBundle:Location:saved.html.twig' );
     }
 }

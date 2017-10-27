@@ -1,7 +1,33 @@
 {% extends "::base.html.twig" %}
 
-{% block title %}AppBundle:Technician:all{% endblock %}
+{% block title %}Technician management{% endblock %}
 
 {% block body %}
-<h1>Welcome to the Technician:all page</h1>
+<h1>Technician management <span class="float-right"><a class="btn btn-primary" href="{{ path( 'technician_add' ) }}">New technician</a></span></h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Location</th>
+            <th>Options</th>
+        <tr>
+    </thead>
+    <tbody>
+        {% if technicians %}
+            {% for technician in technicians %}
+                <tr>
+                    <td>{{technician.getId()}}</td>
+                    <td>{{technician.getName()}}</td>
+                    <td>{{technician.getLocation().getName()}}</td>
+                    <td><a class="btn btn-primary" href="{{ path( 'technician_edit', {'technician': technician.id} ) }}">Edit</a></td>
+                </tr>			
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="4">No technicians found</td>
+            </tr>			
+        {% endif %}
+    </tbody>
+</table>
 {% endblock %}

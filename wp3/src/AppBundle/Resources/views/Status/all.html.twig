@@ -1,9 +1,9 @@
 {% extends "::base.html.twig" %}
 
-{% block title %}Status{% endblock %}
+{% block title %}Status management{% endblock %}
 
 {% block body %}
-<h1>Status</h1>
+<h1>Status management <span class="float-right"><a class="btn btn-primary" href="{{ path( 'status_add' ) }}">New location</a></span></h1>
 <table class="table">
     <thead>
         <tr>

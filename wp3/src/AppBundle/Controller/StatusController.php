@@ -23,7 +23,7 @@ class StatusController extends Controller
             ->add( 'location_id', TextType::class )
             ->add( 'status', TextType::class )
             ->add( 'date', DateType::class )
-            ->add( 'save', SubmitType::class, array( 'label' => 'Add status' ) )
+            ->add( 'save', SubmitType::class, array( 'label' => 'Save status' ) )
             ->getForm();
 
         $form->handleRequest( $request );
@@ -55,7 +55,7 @@ class StatusController extends Controller
         ->add( 'location_id', TextType::class )
         ->add( 'status', TextType::class )
         ->add( 'date', DateType::class )
-        ->add( 'save', SubmitType::class, array( 'label' => 'Add status' ) )
+        ->add( 'save', SubmitType::class, array( 'label' => 'Save status' ) )
         ->getForm();
 
         $form->handleRequest( $request );
@@ -110,8 +110,6 @@ class StatusController extends Controller
      */
     public function savedAction()
     {
-        return $this->render( 'AppBundle:Status:saved.html.twig', array(
-            // ...
-        ) );
+        return $this->render( 'AppBundle:Status:saved.html.twig' );
     }
 }

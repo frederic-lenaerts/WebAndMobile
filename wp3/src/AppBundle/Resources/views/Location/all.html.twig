@@ -1,16 +1,16 @@
 {% extends "::base.html.twig" %}
 
-{% block title %}AppBundle:Location:all{% endblock %}
+{% block title %}Location management{% endblock %}
 
 {% block body %}
-    <h1>Location management</h1>
+    <h1>Location management <span class="float-right"><a class="btn btn-primary" href="{{ path( 'location_add' ) }}">New location</a></span></h1>
 
     <table class="table">
         <thead>
             <tr>
                 <th>#</th>
                 <th>Name</th>
-                <th>Actions</th>
+                <th>Options</th>
             <tr>
         </thead>
         <tbody>
