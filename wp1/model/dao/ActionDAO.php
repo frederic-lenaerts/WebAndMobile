@@ -5,7 +5,7 @@ namespace model\dao;
 use \PDO;
 use PDOException;
 use util\Executor;
-use model\factories\ActionFactory;
+use model\Action;
 use model\interfaces\dao\IActionDAO;
 use config\DependencyInjector;
 
@@ -33,7 +33,9 @@ class ActionDAO implements IActionDAO {
 
         $actions = array();
         for ( $i = 0; $i < count( $rows ); $i++ ) {
-            $actions[$i] = ActionFactory::CreateFromArray( $rows[$i] );
+            $actions[$i] = new Action( $rows[$i]["action"],
+                                       $rows[$i]["date"],
+                                       $rows[$i]["id"] );
         }
 
         return $actions;
@@ -42,7 +44,8 @@ class ActionDAO implements IActionDAO {
     public function find( $id ) {
         $query = function() use ( $id ) {
             $statement = $this->connection->prepare( 
-                'SELECT * FROM actions 
+                'SELECT *
+                 FROM actions 
                  WHERE id = :id' 
             );
             $statement->setFetchMode( PDO::FETCH_ASSOC );
@@ -55,7 +58,9 @@ class ActionDAO implements IActionDAO {
 
         $action = null;
         if ( count( $row ) > 0 ) {
-            $action = ActionFactory::CreateFromArray( $row[0] );
+            $action = new Action( $row[0]["action"],
+                                  $row[0]["date"],
+                                  $row[0]["id"] );
         }
 
         return $action;

@@ -2,25 +2,22 @@
 
 require_once('vendor/autoload.php');
 
-use model\factories\ActionFactory;
-use controller\ActionController;
-use model\factories\StatusFactory;
-use controller\StatusController;
 use model\factories\TechnicianFactory;
+use controller\ActionController;
+use controller\StatusController;
 use controller\TechnicianController;
-use model\factories\LocationFactory;
 use controller\LocationController;
-use model\factories\ReportFactory;
 use controller\ReportController;
-
 use model\Status;
 use model\Location;
+use model\Report;
+use model\Action;
 
 // Dirty hack to allow Yannick to work without Vagrant
 if ( file_exists( 'C:\dontvagrant.txt' ) ) {
-	$root = "/webandmobile/";
+	$root = "/webandmobile/wp1/";
 } else {
-	$root = "/";
+	$root = "/wp1/";
 }
 
 $router = new AltoRouter();
@@ -86,7 +83,6 @@ try {
 	# curl -X GET http://192.168.1.250/report/1
 		$router->map('GET', 'report/[i:id]', 
 		function( $id ) {
-			var_dump("api");
 			$controller = new ReportController();
 			$controller->handleFind( $id );
 		}
@@ -112,7 +108,8 @@ try {
 		function() {
 			$json = file_get_contents( 'php://input' );
 			$data = json_decode( $json, true );
-			$action = ActionFactory::CreateFromArray( $data );
+			$action = new Action( $data["action"],
+						     	  $data["date"] );
 			$controller = new ActionController();
 			$controller->handleCreate( $action );
 		}
@@ -124,8 +121,9 @@ try {
 			$data = json_decode( $json, true );
 			$status = new Status( $data["status"],
 								  $data["date"],
-								  new Location("", $data["location_id"]),
-								  $data["id"]);
+								  new Location(
+									  $data["location"]["name"], 
+									  $data["location"]["id"] ));
 			$controller = new StatusController();
 			$controller->handleCreate( $status );
 		}
@@ -135,7 +133,17 @@ try {
 		function() {
 			$json = file_get_contents( 'php://input' );
 			$data = json_decode( $json, true );
-			$report = ReportFactory::CreateFromArray( $data );
+			$report = new Report( $data["date"],
+								  $data["handled"],
+								  new Location(
+								      $data["location"]["id"],
+									  $data["location"]["name"] ),
+								  new Technician(
+									  $data["technician"]["name"],
+									  new Location(
+										  $data["technician"]["location"]["id"],
+										  $data["technician"]["location"]["name"] ),
+									  $data["technician"]["id"] ));
 			$controller = new ReportController();
 			$controller->handleCreate( $report );
 		}
@@ -145,7 +153,7 @@ try {
 		function() {
 			$json = file_get_contents( 'php://input' );
 			$data = json_decode( $json, true );
-			$location = LocationFactory::CreateFromArray( $data );
+			$location = new Location( $data["name"] );
 			$controller = new LocationController();
 			$controller->handleCreate( $location );
 		}
@@ -170,6 +178,4 @@ try {
 
 } catch (Exception $e) {
 	var_dump($e);
-} finally {
-	$pdo = null;
 }

@@ -8,7 +8,6 @@ use util\Executor;
 use model\Report;
 use model\Location;
 use model\Technician;
-use model\factories\ReportFactory;
 use model\interfaces\dao\IReportDAO;
 use config\DependencyInjector;
 
@@ -61,7 +60,7 @@ class ReportDAO implements IReportDAO {
     }
 
     public function find( $id ) {
-        $query = function() {
+        $query = function() use ( $id ) {
             $statement = $this->connection->prepare( 
                 'SELECT r.id, r.date, r.handled, 
                         l.id as l_id, l.name as l_name, 
@@ -80,7 +79,7 @@ class ReportDAO implements IReportDAO {
         };
 
         $row = Executor::tryPDO( $query(), $this->connection );
-        var_dump($row);
+        
         $report = null;
         if ( count( $row ) > 0 ) {
             $report = new Report( $row[0]["date"],
@@ -103,10 +102,11 @@ class ReportDAO implements IReportDAO {
     }
 
     public function create( $report ) {
-        $query = function() {
+        $query = function() use ( $report ) {
             $statement = $this->connection->prepare( 
                 'INSERT INTO reports (location_id, date, handled, technician_id) 
-                 VALUES ( :location_id, :date, :handled, :technician_id )' );
+                 VALUES ( :location_id, :date, :handled, :technician_id )'
+            );
             $locationId = $report->getLocation()->getLocationId();
             $statement->bindParam( ':location_id', $locationId, PDO::PARAM_INT );
             $date = $report->getDate();
@@ -115,6 +115,7 @@ class ReportDAO implements IReportDAO {
             $statement->bindParam( ':handled', $handled, PDO::PARAM_INT);
             $technicianId = $report->getTechnician()->getId();
             $statement->bindParam( ':technician_id', $technicianId, PDO::PARAM_INT );
+            
             if ( $statement->execute() ) {
                 return $this->connection->lastInsertId();
             };
