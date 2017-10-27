@@ -5,17 +5,17 @@ namespace model;
 class Report implements \JsonSerializable {
     
     private $id;
-	private $location_id;
+	private $location;
 	private $date;
 	private $handled;
-	private $technician_id;
+	private $technician;
 
-    function __construct( $location_id, $date, $handled, $technician_id = null, $id = null ) {
+    function __construct( $date, $handled, $location = null, $technician = null, $id = null ) {
         $this->setId( $id );
-        $this->setLocationId( $location_id );
+        $this->setLocation( $location );
         $this->setDate( $date );
         $this->setHandled( $handled );
-        $this->setTechnicianId( $technician_id );
+        $this->setTechnician( $technician );
     }
 
     // Setters
@@ -23,8 +23,8 @@ class Report implements \JsonSerializable {
         $this->id = $id;
     }
 
-    public function setLocationId( $location_id ) {
-        $this->location_id = $location_id;
+    public function setLocation( $location ) {
+        $this->location = $location;
     }
 
     public function setDate( $date ) {
@@ -32,11 +32,14 @@ class Report implements \JsonSerializable {
     }
 
     public function setHandled( $handled ) {
+        if ( \is_string( $handled )) {
+            $handled = ((int) $handled) === 1;
+        }
         $this->handled = $handled;
     }
 
-    public function setTechnicianId( $technician_id ) {
-        $this->technician_id = $technician_id;
+    public function setTechnician( $technician ) {
+        $this->technician = $technician;
     }
 
     // Getters
@@ -44,29 +47,29 @@ class Report implements \JsonSerializable {
         return $this->id;
     }
 
-    public function getLocationId() {
-        return $this->location_id;
+    public function getLocation() {
+        return $this->location;
     }
 
     public function getDate() {
         return $this->date;
     }
 
-    public function getHandled() {
+    public function isHandled() {
         return $this->handled;
     }
 
-    public function getTechnicianId() {
-        return $this->technician_id;
+    public function getTechnician() {
+        return $this->technician;
     }
 
     public function jsonSerialize() {
         return [
             'id' => $this->getId(),
-            'location_id' => $this->getLocationId(),
+            'location' => $this->getLocation(),
             'date' => $this->getDate(),
-            'handled' => $this->getHandled(),
-            'technician_id' => $this->getTechnicianId()
+            'handled' => $this->isHandled(),
+            'technician' => $this->getTechnician()
         ];
     }
 }

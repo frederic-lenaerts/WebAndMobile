@@ -5,25 +5,22 @@ namespace model;
 class Status implements \JsonSerializable {
     
     private $id;
-	private $location_id;
 	private $status;
-	private $date;
+    private $date;
+    private $location;
+    private $statusArray = array( 0 => "niet goed", 1 => "middelmatig", 2 => "goed" );
 
-    function __construct( $location_id, $status, $date, $id = null ) {
+    function __construct( $status, $date, $location = null, $id = null ) {
         $this->setId( $id );
-        $this->setLocationId( $location_id );
         $this->setStatus( $status );
         $this->setDate( $date );
+        $this->setLocation( $location );
         //$this->setHandled( $handled );
     }
 
     // Setters
     public function setId( $id ) {
         $this->id = $id;
-    }
-
-    public function setLocationId( $location_id ) {
-        $this->location_id = $location_id;
     }
     
     public function setStatus( $status ) {
@@ -34,29 +31,42 @@ class Status implements \JsonSerializable {
         $this->date = $date;
     }
 
+    public function setLocation ( Location $location ){
+        $this->location = $location;
+    }
+
     // Getters
     public function getId() {
         return $this->id;
-    }
-
-    public function getLocationId() {
-        return $this->location_id;
     }
     
     public function getStatus() {
         return $this->status;
     }
 
+    public function getStatusString() {
+        return $this->statusArray[$this->status];
+    }
+
     public function getDate() {
         return $this->date;
+    }
+
+    public function getLocation() {
+        return $this->location;
     }
 
     public function jsonSerialize() {
         return [
             'id' => $this->getId(),
-            'location_id' => $this->getLocationId(),
-            'status' => $this->getStatus(),
-            'date' => $this->getDate()
+            'date' => $this->getDate(),
+            'status' => $this->getStatusString(),
+            'location' => $this->getLocation()
         ];
     }
+}
+
+abstract class StatusTypes {
+    const NietGoed = "niet goed";
+
 }

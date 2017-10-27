@@ -2,6 +2,7 @@
 
 namespace controller;
 
+use util\Executor;
 abstract class BaseController {
 
     public function __construct( $repository ) {
@@ -10,7 +11,7 @@ abstract class BaseController {
 
     public function handleFindAll() {
         $statuscode = 200;
-        $result = $this->tryToExecute( $this->repository->findAll() );
+        $result = Executor::try( $this->repository->findAll() );
         
         if ( !is_array( $result ) ) {
             $statuscode = 500;
@@ -21,8 +22,8 @@ abstract class BaseController {
 
     public function handleFind( $id ) {
         $statuscode = 200;
-        $result = $this->tryToExecute( $this->repository->find( $id ));
-
+        $result = Executor::try( $this->repository->find( $id ));
+        
         if ( !$result ) {
             $statuscode = 204;
         } elseif ( is_string( $result )) {
@@ -37,7 +38,7 @@ abstract class BaseController {
         $statuscode = 201;
 
         if ( isset( $object ) ) {
-            $createdObject = $this->tryToExecute( $this->repository->create( $object ));
+            $createdObject = Executor::try( $this->repository->create( $object ));
             if ( is_string( $createdObject ) || $createdObject === null ) {
                 $statuscode = 500;
             } 
@@ -47,15 +48,7 @@ abstract class BaseController {
         
         $this->returnJSON( $createdObject, $statuscode );
     }
-
-    protected function tryToExecute( $function ) {
-        try {
-            return $function;
-        } catch ( Exception $e ) {
-            return $e->getMessage();
-        }
-    }
-    
+  
     protected function returnJSON( $object, $statuscode ) {
         header( 'Content-Type: application/json' );
         http_response_code( $statuscode );

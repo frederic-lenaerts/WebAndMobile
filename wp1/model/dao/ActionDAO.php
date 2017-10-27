@@ -4,6 +4,7 @@ namespace model\dao;
 
 use \PDO;
 use PDOException;
+use util\Executor;
 use model\factories\ActionFactory;
 use model\interfaces\dao\IActionDAO;
 use config\DependencyInjector;
@@ -21,14 +22,14 @@ class ActionDAO implements IActionDAO {
         $query = function() {
             $statement = $this->connection->prepare( 
                 'SELECT * 
-                FROM actions' 
+                 FROM actions' 
             );
             $statement->setFetchMode( PDO::FETCH_ASSOC );
             $statement->execute();
             return $statement->fetchAll();
         };
 
-        $rows = $this->tryToExecute( $query() );
+        $rows = Executor::tryPDO( $query(), $this->connection );
 
         $actions = array();
         for ( $i = 0; $i < count( $rows ); $i++ ) {
@@ -42,7 +43,7 @@ class ActionDAO implements IActionDAO {
         $query = function() use ( $id ) {
             $statement = $this->connection->prepare( 
                 'SELECT * FROM actions 
-                WHERE id = :id' 
+                 WHERE id = :id' 
             );
             $statement->setFetchMode( PDO::FETCH_ASSOC );
             $statement->bindParam( ':id', $id, PDO::PARAM_INT );
@@ -50,7 +51,7 @@ class ActionDAO implements IActionDAO {
             return $statement->fetchAll();
         };
 
-        $row = $this->tryToExecute( $query() );
+        $row = Executor::tryPDO( $query(), $this->connection );
 
         $action = null;
         if ( count( $row ) > 0 ) {
@@ -65,7 +66,7 @@ class ActionDAO implements IActionDAO {
             $id = null;
             $statement = $this->connection->prepare( 
                 'INSERT INTO actions (action, date) 
-                VALUES (:action, :date)' 
+                 VALUES (:action, :date)' 
             );
             $actionString = $action->getAction();
             $statement->bindParam( ':action', $actionString, PDO::PARAM_STR );
@@ -77,7 +78,7 @@ class ActionDAO implements IActionDAO {
             return null;
         };
 
-        $id = $this->tryToExecute( $query() );
+        $id = Executor::tryPDO( $query(), $this->connection );
 
         if ( $id ) {
             $action->setId( $id );
@@ -88,13 +89,4 @@ class ActionDAO implements IActionDAO {
         return $action;
     }
 
-    private function tryToExecute( $function ) {
-        try {
-            return $function;
-        } catch ( PDOException $e ) {
-            throw new Exception( 'Caught exception: ' . $e->getMessage() );
-        } finally {
-            $this->connection = null;
-        }
-    }
 }

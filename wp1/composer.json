@@ -7,6 +7,7 @@
           "model\\": "model/",
           "model\\repositories\\": "model/repositories/",
           "model\\interfaces\\": "model/interfaces/",
+          "util\\": "util/",
           "config\\": "config/"
         }
     },

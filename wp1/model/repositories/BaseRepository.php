@@ -16,7 +16,7 @@ abstract class BaseRepository {
 
     public function find( $id ) {
         $result = null;
-
+        
         if ( $this->isValidId( $id ) )
             $result = $this->DAO->find( $id );
                 
