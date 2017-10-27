@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Report;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -14,11 +15,33 @@ class ReportController extends Controller
     /**
      * @Route("/report/add", name="report_add")
      */
-    public function addAction()
+    public function addAction( Request $request )
     {
-        return $this->render('AppBundle:Report:add.html.twig', array(
-            // ...
-        ));
+        $report = new Report();
+        
+        $form = $this->createFormBuilder( $report )
+            ->add( 'location_id', TextType::class )
+            ->add( 'date', DateType::class )
+            ->add( 'handled', TextType::class )
+            ->add( 'technician_id', TextType::class )
+            ->add( 'save', SubmitType::class, array( 'label' => 'Save report' ) )
+            ->getForm();
+
+        $form->handleRequest( $request );
+    
+        if ( $form->isSubmitted() && $form->isValid() ) {
+            $report = $form->getData();
+    
+            $em = $this->getDoctrine()->getManager();
+            $em->persist( $report );
+            $em->flush();
+    
+            return $this->redirectToRoute( 'report_saved' );
+        }
+
+        return $this->render( 'AppBundle:Report:add.html.twig', array(
+            'form' => $form->createView(),
+        ) );
     }
     
     /**

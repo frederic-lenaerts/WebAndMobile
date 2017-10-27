@@ -5,13 +5,28 @@
 {% block body %}
     <h1>Location management</h1>
 
-    {% if locations %}
-        <ul>
-            {% for location in locations %}
-                <li><a href="{{ path( 'location_edit', {'location': location.id} ) }}">{{location.name}}</a></li>				
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>No locations found</p>
-    {% endif %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Actions</th>
+            <tr>
+        </thead>
+        <tbody>
+            {% if locations %}
+                {% for location in locations %}
+                    <tr>
+                        <td>{{location.getId()}}</td>
+                        <td>{{location.getName()}}</td>
+                        <td><a href="{{ path( 'location_edit', {'location': location.id} ) }}" class="btn btn-primary">Edit</a></td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="4">No locations found</td>
+                </tr>			
+            {% endif %}
+        </tbody>
+    </table>
 {% endblock %}

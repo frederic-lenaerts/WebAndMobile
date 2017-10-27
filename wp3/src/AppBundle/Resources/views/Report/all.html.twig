@@ -5,13 +5,32 @@
 {% block body %}
     <h1>Report management</h1>
 
-    {% if reports %}
-        <ul>
-            {% for report in reports %}
-                <li><a href="{{ path( 'report_edit', {'report': report.id} ) }}">{{report.id}} on {{report.getDate()|date('d-m-Y H:i')}} with status {{report.getHandled()}}</a></li>				
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>No reports found</p>
-    {% endif %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Date</th>
+                <th>Location</th>
+                <th>Status</th>
+                <th>Actions</th>
+            <tr>
+        </thead>
+        <tbody>
+            {% if reports %}
+                {% for report in reports %}
+                    <tr>
+                        <td>{{report.getId()}}</td>
+                        <td>{{report.getDate()|date('H:i d-m-Y')}}</td>
+                        <td>{{report.getLocation().getName()}}</td>
+                        <td>{{report.getHandled( true )}}</td>
+                        <td><a href="{{ path( 'report_edit', {'report': report.id} ) }}" class="btn btn-primary">Edit</a></td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="4">No reports found</td>
+                </tr>			
+            {% endif %}
+        </tbody>
+    </table>
 {% endblock %}
