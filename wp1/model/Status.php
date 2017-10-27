@@ -8,7 +8,7 @@ class Status implements \JsonSerializable {
 	private $status;
     private $date;
     private $location;
-    private $statusArray = array( 0 => "niet goed", "niet goed" => 0, 1 => "middelmatig", "middelmatig" => 1, 2 => "goed", "goed" => 2 );
+    private $statusArray = array( 0 => "niet goed", 1 => "middelmatig", 2 => "goed", "niet goed" => 0, "middelmatig" => 1, "goed" => 2 );
 
     function __construct( $status, $date, $location = null, $id = null ) {
         $this->setId( $id );
@@ -24,7 +24,7 @@ class Status implements \JsonSerializable {
     
     public function setStatus( $status ) {
         if ( \is_string( $status )) {
-            $status = $this->statusArray[ $status ];
+            $status = \is_numeric( $status ) ? (int)$status : $this->statusArray[$status];
         }
         $this->status = $status;
     }
