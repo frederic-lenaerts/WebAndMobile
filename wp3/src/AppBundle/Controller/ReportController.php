@@ -4,6 +4,10 @@ namespace AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\Request;
 
 class ReportController extends Controller
 {
@@ -15,6 +19,39 @@ class ReportController extends Controller
         return $this->render('AppBundle:Report:add.html.twig', array(
             // ...
         ));
+    }
+    
+    /**
+     * @Route("/report/edit/{report}", name="report_edit")
+     */
+    public function editAction( $report, Request $request )
+    {
+        $em = $this->getDoctrine()->getManager();
+        $report = $em->getRepository( 'AppBundle:Report' )->findOneById( $report );
+
+        $form = $this->createFormBuilder( $report )
+            ->add( 'location_id', TextType::class )
+            ->add( 'date', DateType::class )
+            ->add( 'handled', TextType::class )
+            ->add( 'technician_id', TextType::class )
+            ->add( 'save', SubmitType::class, array( 'label' => 'Save report' ) )
+            ->getForm();
+
+        $form->handleRequest( $request );
+    
+        if ( $form->isSubmitted() && $form->isValid() ) {
+            $report = $form->getData();
+    
+            $em = $this->getDoctrine()->getManager();
+            $em->persist( $report );
+            $em->flush();
+    
+            return $this->redirectToRoute( 'report_saved' );
+        }
+
+        return $this->render( 'AppBundle:Report:edit.html.twig', array(
+            'form' => $form->createView(),
+        ) );
     }
 
     /**
@@ -32,9 +69,9 @@ class ReportController extends Controller
      */
     public function allAction()
     {
-        return $this->render('AppBundle:Report:all.html.twig', array(
-            // ...
-        ));
+        $reports = $this->getDoctrine()->getRepository( 'AppBundle:Report' )->findAll();
+
+        return $this->render( 'AppBundle:Report:all.html.twig', array( "reports" => $reports ) );
     }
 
     /**

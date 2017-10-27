@@ -43,9 +43,9 @@
                         <tr>
                             <td>{{report.getId()}}</td>
                             <td>{{report.getDate()|date('d-m-Y H:i')}}</td>
-                            <td>{{locations[report.getLocationId()].getName()}}</td>
+                            <td>{{report.getLocation().getName()}}</td>
                             <td>{{report.getHandled()}}</td>
-                        </tr>			
+                        </tr>
                     {% endfor %}
                 {% else %}
                     <tr>
@@ -72,7 +72,7 @@
                         <tr>
                             <td>{{status.getId()}}</td>
                             <td>{{status.getDate()|date('d-m-Y H:i')}}</td>
-                            <td>{{locations[status.getLocationId()].getName()}}</td>
+                            <td>{{status.getLocation().getName()}}</td>
                             <td>{{status.getStatus()}}</td>
                         </tr>			
                     {% endfor %}

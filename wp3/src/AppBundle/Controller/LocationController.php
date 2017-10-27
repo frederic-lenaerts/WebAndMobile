@@ -6,7 +6,6 @@ use AppBundle\Entity\Location;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -41,6 +40,7 @@ class LocationController extends Controller
             'form' => $form->createView(),
         ) );
     }
+
     /**
      * @Route("/location/edit/{location}", name="location_edit")
      */
@@ -76,7 +76,7 @@ class LocationController extends Controller
      */
     public function findAction()
     {
-        $locations = $this->getDoctrine()->getRepository( 'AppBundle:Product' )->findAll();
+        $locations = $this->getDoctrine()->getRepository( 'AppBundle:Location' )->findAll();
 
         return $this->render( 'AppBundle:Location:find.html.twig', array( "locations" => $locations ) );
     }
@@ -100,8 +100,7 @@ class LocationController extends Controller
             // ...
         ) );
     }
-
-
+    
     /**
      * @Route("/location/saved", name="location_saved")
      */

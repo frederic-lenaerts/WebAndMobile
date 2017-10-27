@@ -1,7 +1,17 @@
 {% extends "::base.html.twig" %}
 
-{% block title %}AppBundle:Report:all{% endblock %}
+{% block title %}Report management{% endblock %}
 
 {% block body %}
-<h1>Welcome to the Report:all page</h1>
+    <h1>Report management</h1>
+
+    {% if reports %}
+        <ul>
+            {% for report in reports %}
+                <li><a href="{{ path( 'report_edit', {'report': report.id} ) }}">{{report.id}} on {{report.getDate()|date('d-m-Y H:i')}} with status {{report.getHandled()}}</a></li>				
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No reports found</p>
+    {% endif %}
 {% endblock %}
