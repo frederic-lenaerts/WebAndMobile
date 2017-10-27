@@ -22,7 +22,7 @@ abstract class BaseController {
 
     public function handleFind( $id ) {
         $statuscode = 200;
-        $result = Executor::try( $this->repository->find( $id ));
+        $result = Executor::try( $this->repository->find( $id ) );
         
         if ( !$result ) {
             $statuscode = 204;

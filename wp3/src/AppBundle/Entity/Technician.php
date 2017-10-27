@@ -44,8 +44,8 @@ class Technician
         $this->name = $name;
     }
     
-    public function setLocationId( $location_id ) {
-        $this->location_id = $location_id;
+    public function setLocationId( $locationId ) {
+        $this->locationId = $locationId;
     }
 
     // Getters
@@ -58,6 +58,6 @@ class Technician
     }
     
     public function getLocationId() {
-        return $this->location_id;
+        return $this->locationId;
     }
 }

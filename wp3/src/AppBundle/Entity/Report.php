@@ -83,8 +83,8 @@ class Report
         $this->handled = $handled;
     }
 
-    public function setTechnicianId( $technician_id ) {
-        $this->technician_id = $technician_id;
+    public function setTechnicianId( $technicianId ) {
+        $this->technicianId = $technicianId;
     }
 
     // Getters
@@ -112,6 +112,6 @@ class Report
     }
 
     public function getTechnicianId() {
-        return $this->technician_id;
+        return $this->technicianId;
     }
 }
