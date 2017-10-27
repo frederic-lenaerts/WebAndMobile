@@ -3,39 +3,15 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use AppBundle\Entity\Location;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Report
  *
- * @ORM\Table(name="reports", uniqueConstraints={@ORM\UniqueConstraint(name="id_UNIQUE", columns={"id"})})
+ * @ORM\Table(name="reports", uniqueConstraints={@ORM\UniqueConstraint(name="id_UNIQUE", columns={"id"})}, indexes={@ORM\Index(name="location_id", columns={"location_id"}), @ORM\Index(name="technician_id", columns={"technician_id"})})
  * @ORM\Entity
  */
 class Report
 {
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="location_id", type="integer", nullable=false)
-     */
-    private $locationId;
-    
-    /**
-     * @ORM\ManyToOne(targetEntity="Location")
-     * @ORM\JoinColumn(name="location_id", referencedColumnName="id")
-     */
-    private $location;
-
     /**
      * @var \DateTime
      *
@@ -56,14 +32,40 @@ class Report
      * @ORM\Column(name="technician_id", type="integer", nullable=true)
      */
     private $technicianId;
-    
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="action_id", type="integer", nullable=true)
+     */
+    private $actionId;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var \AppBundle\Entity\Location
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Location")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="location_id", referencedColumnName="id")
+     * })
+     */
+    private $location;
+
     // Setters
     public function setId( $id ) {
         $this->id = $id;
     }
 
-    public function setLocationId( $locationId ) {
-        $this->locationId = $locationId;
+    public function setLocationId( $location_id ) {
+        $this->location_id = $location_id;
     }
 
     public function setDate( $date ) {
@@ -74,12 +76,8 @@ class Report
         $this->handled = $handled;
     }
 
-    public function setTechnicianId( $technicianId ) {
-        $this->technicianId = $technicianId;
-    }
-    
-    public function setLocation( $locationId ) {
-        $this->location = $location;
+    public function setTechnicianId( $technician_id ) {
+        $this->technician_id = $technician_id;
     }
 
     // Getters
@@ -88,7 +86,11 @@ class Report
     }
 
     public function getLocationId() {
-        return $this->locationId;
+        return $this->location_id;
+    }
+    
+    public function getLocation() {
+        return $this->location;
     }
 
     public function getDate() {
@@ -100,10 +102,6 @@ class Report
     }
 
     public function getTechnicianId() {
-        return $this->technicianId;
-    }
-
-    public function getLocation() {
-        return $this->location;
+        return $this->technician_id;
     }
 }
