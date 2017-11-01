@@ -54,12 +54,13 @@ class LocationDAO implements ILocationDAO {
 
         $row = Executor::tryPDO( $query(), $this->connection );
 
+        $location = null;
         if ( count( $row ) > 0 ) {
-            return new Location( $row[0]["name"],
+            $location = new Location( $row[0]["name"],
                                  $row[0]["id"] );
-        } else {
-            return null;
         }
+        
+        return $location;
     }
 
     public function create( $location ) {
