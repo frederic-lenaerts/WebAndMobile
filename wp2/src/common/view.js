@@ -20,27 +20,38 @@ class View extends Component {
     render() {
         return (
             <div>
-                <AppBar title={ this.props.title } onLeftIconButtonTouchTap={ this.handleToggle } style={{ backgroundColor: "hotpink" }}/>
+                <AppBar 
+                    title={ this.props.title } 
+                    onLeftIconButtonTouchTap={ this.handleToggle } 
+                />
                 <Drawer
-                    docked={false}
-                    width={200}
-                    open={this.state.open}
-                    onRequestChange={(open) => this.setState({open})}
+                    docked={ false }
+                    width={ 200 }
+                    open={ this.state.open }
+                    onRequestChange={( open ) => this.setState({ open })}
                 >
-                    <MenuItem onClick={ this.handleClose } containerElement={
-                        <Link to="/"></Link>} >
+                    <MenuItem 
+                        onClick={ this.handleClose } 
+                        containerElement={ <Link to="/"></Link> } 
+                    >
                         Dashboard
                     </MenuItem>
-                    <MenuItem onClick={ this.handleClose } containerElement={
-                        <Link to="/status"></Link>} >
+                    <MenuItem 
+                        onClick={ this.handleClose } 
+                        containerElement={ <Link to="/status"></Link> } 
+                    >
                         Status
                     </MenuItem>
-                    <MenuItem onClick={ this.handleClose } containerElement={
-                        <Link to="/problems"></Link>} >
-                        Problems
+                    <MenuItem 
+                        onClick={ this.handleClose } 
+                        containerElement={ <Link to="/reports"></Link> } 
+                    >
+                        Reports
                     </MenuItem>
-                    <MenuItem onClick={ this.handleClose } containerElement={
-                        <Link to="/locations"></Link>} >
+                    <MenuItem 
+                        onClick={ this.handleClose }
+                        containerElement={ <Link to="/locations"></Link>} 
+                    >
                         Locations
                     </MenuItem>
                 </Drawer>

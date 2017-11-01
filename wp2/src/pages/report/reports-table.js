@@ -11,13 +11,19 @@ import {
 const Row = ( props ) => (
     <TableRow >
         <TableRowColumn >
+            { props.entry.id }
+        </TableRowColumn>
+        <TableRowColumn >
             { props.entry.date }
         </TableRowColumn>
         <TableRowColumn >
-            { props.entry.status }
+            { props.entry.location.name }
         </TableRowColumn>
         <TableRowColumn >
-            { props.entry.location.name }
+            { props.entry.handled ? 'yes' : 'no' }
+        </TableRowColumn>
+        <TableRowColumn >
+            { props.entry.technician.name }
         </TableRowColumn>
     </TableRow>
 )
@@ -26,7 +32,7 @@ const Rows = ( props ) => props.entries.map( e => (
     <Row entry={ e } key={ e.id } />
 ))
 
-const StatusTable = ( props ) => (
+const ReportsTable = ( props ) => (
     <Table 
         fixedHeader={ true }
         selectable={ false }
@@ -37,9 +43,11 @@ const StatusTable = ( props ) => (
             enableSelectAll={ false}
         >
             <TableRow style={{ textAlign: 'left' }}>
+                <TableHeaderColumn>ID</TableHeaderColumn>
                 <TableHeaderColumn>Date</TableHeaderColumn>
-                <TableHeaderColumn>Status</TableHeaderColumn>
-                <TableHeaderColumn>location</TableHeaderColumn>
+                <TableHeaderColumn>Location</TableHeaderColumn>
+                <TableHeaderColumn>Handled</TableHeaderColumn>
+                <TableHeaderColumn>Technician</TableHeaderColumn>
             </TableRow>
         </TableHeader>
         <TableBody displayRowCheckbox={ false }>
@@ -48,4 +56,4 @@ const StatusTable = ( props ) => (
     </Table>
 )
 
-export default StatusTable
+export default ReportsTable

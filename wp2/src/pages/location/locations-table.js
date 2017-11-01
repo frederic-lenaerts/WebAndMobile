@@ -11,13 +11,10 @@ import {
 const Row = ( props ) => (
     <TableRow >
         <TableRowColumn >
-            { props.entry.date }
+            { props.entry.id }
         </TableRowColumn>
         <TableRowColumn >
-            { props.entry.status }
-        </TableRowColumn>
-        <TableRowColumn >
-            { props.entry.location.name }
+            { props.entry.name }
         </TableRowColumn>
     </TableRow>
 )
@@ -26,7 +23,7 @@ const Rows = ( props ) => props.entries.map( e => (
     <Row entry={ e } key={ e.id } />
 ))
 
-const StatusTable = ( props ) => (
+const LocationsTable = ( props ) => (
     <Table 
         fixedHeader={ true }
         selectable={ false }
@@ -36,10 +33,9 @@ const StatusTable = ( props ) => (
             adjustForCheckbox={ true }
             enableSelectAll={ false}
         >
-            <TableRow style={{ textAlign: 'left' }}>
-                <TableHeaderColumn>Date</TableHeaderColumn>
-                <TableHeaderColumn>Status</TableHeaderColumn>
-                <TableHeaderColumn>location</TableHeaderColumn>
+            <TableRow>
+                <TableHeaderColumn>Id</TableHeaderColumn>
+                <TableHeaderColumn>Name</TableHeaderColumn>
             </TableRow>
         </TableHeader>
         <TableBody displayRowCheckbox={ false }>
@@ -48,4 +44,4 @@ const StatusTable = ( props ) => (
     </Table>
 )
 
-export default StatusTable
+export default LocationsTable
