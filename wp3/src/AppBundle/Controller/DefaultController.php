@@ -63,23 +63,13 @@ class DefaultController extends Controller
         $paginator = $this->get('knp_paginator');
 
         $result = $em->getRepository( 'AppBundle:Report' )->findById( $report );
-        $result[0]->setHandled( 1 );
-        $em->persist( $result[0] );
-        $em->flush();
-        
-        return $this->redirectToRoute( 'home' );
-    }
-    
-    /**
-     * @Route("/unhandled/{report}", name="unhandled")
-     */
-    public function unhandledAction( Request $request, $report )
-    {
-        $em = $this->getDoctrine()->getManager();
-        $paginator = $this->get('knp_paginator');
 
-        $result = $em->getRepository( 'AppBundle:Report' )->findById( $report );
-        $result[0]->setHandled( 0 );
+        if ( $result[0]->getHandled() == 0 ) {
+            $result[0]->setHandled( 1 );
+        } else {
+            $result[0]->setHandled( 0 );
+        }
+
         $em->persist( $result[0] );
         $em->flush();
         
