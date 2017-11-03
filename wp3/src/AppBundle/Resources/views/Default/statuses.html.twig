@@ -6,10 +6,10 @@
         <h1>Backstage</h1>
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a class="nav-link active" href="{{ path( 'home' ) }}">Reports</a>
+                <a class="nav-link" href="{{ path( 'home' ) }}">Reports</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ path( 'statuses' ) }}">Statuses</a>
+                <a class="nav-link active" href="{{ path( 'statuses' ) }}">Statuses</a>
             </li>
         </ul>
 
@@ -21,7 +21,7 @@
 
             <div class="dropdown-menu" aria-labelledby="dropdownLocationSelection">
                 {% for location in locations %}
-                    <a class="dropdown-item" href="{{ path( 'reportsFiltered', {'location': location.id} ) }}">{{location.name}}</a>
+                    <a class="dropdown-item" href="{{ path( 'statusesFiltered', {'location': location.id} ) }}">{{location.name}}</a>
                 {% endfor %}
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="{{ path( 'home' ) }}">None</a>
@@ -31,7 +31,7 @@
             <p>No locations found</p>
         {% endif %}
         
-        <h2>Reports</h2>
+        <h2>Statuses</h2>
         <table class="table">
             <thead>
                 <tr>
@@ -42,24 +42,24 @@
                 <tr>
             </thead>
             <tbody>
-                {% if reports %}
-                    {% for report in reports %}
+                {% if statuses %}
+                    {% for status in statuses %}
                         <tr>
-                            <td>{{report.getId()}}</td>
-                            <td>{{report.getDate()|date('H:i d-m-Y')}}</td>
-                            <td>{{report.getLocation().getName()}}</td>
-                            <td>{{report.getHandled( true )}}</td>
-                        </tr>
+                            <td>{{status.getId()}}</td>
+                            <td>{{status.getDate()|date('H:i d-m-Y')}}</td>
+                            <td>{{status.getLocation().getName()}}</td>
+                            <td>{{status.getStatus( true )}}</td>
+                        </tr>			
                     {% endfor %}
                 {% else %}
                     <tr>
-                        <td colspan="4">No reports found</td>
+                        <td colspan="4">No statuses found</td>
                     </tr>			
                 {% endif %}
             </tbody>
         </table>
         <div class="navigation">
-            {{ knp_pagination_render(reports) }}
+            {{ knp_pagination_render(statuses) }}
         </div>
     </div>
 </div>

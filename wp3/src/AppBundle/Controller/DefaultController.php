@@ -12,20 +12,44 @@ class DefaultController extends Controller
 {
     /**
      * @Route("/", name="home")
-     * @Route("/filter/{location}", name="filter")
+     * @Route("/reports/{location}", name="reportsFiltered")
      */
-    public function indexAction( Request $request, $location = null, $status = null, $report = null )
+    public function indexAction( Request $request, $location = null, $page = null )
     {
-        $locations = $this->getDoctrine()->getRepository( 'AppBundle:Location' )->findAll();
+        $em = $this->getDoctrine()->getManager();
+        $paginator = $this->get('knp_paginator');
+
+        $locations = $em->getRepository( 'AppBundle:Location' )->findAll();
 
         if ( $location != null ) {
-            $statuses = $this->getDoctrine()->getRepository( 'AppBundle:Status' )->findByLocation( $location );
-            $reports = $this->getDoctrine()->getRepository( 'AppBundle:Report' )->findByLocation( $location );
+            $reports = $em->getRepository( 'AppBundle:Report' )->findByLocation( $location, $page );
         } else {
-            $statuses = $this->getDoctrine()->getRepository( 'AppBundle:Status' )->findAll();
-            $reports = $this->getDoctrine()->getRepository( 'AppBundle:Report' )->findAll();
+            $reports = $em->getRepository( 'AppBundle:Report' )->findAll( $page );
         }
+
+        $reports = $paginator->paginate( $reports, $request->query->getInt( 'page', 1 ), 10 );
         
-        return $this->render( 'AppBundle:Default:index.html.twig', array( "locations" => $locations, "statuses" => $statuses, "reports" => $reports ) );
+        return $this->render( 'AppBundle:Default:index.html.twig', compact( "locations", "reports" ) );
+    }
+    /**
+     * @Route("/statuses", name="statuses")
+     * @Route("/statuses/{location}", name="statusesFiltered")
+     */
+    public function statusAction( Request $request, $location = null, $page = null )
+    {
+        $em = $this->getDoctrine()->getManager();
+        $paginator = $this->get('knp_paginator');
+
+        $locations = $em->getRepository( 'AppBundle:Location' )->findAll();
+
+        if ( $location != null ) {
+            $statuses = $em->getRepository( 'AppBundle:Status' )->findByLocation( $location, $page );
+        } else {
+            $statuses = $em->getRepository( 'AppBundle:Status' )->findAll( $page );
+        }
+
+        $statuses = $paginator->paginate( $statuses, $request->query->getInt( 'page', 1 ), 10 );
+        
+        return $this->render( 'AppBundle:Default:statuses.html.twig', compact( "locations", "statuses" ) );
     }
 }
