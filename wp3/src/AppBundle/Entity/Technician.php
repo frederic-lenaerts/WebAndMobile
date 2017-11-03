@@ -57,6 +57,10 @@ class Technician
     public function setLocationId( $locationId ) {
         $this->locationId = $locationId;
     }
+    
+    public function setLocation( $location ) {
+        $this->location = $location;
+    }
 
     // Getters
     public function getId() {
