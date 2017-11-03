@@ -32,7 +32,7 @@
         {% endif %}
         
         <h2>Statuses</h2>
-        <table class="table">
+        <table class="table table-responsive-md">
             <thead>
                 <tr>
                     <th>#</th>
@@ -46,7 +46,7 @@
                     {% for status in statuses %}
                         <tr>
                             <td>{{status.getId()}}</td>
-                            <td>{{status.getDate()|date('H:i d-m-Y')}}</td>
+                            <td>{{status.getDate()|date('d-m-Y')}}</td>
                             <td>{{status.getLocation().getName()}}</td>
                             <td>{{status.getStatus( true )}}</td>
                         </tr>			

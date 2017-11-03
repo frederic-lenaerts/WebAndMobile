@@ -32,7 +32,7 @@
         {% endif %}
         
         <h2>Reports</h2>
-        <table class="table">
+        <table class="table table-responsive-md">
             <thead>
                 <tr>
                     <th>#</th>
@@ -48,11 +48,11 @@
                     {% for report in reports %}
                         <tr>
                             <td>{{report.getId()}}</td>
-                            <td>{{report.getDate()|date('H:i d-m-Y')}}</td>
+                            <td>{{report.getDate()|date('d-m-Y')}}</td>
                             {% if report.getTechnician() %}
                                 <td>{{report.getTechnician().getName()}}</td>
                             {% else %}
-                                <td>{{report.getTechnicianId()}} -</td>
+                                <td>-</td>
                             {% endif %}
                             <td>{{report.getLocation().getName()}}</td>
                             <td>{{report.getHandled( true )}}</td>

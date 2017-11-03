@@ -6,6 +6,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Report;
+use AppBundle\Entity\Status;
 use AppBundle\Entity\Location;
 
 class DefaultController extends Controller
