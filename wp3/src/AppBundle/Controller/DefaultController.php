@@ -31,6 +31,7 @@ class DefaultController extends Controller
         
         return $this->render( 'AppBundle:Default:index.html.twig', compact( "locations", "reports" ) );
     }
+
     /**
      * @Route("/statuses", name="statuses")
      * @Route("/statuses/{location}", name="statusesFiltered")
@@ -51,5 +52,37 @@ class DefaultController extends Controller
         $statuses = $paginator->paginate( $statuses, $request->query->getInt( 'page', 1 ), 10 );
         
         return $this->render( 'AppBundle:Default:statuses.html.twig', compact( "locations", "statuses" ) );
+    }
+    
+    /**
+     * @Route("/handled/{report}", name="handled")
+     */
+    public function handledAction( Request $request, $report )
+    {
+        $em = $this->getDoctrine()->getManager();
+        $paginator = $this->get('knp_paginator');
+
+        $result = $em->getRepository( 'AppBundle:Report' )->findById( $report );
+        $result[0]->setHandled( 1 );
+        $em->persist( $result[0] );
+        $em->flush();
+        
+        return $this->redirectToRoute( 'home' );
+    }
+    
+    /**
+     * @Route("/unhandled/{report}", name="unhandled")
+     */
+    public function unhandledAction( Request $request, $report )
+    {
+        $em = $this->getDoctrine()->getManager();
+        $paginator = $this->get('knp_paginator');
+
+        $result = $em->getRepository( 'AppBundle:Report' )->findById( $report );
+        $result[0]->setHandled( 0 );
+        $em->persist( $result[0] );
+        $em->flush();
+        
+        return $this->redirectToRoute( 'home' );
     }
 }

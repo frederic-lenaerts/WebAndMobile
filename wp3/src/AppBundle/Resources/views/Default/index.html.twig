@@ -40,6 +40,7 @@
                     <th>Technician</th>
                     <th>Location</th>
                     <th>Status</th>
+                    <th>Options</th>
                 <tr>
             </thead>
             <tbody>
@@ -55,6 +56,11 @@
                             {% endif %}
                             <td>{{report.getLocation().getName()}}</td>
                             <td>{{report.getHandled( true )}}</td>
+                            {% if report.getHandled() %}
+                                <td><a href="{{ path( 'handled', {'report': report.getid()} ) }}" class="btn btn-danger">Unhandled</a></td>
+                            {% else %}
+                                <td><a href="{{ path( 'handled', {'report': report.getid()} ) }}" class="btn btn-success">Handled</a></td>
+                            {% endif %}
                         </tr>
                     {% endfor %}
                 {% else %}

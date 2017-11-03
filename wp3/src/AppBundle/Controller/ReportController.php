@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,13 +25,15 @@ class ReportController extends Controller
             ->add( 'location', EntityType::class, array(
                 'class' => 'AppBundle:Location',
                 'choice_label' => 'name'
-            ))
+            ) )
             ->add( 'date', DateType::class )
-            ->add( 'handled', TextType::class )
+            ->add( 'handled', CheckboxType::class, array(
+                'required' => false,
+            ) )
             ->add( 'technician', EntityType::class, array(
                 'class' => 'AppBundle:Technician',
                 'choice_label' => 'name'
-            ))
+            ) )
             ->add( 'save', SubmitType::class, array( 'label' => 'Save report' ) )
             ->getForm();
 
@@ -63,13 +66,15 @@ class ReportController extends Controller
             ->add( 'location', EntityType::class, array(
                 'class' => 'AppBundle:Location',
                 'choice_label' => 'name'
-            ))
+            ) )
             ->add( 'date', DateType::class )
-            ->add( 'handled', TextType::class )
+            ->add( 'handled', CheckboxType::class, array(
+                'required' => false,
+            ) )
             ->add( 'technician', EntityType::class, array(
                 'class' => 'AppBundle:Technician',
                 'choice_label' => 'name'
-            ))
+            ) )
             ->add( 'save', SubmitType::class, array( 'label' => 'Save report' ) )
             ->getForm();
 
