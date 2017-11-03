@@ -94,13 +94,19 @@ class TechnicianController extends Controller
     }
 
     /**
-     * @Route("/technician/remove", name="technician_remove")
+     * @Route("/technician/remove/{technician}", name="technician_remove")
      */
-    public function removeAction()
+    public function removeAction( Technician $technician )
     {
-        return $this->render('AppBundle:Technician:remove.html.twig', array(
-            // ...
-        ));
+        if ( !$technician ) {
+            throw $this->createNotFoundException( 'No technician found' );
+        }
+
+        $em = $this->getDoctrine()->getEntityManager();
+        $em->remove( $technician );
+        $em->flush();
+
+        return $this->redirect( $this->generateUrl( 'technician_all' ) );
     }
     
     /**
