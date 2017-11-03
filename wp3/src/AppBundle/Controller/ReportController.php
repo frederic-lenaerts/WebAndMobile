@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -20,10 +21,16 @@ class ReportController extends Controller
         $report = new Report();
         
         $form = $this->createFormBuilder( $report )
-            ->add( 'location_id', TextType::class )
+            ->add( 'location', EntityType::class, array(
+                'class' => 'AppBundle:Location',
+                'choice_label' => 'name'
+            ))
             ->add( 'date', DateType::class )
             ->add( 'handled', TextType::class )
-            ->add( 'technician_id', TextType::class )
+            ->add( 'technician', EntityType::class, array(
+                'class' => 'AppBundle:Technician',
+                'choice_label' => 'name'
+            ))
             ->add( 'save', SubmitType::class, array( 'label' => 'Save report' ) )
             ->getForm();
 
@@ -53,10 +60,16 @@ class ReportController extends Controller
         $report = $em->getRepository( 'AppBundle:Report' )->findOneById( $report );
 
         $form = $this->createFormBuilder( $report )
-            ->add( 'location_id', TextType::class )
+            ->add( 'location', EntityType::class, array(
+                'class' => 'AppBundle:Location',
+                'choice_label' => 'name'
+            ))
             ->add( 'date', DateType::class )
             ->add( 'handled', TextType::class )
-            ->add( 'technician_id', TextType::class )
+            ->add( 'technician', EntityType::class, array(
+                'class' => 'AppBundle:Technician',
+                'choice_label' => 'name'
+            ))
             ->add( 'save', SubmitType::class, array( 'label' => 'Save report' ) )
             ->getForm();
 

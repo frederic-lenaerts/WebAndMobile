@@ -17,11 +17,6 @@
         <option name="default">0</option>
       </options>
     </field>
-    <field name="technicianId" type="integer" column="technician_id" nullable="true">
-      <options>
-        <option name="unsigned"/>
-      </options>
-    </field>
     <field name="actionId" type="integer" column="action_id" nullable="true">
       <options>
         <option name="unsigned"/>
@@ -30,6 +25,11 @@
     <many-to-one field="location" target-entity="Location" fetch="LAZY">
       <join-columns>
         <join-column name="location_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="technician" target-entity="Technician" fetch="LAZY">
+      <join-columns>
+        <join-column name="technician_id" referenced-column-name="id"/>
       </join-columns>
     </many-to-one>
   </entity>

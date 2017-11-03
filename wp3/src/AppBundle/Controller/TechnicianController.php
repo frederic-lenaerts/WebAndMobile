@@ -6,7 +6,7 @@ use AppBundle\Entity\Technician;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -21,7 +21,10 @@ class TechnicianController extends Controller
 
         $form = $this->createFormBuilder( $technician )
             ->add( 'name', TextType::class )
-            ->add( 'location_id', TextType::class )
+            ->add( 'location', EntityType::class, array(
+                'class' => 'AppBundle:Location',
+                'choice_label' => 'name'
+            ))
             ->add( 'save', SubmitType::class, array( 'label' => 'Save technician' ) )
             ->getForm();
 
@@ -52,7 +55,10 @@ class TechnicianController extends Controller
 
         $form = $this->createFormBuilder( $technician )
         ->add( 'name', TextType::class )
-        ->add( 'location_id', TextType::class )
+        ->add( 'location', EntityType::class, array(
+            'class' => 'AppBundle:Location',
+            'choice_label' => 'name'
+        ))
         ->add( 'save', SubmitType::class, array( 'label' => 'Save technician' ) )
         ->getForm();
 

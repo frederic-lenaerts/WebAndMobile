@@ -32,6 +32,16 @@ class Report
      * @ORM\Column(name="technician_id", type="integer", nullable=true)
      */
     private $technicianId;
+    
+    /**
+     * @var \AppBundle\Entity\Technician
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Technician")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="technician_id", referencedColumnName="id")
+     * })
+     */
+    private $technician;
 
     /**
      * @var integer
@@ -86,6 +96,10 @@ class Report
     public function setTechnicianId( $technicianId ) {
         $this->technicianId = $technicianId;
     }
+    
+    public function setTechnician( $technician ) {
+        $this->technician = $technician;
+    }
 
     // Getters
     public function getId() {
@@ -113,5 +127,9 @@ class Report
 
     public function getTechnicianId() {
         return $this->technicianId;
+    }
+    
+    public function getTechnician() {
+        return $this->technician;
     }
 }

@@ -10,6 +10,7 @@
             <tr>
                 <th>#</th>
                 <th>Date</th>
+                <th>Technician</th>
                 <th>Location</th>
                 <th>Status</th>
                 <th>Options</th>
@@ -21,6 +22,11 @@
                     <tr>
                         <td>{{report.getId()}}</td>
                         <td>{{report.getDate()|date('H:i d-m-Y')}}</td>
+                        {% if report.getTechnician() %}
+                            <td>{{report.getTechnician().getName()}}</td>
+                        {% else %}
+                            <td>{{report.getTechnicianId()}} -</td>
+                        {% endif %}
                         <td>{{report.getLocation().getName()}}</td>
                         <td>{{report.getHandled( true )}}</td>
                         <td><a href="{{ path( 'report_edit', {'report': report.id} ) }}" class="btn btn-primary">Edit</a></td>
@@ -28,7 +34,7 @@
                 {% endfor %}
             {% else %}
                 <tr>
-                    <td colspan="4">No reports found</td>
+                    <td colspan="6">No reports found</td>
                 </tr>			
             {% endif %}
         </tbody>

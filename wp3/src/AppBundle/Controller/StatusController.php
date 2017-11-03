@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -20,7 +21,10 @@ class StatusController extends Controller
         $status = new Status();
 
         $form = $this->createFormBuilder( $status )
-            ->add( 'location_id', TextType::class )
+            ->add( 'location', EntityType::class, array(
+                'class' => 'AppBundle:Location',
+                'choice_label' => 'name'
+            ))
             ->add( 'status', TextType::class )
             ->add( 'date', DateType::class )
             ->add( 'save', SubmitType::class, array( 'label' => 'Save status' ) )
@@ -52,11 +56,14 @@ class StatusController extends Controller
         $status = $em->getRepository( 'AppBundle:Status' )->findOneById( $status );
 
         $form = $this->createFormBuilder( $status )
-        ->add( 'location_id', TextType::class )
-        ->add( 'status', TextType::class )
-        ->add( 'date', DateType::class )
-        ->add( 'save', SubmitType::class, array( 'label' => 'Save status' ) )
-        ->getForm();
+            ->add( 'location', EntityType::class, array(
+                'class' => 'AppBundle:Location',
+                'choice_label' => 'name'
+            ))
+            ->add( 'status', TextType::class )
+            ->add( 'date', DateType::class )
+            ->add( 'save', SubmitType::class, array( 'label' => 'Save status' ) )
+            ->getForm();
 
         $form->handleRequest( $request );
 

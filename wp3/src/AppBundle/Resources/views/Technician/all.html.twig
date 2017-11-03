@@ -21,8 +21,8 @@
                     <td>{{technician.getName()}}</td>
                     <td>{{technician.getLocation().getName()}}</td>
                     <td>
-                            <a class="btn btn-primary" href="{{ path( 'technician_edit', {'technician': technician.id} ) }}">Edit</a>
-                            <a class="btn btn-danger" href="{{ path( 'technician_remove', {'technician': technician.id} ) }}">Remove</a>
+                        <a class="btn btn-primary" href="{{ path( 'technician_edit', {'technician': technician.id} ) }}">Edit</a>
+                        <a class="btn btn-danger" href="{{ path( 'technician_remove', {'technician': technician.id} ) }}">Remove</a>
                     </td>
                 </tr>			
             {% endfor %}

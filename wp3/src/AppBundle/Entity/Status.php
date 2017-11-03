@@ -61,6 +61,10 @@ class Status
         $this->locationId = $locationId;
     }
     
+    public function setLocation( $location ) {
+        $this->location = $location;
+    }
+    
     public function setStatus( $status ) {
         $this->status = $status;
     }
