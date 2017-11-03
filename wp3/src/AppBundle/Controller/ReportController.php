@@ -107,7 +107,7 @@ class ReportController extends Controller
     {
         $reports = $this->getDoctrine()->getRepository( 'AppBundle:Report' )->findAll();
 
-        return $this->render( 'AppBundle:Report:all.html.twig', array( "reports" => $reports ) );
+        return $this->render( 'AppBundle:Report:all.html.twig', compact( "reports" ) );
     }
 
     /**

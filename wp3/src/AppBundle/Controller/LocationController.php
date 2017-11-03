@@ -77,7 +77,7 @@ class LocationController extends Controller
     {
         $locations = $this->getDoctrine()->getRepository( 'AppBundle:Location' )->findAll();
 
-        return $this->render( 'AppBundle:Location:find.html.twig', array( "locations" => $locations ) );
+        return $this->render( 'AppBundle:Location:find.html.twig', compact( "locations" ) );
     }
 
     /**
@@ -87,7 +87,7 @@ class LocationController extends Controller
     {
         $locations = $this->getDoctrine()->getRepository( 'AppBundle:Location' )->findAll();
         
-        return $this->render( 'AppBundle:Location:all.html.twig', array( "locations" => $locations ) );
+        return $this->render( 'AppBundle:Location:all.html.twig', compact( "locations" ) );
     }
 
     /**

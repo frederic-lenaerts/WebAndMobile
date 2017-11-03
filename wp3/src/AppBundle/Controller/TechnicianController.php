@@ -96,7 +96,7 @@ class TechnicianController extends Controller
     {
         $technicians = $this->getDoctrine()->getRepository( 'AppBundle:Technician' )->findAll();
         
-        return $this->render( 'AppBundle:Technician:all.html.twig', array( "technicians" => $technicians ) );
+        return $this->render( 'AppBundle:Technician:all.html.twig', compact( "technicians" ) );
     }
 
     /**
