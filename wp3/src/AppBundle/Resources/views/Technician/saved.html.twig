@@ -2,7 +2,18 @@
 
 {% block title %}New technician{% endblock %}
 
-{% block body %}
+{% block jumbotron %}
     <h1>New technician</h1>
+    <div class="sub-nav">
+        <nav class="nav nav-inline">
+            <a class="nav-link" href="{{ path( 'report_all' ) }}">Reports</a>
+            <a class="nav-link" href="{{ path( 'status_all' ) }}">Statuses</a>
+            <a class="nav-link active" href="{{ path( 'technician_all' ) }}">Technicians</a>
+            <a class="nav-link" href="{{ path( 'location_all' ) }}">Locations</a>
+        </nav>
+    </div>
+{% endblock %}
+
+{% block body %}
     <h2>Technician has been saved</h2>
 {% endblock %}

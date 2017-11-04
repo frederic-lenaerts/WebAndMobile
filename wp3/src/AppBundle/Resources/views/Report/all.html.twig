@@ -2,10 +2,23 @@
 
 {% block title %}Report management{% endblock %}
 
-{% block body %}
-    <h1>Report management <span class="float-right"><a class="btn btn-primary" href="{{ path( 'report_add' ) }}">New report</a></span></h1>
+{% block jumbotron %}
+    <h1>Manage</h1>
+    <div class="sub-nav">
+        <nav class="nav nav-inline">
+            <a class="nav-link active" href="{{ path( 'report_all' ) }}">Reports</a>
+            <a class="nav-link" href="{{ path( 'status_all' ) }}">Statuses</a>
+            <a class="nav-link" href="{{ path( 'technician_all' ) }}">Technicians</a>
+            <a class="nav-link" href="{{ path( 'location_all' ) }}">Locations</a>
+        </nav>
+    </div>
+{% endblock %}
 
-    <table class="table">
+{% block body %}
+    <div class="btn-toolbar">
+        <a class="btn btn-primary" href="{{ path( 'report_add' ) }}"><i class="fa fa-fw fa-plus"></i> New report</a>
+    </div>
+    <table class="table table-responsive-md">
         <thead>
             <tr>
                 <th>#</th>
@@ -21,20 +34,27 @@
                 {% for report in reports %}
                     <tr>
                         <td>{{report.getId()}}</td>
-                        <td>{{report.getDate()|date('H:i d-m-Y')}}</td>
+                        <td>{{report.getDate()|date('d-m-Y')}}</td>
                         {% if report.getTechnician() %}
                             <td>{{report.getTechnician().getName()}}</td>
                         {% else %}
-                            <td>{{report.getTechnicianId()}} -</td>
+                            <td>-</td>
                         {% endif %}
                         <td>{{report.getLocation().getName()}}</td>
                         <td>{{report.getHandled( true )}}</td>
-                        <td><a href="{{ path( 'report_edit', {'report': report.id} ) }}" class="btn btn-primary">Edit</a></td>
+                        <td>
+                            <a href="{{ path( 'report_edit', {'report': report.getid()} ) }}" class="btn btn-primary"><i class="fa fa-fw fa-pencil"></i> Edit</a>
+                            {% if report.getHandled() %}
+                                <a href="{{ path( 'handled', {'report': report.getid()} ) }}" class="btn btn-danger"><i class="fa fa-fw fa-times"></i> Unhandled</a>
+                            {% else %}
+                                <a href="{{ path( 'handled', {'report': report.getid()} ) }}" class="btn btn-success"><i class="fa fa-fw fa-check"></i> Handled</a>
+                            {% endif %}
+                        </td>
                     </tr>
                 {% endfor %}
             {% else %}
                 <tr>
-                    <td colspan="6">No reports found</td>
+                    <td colspan="5">No reports found</td>
                 </tr>			
             {% endif %}
         </tbody>

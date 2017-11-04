@@ -1,37 +1,36 @@
 {% extends 'base.html.twig' %}
 
+{% block jumbotron %}
+    <h1>Backstage</h1>
+    <div class="sub-nav">
+        <nav class="nav nav-inline">
+            <a class="nav-link" href="{{ path( 'home' ) }}">Reports</a>
+            <a class="nav-link active" href="{{ path( 'statuses' ) }}">Statuses</a>
+        </nav>
+    </div>
+{% endblock %}
+
 {% block body %}
 <div class="row">
     <div class="col">
-        <h1>Backstage</h1>
-        <ul class="nav nav-tabs">
-            <li class="nav-item">
-                <a class="nav-link" href="{{ path( 'home' ) }}">Reports</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link active" href="{{ path( 'statuses' ) }}">Statuses</a>
-            </li>
-        </ul>
-
-        {% if locations %}
-        <div class="dropdown">
-            <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownLocationSelection" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Locations
-            </a>
-
-            <div class="dropdown-menu" aria-labelledby="dropdownLocationSelection">
-                {% for location in locations %}
-                    <a class="dropdown-item" href="{{ path( 'statusesFiltered', {'location': location.id} ) }}">{{location.name}}</a>
-                {% endfor %}
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="{{ path( 'home' ) }}">None</a>
-            </div>
+        <div class="btn-toolbar">
+            {% if locations %}
+                <div class="dropdown">
+                    <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownLocationSelection" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Locations
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownLocationSelection">
+                        {% for location in locations %}
+                            <a class="dropdown-item" href="{{ path( 'statusesFiltered', {'location': location.id} ) }}">{{location.name}}</a>
+                        {% endfor %}
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{{ path( 'home' ) }}">None</a>
+                    </div>
+                </div>
+            {% else %}
+                <p>No locations found</p>
+            {% endif %}
         </div>
-        {% else %}
-            <p>No locations found</p>
-        {% endif %}
-        
-        <h2>Statuses</h2>
         <table class="table table-responsive-md">
             <thead>
                 <tr>

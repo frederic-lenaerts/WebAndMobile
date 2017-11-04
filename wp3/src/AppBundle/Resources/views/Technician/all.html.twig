@@ -2,9 +2,22 @@
 
 {% block title %}Technician management{% endblock %}
 
+{% block jumbotron %}
+    <h1>Manage</h1>
+    <div class="sub-nav">
+        <nav class="nav nav-inline">
+            <a class="nav-link" href="{{ path( 'report_all' ) }}">Reports</a>
+            <a class="nav-link" href="{{ path( 'status_all' ) }}">Statuses</a>
+            <a class="nav-link active" href="{{ path( 'technician_all' ) }}">Technicians</a>
+            <a class="nav-link" href="{{ path( 'location_all' ) }}">Locations</a>
+        </nav>
+    </div>
+{% endblock %}
+
 {% block body %}
-    <h1>Technician management <span class="float-right"><a class="btn btn-primary" href="{{ path( 'technician_add' ) }}">New technician</a></span></h1>
-    
+    <div class="btn-toolbar">
+        <a class="btn btn-primary" href="{{ path( 'technician_add' ) }}"><i class="fa fa-fw fa-plus"></i> New technician</a>
+    </div>
     <table class="table table-responsive-md">
         <thead>
             <tr>
@@ -22,8 +35,8 @@
                         <td>{{technician.getName()}}</td>
                         <td>{{technician.getLocation().getName()}}</td>
                         <td>
-                            <a class="btn btn-primary" href="{{ path( 'technician_edit', {'technician': technician.id} ) }}">Edit</a>
-                            <a class="btn btn-danger" href="{{ path( 'technician_remove', {'technician': technician.id} ) }}">Remove</a>
+                            <a class="btn btn-primary" href="{{ path( 'technician_edit', {'technician': technician.id} ) }}"><i class="fa fa-fw fa-pencil"></i> Edit</a>
+                            <a class="btn btn-danger" href="{{ path( 'technician_remove', {'technician': technician.id} ) }}"><i class="fa fa-fw fa-trash"></i> Remove</a>
                         </td>
                     </tr>			
                 {% endfor %}

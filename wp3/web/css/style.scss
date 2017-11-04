@@ -1,0 +1,63 @@
+// Variable
+$accent: #e52262;
+
+// Jumbotron
+.jumbotron {
+    background: #f8f8f8 !important;
+    padding: 2rem;
+    margin-bottom: 10px;
+
+    h1 {
+        margin-bottom: 20px;
+        font-weight: 600;
+    }
+}
+
+// Navbar
+.navbar {
+    text-transform: uppercase;
+    font-weight: 600;
+
+    &.bg-primary {
+        background-color: $accent !important;
+    }
+}
+
+// Nav tabs
+.sub-nav {
+    border-bottom: none;
+    margin: 20px 5px 0;
+    padding: 0;
+    
+    .nav {
+        flex: wrap;
+        margin-bottom: -1px;
+
+        .nav-link {
+            padding: 10px 0 20px !important;
+            margin: 0 0 0 17px;
+            color: #666;
+            font-weight: 500;
+            font-size: 16px;
+            
+            &:first-child {
+                margin-left: 0;
+            }
+            
+            &.active {
+                color: #000 !important;
+                border-bottom: 3px solid $accent;
+            }
+
+            &:hover {
+                color: #333 !important;
+                border-bottom: 3px solid $accent;
+            }
+        }
+    }
+}
+
+// Toolbar
+.btn-toolbar {
+    margin-bottom: 10px;
+}

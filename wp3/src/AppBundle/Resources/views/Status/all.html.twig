@@ -2,9 +2,22 @@
 
 {% block title %}Status management{% endblock %}
 
+{% block jumbotron %}
+    <h1>Manage</h1>
+    <div class="sub-nav">
+        <nav class="nav nav-inline">
+            <a class="nav-link" href="{{ path( 'report_all' ) }}">Reports</a>
+            <a class="nav-link active" href="{{ path( 'status_all' ) }}">Statuses</a>
+            <a class="nav-link" href="{{ path( 'technician_all' ) }}">Technicians</a>
+            <a class="nav-link" href="{{ path( 'location_all' ) }}">Locations</a>
+        </nav>
+    </div>
+{% endblock %}
+
 {% block body %}
-    <h1>Status management <span class="float-right"><a class="btn btn-primary" href="{{ path( 'status_add' ) }}">New status</a></span></h1>
-    
+    <div class="btn-toolbar">
+        <a class="btn btn-primary" href="{{ path( 'status_add' ) }}"><i class="fa fa-fw fa-plus"></i> New status</a>
+    </div>
     <table class="table table-responsive-md">
         <thead>
             <tr>
@@ -23,7 +36,7 @@
                         <td>{{status.getDate()|date('H:i d-m-Y')}}</td>
                         <td>{{status.getLocation().getName()}}</td>
                         <td>{{status.getStatus()}}</td>
-                        <td><a class="btn btn-primary" href="{{ path( 'status_edit', {'status': status.id} ) }}">Edit</a></td>
+                        <td><a class="btn btn-primary" href="{{ path( 'status_edit', {'status': status.id} ) }}"><i class="fa fa-fw fa-pencil"></i> Edit</a></td>
                     </tr>			
                 {% endfor %}
             {% else %}

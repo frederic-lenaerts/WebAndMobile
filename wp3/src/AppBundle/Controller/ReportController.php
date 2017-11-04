@@ -27,13 +27,6 @@ class ReportController extends Controller
                 'choice_label' => 'name'
             ) )
             ->add( 'date', DateType::class )
-            ->add( 'handled', CheckboxType::class, array(
-                'required' => false,
-            ) )
-            ->add( 'technician', EntityType::class, array(
-                'class' => 'AppBundle:Technician',
-                'choice_label' => 'name'
-            ) )
             ->add( 'save', SubmitType::class, array( 'label' => 'Save report' ) )
             ->getForm();
 
