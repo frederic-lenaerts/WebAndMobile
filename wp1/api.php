@@ -12,6 +12,7 @@ use model\Status;
 use model\Location;
 use model\Report;
 use model\Action;
+use model\Technician;
 
 // Dirty hack to allow Yannick to work without Vagrant
 if ( file_exists( 'C:\dontvagrant.txt' ) ) {
@@ -109,7 +110,10 @@ try {
 			$json = file_get_contents( 'php://input' );
 			$data = json_decode( $json, true );
 			$action = new Action( $data["action"],
-						     	  $data["date"] );
+								  $data["date"],
+								  new Location(
+									  $data["location"]["name"], 
+									  $data["location"]["id"] ));
 			$controller = new ActionController();
 			$controller->handleCreate( $action );
 		}
@@ -119,6 +123,7 @@ try {
 		function() {
 			$json = file_get_contents( 'php://input' );
 			$data = json_decode( $json, true );
+			var_dump( $data );
 			$status = new Status( $data["status"],
 								  $data["date"],
 								  new Location(
@@ -134,16 +139,18 @@ try {
 			$json = file_get_contents( 'php://input' );
 			$data = json_decode( $json, true );
 			$report = new Report( $data["date"],
+								  $data["text"],
 								  $data["handled"],
 								  new Location(
-								      $data["location"]["id"],
-									  $data["location"]["name"] ),
-								  new Technician(
-									  $data["technician"]["name"],
-									  new Location(
-										  $data["technician"]["location"]["id"],
-										  $data["technician"]["location"]["name"] ),
-									  $data["technician"]["id"] ));
+								      $data["location"]["name"],
+									  $data["location"]["id"] ));
+			if ( array_key_exists( "technician", $data )) {
+				$report->setTechnician( new Technician( $data["technician"]["name"],
+														new Location(
+															$data["technician"]["location"]["name"],
+															$data["technician"]["location"]["id"] ),
+														$data["technician"]["id"] ));
+			}
 			$controller = new ReportController();
 			$controller->handleCreate( $report );
 		}

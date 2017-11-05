@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import mapDispatchToPropsTitle from '../../common/title-dispatch-to-props'
+import TextField from 'material-ui/TextField';
 import DatePicker from 'material-ui/DatePicker'
 import FlatButton from 'material-ui/FlatButton'
 import DropDownMenu from 'material-ui/DropDownMenu'
@@ -9,15 +10,14 @@ import Dialog from 'material-ui/Dialog'
 import HttpService from '../../util/http-service'
 import { Link } from 'react-router-dom'
 
-class StatusAddPage extends Component {
+class ReportAddPage extends Component {
     constructor() {
         super()
         this.state = { 
             showSuccessDialog: false,
             showInvalidFormDialog: false,
             showFailedMessage: false,
-            locationMenuItem: -1,
-            statusMenuItem: -1
+            locationMenuItem: -1
         }
     }
 
@@ -29,7 +29,7 @@ class StatusAddPage extends Component {
     }
 
     handleLocationChange = (event, index, menuItem) => this.setState({ locationMenuItem: menuItem })
-    handleStatusChange = (event, index, menuItem) => this.setState({ statusMenuItem: menuItem })
+    handleHandledChange = (event, index, menuItem) => this.setState({ handledMenuItem: menuItem })
     handleClose = () => { this.setState({ showInvalidFormDialog: false, showSuccessDialog: false }) }
     handleReload = () => { window.location.reload() }
 
@@ -40,7 +40,7 @@ class StatusAddPage extends Component {
                 primary={ true }
                 onClick={ this.handleReload }
             />,
-            <Link to='/status'>
+            <Link to='/actions'>
                 <FlatButton
                     label='Return to overview'
                     primary={ true }
@@ -53,7 +53,7 @@ class StatusAddPage extends Component {
         ]
 
         const failedMessage = (
-            <div>
+            <div style={{ marginLeft: 24, marginRight: 24 }}>
                 <span>Communication with the server failed. Please try again later.</span>
             </div>
         )
@@ -63,6 +63,8 @@ class StatusAddPage extends Component {
                 <br />
                 { this.state.showFailedMessage ? failedMessage : null }
                 <form onSubmit={ this.save }>
+                    <TextField hintText='Performed action' name='text' style={{ marginLeft: 24 }}/>
+                    <br />
                     <DatePicker hintText='Select date' name='date' style={{ marginLeft: 24 }}/>
                     <br />
                     <DropDownMenu 
@@ -78,27 +80,16 @@ class StatusAddPage extends Component {
                         }
                     </DropDownMenu>
                     <br />
-                    <DropDownMenu 
-                        value={ this.state.statusMenuItem } 
-                        onChange={ this.handleStatusChange } 
-                        ref={(element) => { this.status = element }}
-                    >
-                        <MenuItem value={ -1 } primaryText='Select status' disabled= { true } />
-                        <MenuItem key={ 0 } value={ 0 } primaryText={ 'Poor' } />
-                        <MenuItem key={ 1 } value={ 1 } primaryText={ 'Average' } />
-                        <MenuItem key={ 2 } value={ 2 } primaryText={ 'Good' } />
-                    </DropDownMenu>
-                    <br />
                     <FlatButton label='SEND' type='submit' primary={true} style={{ marginLeft: 24 }} />
                 </form>
                 <Dialog
-                    title='Status added'
+                    title='Action added'
                     actions={ successActions }
                     modal={ false }
                     open={ this.state.showSuccessDialog }
                     onRequestClose={ this.handleClose }
                 >
-                    Thank you for your feedback.
+                    Your action has been saved.
                 </Dialog>
                 <Dialog
                     title='Invalid form'
@@ -120,17 +111,17 @@ class StatusAddPage extends Component {
         const date = event.target['date'].value        
         const locationMenuItem = this.location.props.value
         const location = this.props.locationEntries[locationMenuItem - 1]
-        const status = this.status.props.value
-        const entry = { date, status, location }
-
+        const action = event.target['text'].value
+        const entry = { date, action, location }
+       
         if ( this.isValid( entry )) {
-            HttpService.addStatusEntry( entry ).then( resp => {
+            HttpService.addActionEntry( entry ).then( resp => {
                 if ( resp.status === 201 ) {
-                    this.props.addStatus( resp.data )
+                    this.props.addAction( resp.data )
                     this.setState({ showSuccessDialog: true })
                 } else {
                     this.setState({ showFailedMessage: true })
-                }
+                }      
             })
         } else {
             this.setState({ showInvalidFormDialog: true })
@@ -138,11 +129,11 @@ class StatusAddPage extends Component {
     }
 
     isValid = ( entry ) => {
-        return entry.date && entry.location && entry.status !== -1
+        return entry.date && entry.location && entry.action
     }
 
     componentDidMount() {
-        this.props.setTitle('Add new status')
+        this.props.setTitle('Add new action')
     }
 }
 
@@ -155,8 +146,8 @@ const mapStateToProps = ( state, ownProps ) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         ...mapDispatchToPropsTitle(dispatch, ownProps),
-        addStatus: (entry) => {
-            dispatch({ type: 'ADD_STATUSENTRY', payload: entry })
+        addAction: (entry) => {
+            dispatch({ type: 'ADD_ACTIONENTRY', payload: entry })
         },
         setLocationEntries: ( entries ) => {
             dispatch({ type: 'SET_LOCATIONENTRIES', payload: entries })
@@ -164,4 +155,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     }
 }
 
-export default connect( mapStateToProps, mapDispatchToProps )( StatusAddPage )
+export default connect( mapStateToProps, mapDispatchToProps )( ReportAddPage )

@@ -19,11 +19,16 @@ class HttpService {
         return axios.get( `${ this.baseUrl }report/` ).then( r => r.data );
     }
 
-    addCalorieEntry( date, calories, id ) {
-        return axios.post( `${ this.baseUrl }calorieEntries`, { id: id, userId: this.userId, date: date, weight: calories });
+    addReportEntry( report ) {
+        return axios.post( `${ this.baseUrl }report/`, report, { 'Content-Type': 'application/json' });
     }
-    deleteCalorieEntry( id ) {
-        return axios.delete(`${this.baseUrl}calorieEntries/${id}`)
+
+    getAllActions() {
+        return axios.get( `${ this.baseUrl }action/` ).then( r => r.data );
+    }
+
+    addActionEntry( action ) {
+        return axios.post( `${ this.baseUrl }action/`, action, { 'Content-Type': 'application/json' });
     }
 }
 

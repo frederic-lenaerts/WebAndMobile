@@ -2,26 +2,26 @@ import React, { Component } from 'react'
 import { connect } from "react-redux"
 import HttpService from '../../util/http-service'
 import mapDispatchToPropsTitle from '../../common/title-dispatch-to-props'
-import StatusTable from './status-table'
+import ActionsTable from './actions-table'
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import DropDownMenu from 'material-ui/DropDownMenu'
 import MenuItem from 'material-ui/MenuItem'
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import { Link } from 'react-router-dom';
 
-class StatusPage extends Component {
+class ActionPage extends Component {
     constructor() {
         super()
         this.state = {
             locationMenuItem: -1,
-            filteredStatusEntries: []
+            filteredActionEntries: []
         }
     }
 
     componentWillMount() {
-        if ( this.props.statusEntries.length === 0) {
-            HttpService.getAllStatus()
-                       .then( fetchedEntries => this.props.setStatusEntries( fetchedEntries ))
+        if ( !this.props.actionEntries.length ) {
+            HttpService.getAllActions()
+                       .then( fetchedEntries => this.props.setActionEntries( fetchedEntries ))
         }
         if ( !this.props.locationEntries.length ) {
             HttpService.getAllLocations()
@@ -32,19 +32,19 @@ class StatusPage extends Component {
     handleLocationChange = (event, index, menuItem) => {
         var filteredEntries
         if ( !menuItem  ) {
-            filteredEntries = this.props.statusEntries
+            filteredEntries = this.props.actionEntries
         } else {
-            filteredEntries = this.props.statusEntries.filter( 
-                status => status.location.id === menuItem 
+            filteredEntries = this.props.actionEntries.filter( 
+                action => action.location.id === menuItem 
             )            
         }
         this.setState({ locationMenuItem: menuItem,
-                        filteredStatusEntries: filteredEntries })
+                        filteredActionEntries: filteredEntries })
     }
 
     render(){
         return (
-            <div>
+            <div >
                 <div style={{ marginLeft: 24 }}>
                     <div style={{ verticalAlign: 'middle', height: 56, display: 'inline-block' }}>
                         Filter by location
@@ -62,8 +62,8 @@ class StatusPage extends Component {
                         }
                     </DropDownMenu>
                 </div>
-                <StatusTable entries={ this.state.filteredStatusEntries } />
-                <Link to="/status/add">
+                <ActionsTable entries={ this.state.filteredActionEntries } />
+                <Link to="/actions/add">
                     <FloatingActionButton style={{ position: 'fixed', right: '15px', bottom: '15px' }}>
                         <ContentAdd />
                     </FloatingActionButton>
@@ -71,14 +71,15 @@ class StatusPage extends Component {
             </div>
         )
     }
+
     componentDidMount() {
-        this.props.setTitle( 'Status' )
+        this.props.setTitle( 'Actions' )
     }
 }
 
 const mapStateToProps = ( state, ownProps ) => {
     return {
-        statusEntries: state.statusEntries,
+        actionEntries: state.actionEntries,
         locationEntries: state.locationEntries
     }
 }
@@ -86,8 +87,8 @@ const mapStateToProps = ( state, ownProps ) => {
 const mapDispatchToProps = ( dispatch, ownProps ) => {
     return {
         ...mapDispatchToPropsTitle( dispatch, ownProps ),
-        setStatusEntries: ( entries ) => {
-            dispatch({ type: 'SET_STATUSENTRIES', payload: entries })
+        setActionEntries: ( entries ) => {
+            dispatch({ type: 'SET_ACTIONENTRIES', payload: entries })
         },
         setLocationEntries: ( entries ) => {
             dispatch({ type: 'SET_LOCATIONENTRIES', payload: entries })
@@ -95,4 +96,4 @@ const mapDispatchToProps = ( dispatch, ownProps ) => {
     }
 }
 
-export default connect( mapStateToProps, mapDispatchToProps )( StatusPage )
+export default connect( mapStateToProps, mapDispatchToProps )( ActionPage )

@@ -20,7 +20,7 @@ class StatusDAO implements IStatusDAO {
     }
 
     public function findAll() {
-        $query = function()  {
+        $query = function() {
             $statement = $this->connection->prepare( 
                 'SELECT s.id, s.status, s.date, s.location_id, l.name 
                  FROM status s 

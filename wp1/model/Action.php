@@ -4,12 +4,13 @@ namespace model;
 
 class Action implements \JsonSerializable {
 
-    public function __construct( $action, $date, $id = null ) {
+    public function __construct( $action, $date, $location, $id = null ) {
         if ($id !== null) {
             $this->setId( $id );
         }
         $this->setAction( $action );
         $this->setDate( $date );
+        $this->setLocation( $location );
     }
 
     public function setId( $id ) {
@@ -36,19 +37,20 @@ class Action implements \JsonSerializable {
         return $this->date;
     }
 
+    public function setLocation ( $location ) {
+        $this->location = $location;
+    }
+
+    public function getLocation() {
+        return $this->location;
+    }
+
     public function jsonSerialize() {
         return [
             'id' => $this->getId(),
             'action' => $this->getAction(),
-            'date' => $this->getDate()
+            'date' => $this->getDate(),
+            'location' => $this->getLocation()
         ];
-    }
-
-    public static function deserialize( $data ) {
-        return new self( 
-            $data['action'],
-            $data['date'],
-            $data['id']
-        );
     }
 }

@@ -1,69 +1,21 @@
-import React, { Component } from 'react';
-import AppBar from 'material-ui/AppBar';
-import Drawer from 'material-ui/Drawer';
-import MenuItem from 'material-ui/MenuItem';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-
+import React, { Component } from 'react'
+import Menu from './menu'
+import Pages from './pages'
+import { BrowserRouter } from 'react-router-dom';
 
 class View extends Component {
-    
-    constructor( props ) {
-        super( props );
-        this.state = { open: false };
-    }
-
-    handleToggle = () => this.setState({ open: !this.state.open });
-
-    handleClose = () => this.setState({ open: false });
-
     render() {
         return (
-            <div>
-                <AppBar 
-                    title={ this.props.title } 
-                    onLeftIconButtonTouchTap={ this.handleToggle } 
-                />
-                <Drawer
-                    docked={ false }
-                    width={ 200 }
-                    open={ this.state.open }
-                    onRequestChange={( open ) => this.setState({ open })}
+            <BrowserRouter>
+                <div style={{ fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+                              fontSize: 15 }}
                 >
-                    <MenuItem 
-                        onClick={ this.handleClose } 
-                        containerElement={ <Link to="/"></Link> } 
-                    >
-                        Dashboard
-                    </MenuItem>
-                    <MenuItem 
-                        onClick={ this.handleClose } 
-                        containerElement={ <Link to="/status"></Link> } 
-                    >
-                        Status
-                    </MenuItem>
-                    <MenuItem 
-                        onClick={ this.handleClose } 
-                        containerElement={ <Link to="/reports"></Link> } 
-                    >
-                        Reports
-                    </MenuItem>
-                    <MenuItem 
-                        onClick={ this.handleClose }
-                        containerElement={ <Link to="/locations"></Link>} 
-                    >
-                        Locations
-                    </MenuItem>
-                </Drawer>
-            </div>
+                    <Menu />
+                    <Pages />
+                </div>
+            </BrowserRouter>
         );
     }
 }
 
-const mapStateToProps = ( state, ownProps ) => {
-    return {
-        title: state.title,
-    }
-}
-
-export default connect( mapStateToProps )( View );
+export default View;

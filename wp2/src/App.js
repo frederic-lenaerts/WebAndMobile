@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import Container from './common/container';
+import View from './common/view';
 import { Provider } from 'react-redux';
 import store from './common/store';
 
@@ -9,7 +9,7 @@ class App extends Component {
     return (
       <Provider store={ store }>
         <MuiThemeProvider>
-          <Container />
+          <View />
         </MuiThemeProvider>
       </Provider>
     );

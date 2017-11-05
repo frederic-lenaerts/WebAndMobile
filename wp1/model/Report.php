@@ -10,10 +10,11 @@ class Report implements \JsonSerializable {
 	private $handled;
 	private $technician;
 
-    function __construct( $date, $handled, $location = null, $technician = null, $id = null ) {
+    function __construct( $date, $text, $handled, $location, $technician = null, $id = null ) {
         $this->setId( $id );
         $this->setLocation( $location );
         $this->setDate( $date );
+        $this->setText( $text );
         $this->setHandled( $handled );
         $this->setTechnician( $technician );
     }
@@ -42,6 +43,10 @@ class Report implements \JsonSerializable {
         $this->technician = $technician;
     }
 
+    public function setText ( $text ) {
+        $this->text = $text;
+    }
+
     // Getters
     public function getId() {
         return $this->id;
@@ -55,6 +60,10 @@ class Report implements \JsonSerializable {
         return $this->date;
     }
 
+    public function getText() {
+        return $this->text;
+    }
+
     public function isHandled() {
         return $this->handled;
     }
@@ -66,9 +75,10 @@ class Report implements \JsonSerializable {
     public function jsonSerialize() {
         return [
             'id' => $this->getId(),
-            'location' => $this->getLocation(),
             'date' => $this->getDate(),
+            'text' => $this->getText(),
             'handled' => $this->isHandled(),
+            'location' => $this->getLocation(),
             'technician' => $this->getTechnician()
         ];
     }

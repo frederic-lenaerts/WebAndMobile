@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import mapDispatchToPropsTitle from '../../common/title-dispatch-to-props'
+import TextField from 'material-ui/TextField';
 import DatePicker from 'material-ui/DatePicker'
 import FlatButton from 'material-ui/FlatButton'
 import DropDownMenu from 'material-ui/DropDownMenu'
@@ -9,7 +10,7 @@ import Dialog from 'material-ui/Dialog'
 import HttpService from '../../util/http-service'
 import { Link } from 'react-router-dom'
 
-class StatusAddPage extends Component {
+class ReportAddPage extends Component {
     constructor() {
         super()
         this.state = { 
@@ -17,7 +18,7 @@ class StatusAddPage extends Component {
             showInvalidFormDialog: false,
             showFailedMessage: false,
             locationMenuItem: -1,
-            statusMenuItem: -1
+            handledMenuItem: -1
         }
     }
 
@@ -29,7 +30,7 @@ class StatusAddPage extends Component {
     }
 
     handleLocationChange = (event, index, menuItem) => this.setState({ locationMenuItem: menuItem })
-    handleStatusChange = (event, index, menuItem) => this.setState({ statusMenuItem: menuItem })
+    handleHandledChange = (event, index, menuItem) => this.setState({ handledMenuItem: menuItem })
     handleClose = () => { this.setState({ showInvalidFormDialog: false, showSuccessDialog: false }) }
     handleReload = () => { window.location.reload() }
 
@@ -40,7 +41,7 @@ class StatusAddPage extends Component {
                 primary={ true }
                 onClick={ this.handleReload }
             />,
-            <Link to='/status'>
+            <Link to='/reports'>
                 <FlatButton
                     label='Return to overview'
                     primary={ true }
@@ -53,7 +54,7 @@ class StatusAddPage extends Component {
         ]
 
         const failedMessage = (
-            <div>
+            <div style={{ marginLeft: 24, marginRight: 24 }}>
                 <span>Communication with the server failed. Please try again later.</span>
             </div>
         )
@@ -63,6 +64,8 @@ class StatusAddPage extends Component {
                 <br />
                 { this.state.showFailedMessage ? failedMessage : null }
                 <form onSubmit={ this.save }>
+                    <TextField hintText='Describe the issue' name='text' style={{ marginLeft: 24 }}/>
+                    <br />
                     <DatePicker hintText='Select date' name='date' style={{ marginLeft: 24 }}/>
                     <br />
                     <DropDownMenu 
@@ -78,21 +81,25 @@ class StatusAddPage extends Component {
                         }
                     </DropDownMenu>
                     <br />
-                    <DropDownMenu 
-                        value={ this.state.statusMenuItem } 
-                        onChange={ this.handleStatusChange } 
-                        ref={(element) => { this.status = element }}
-                    >
-                        <MenuItem value={ -1 } primaryText='Select status' disabled= { true } />
-                        <MenuItem key={ 0 } value={ 0 } primaryText={ 'Poor' } />
-                        <MenuItem key={ 1 } value={ 1 } primaryText={ 'Average' } />
-                        <MenuItem key={ 2 } value={ 2 } primaryText={ 'Good' } />
-                    </DropDownMenu>
+                    <div style={{ marginLeft: 24 }}>
+                        <div style={{ verticalAlign: 'middle', height: 56, display: 'inline-block' }}>
+                            Has it been handled?
+                        </div>
+                        <DropDownMenu 
+                            value={ this.state.handledMenuItem } 
+                            onChange={ this.handleHandledChange } 
+                            ref={(element) => { this.handled = element }}
+                        >
+                            <MenuItem value={ -1 } primaryText='Select value' disabled= { true } />
+                            <MenuItem key={ 0 } value={ false } primaryText={ 'No' } />
+                            <MenuItem key={ 1 } value={ true } primaryText={ 'Yes' } />
+                        </DropDownMenu>
+                    </div>
                     <br />
                     <FlatButton label='SEND' type='submit' primary={true} style={{ marginLeft: 24 }} />
                 </form>
                 <Dialog
-                    title='Status added'
+                    title='Report added'
                     actions={ successActions }
                     modal={ false }
                     open={ this.state.showSuccessDialog }
@@ -117,20 +124,21 @@ class StatusAddPage extends Component {
         event.preventDefault()
         this.setState({ showFailedMessage: false })
 
-        const date = event.target['date'].value        
+        const date = event.target['date'].value
+        const text = event.target['text'].value   
         const locationMenuItem = this.location.props.value
         const location = this.props.locationEntries[locationMenuItem - 1]
-        const status = this.status.props.value
-        const entry = { date, status, location }
-
+        const handled = this.handled.props.value
+        const entry = { date, text, handled, location }
+       
         if ( this.isValid( entry )) {
-            HttpService.addStatusEntry( entry ).then( resp => {
+            HttpService.addReportEntry( entry ).then( resp => {
                 if ( resp.status === 201 ) {
-                    this.props.addStatus( resp.data )
+                    this.props.addReport( resp.data )
                     this.setState({ showSuccessDialog: true })
                 } else {
                     this.setState({ showFailedMessage: true })
-                }
+                }      
             })
         } else {
             this.setState({ showInvalidFormDialog: true })
@@ -138,11 +146,11 @@ class StatusAddPage extends Component {
     }
 
     isValid = ( entry ) => {
-        return entry.date && entry.location && entry.status !== -1
+        return entry.date && entry.location && typeof entry.handled === 'boolean'
     }
 
     componentDidMount() {
-        this.props.setTitle('Add new status')
+        this.props.setTitle('Add new report')
     }
 }
 
@@ -155,8 +163,8 @@ const mapStateToProps = ( state, ownProps ) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         ...mapDispatchToPropsTitle(dispatch, ownProps),
-        addStatus: (entry) => {
-            dispatch({ type: 'ADD_STATUSENTRY', payload: entry })
+        addReport: (entry) => {
+            dispatch({ type: 'ADD_REPORTENTRY', payload: entry })
         },
         setLocationEntries: ( entries ) => {
             dispatch({ type: 'SET_LOCATIONENTRIES', payload: entries })
@@ -164,4 +172,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     }
 }
 
-export default connect( mapStateToProps, mapDispatchToProps )( StatusAddPage )
+export default connect( mapStateToProps, mapDispatchToProps )( ReportAddPage )

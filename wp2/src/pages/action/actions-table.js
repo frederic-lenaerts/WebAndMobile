@@ -14,13 +14,10 @@ const Row = ( props ) => (
             { props.entry.date }
         </TableRowColumn>
         <TableRowColumn >
+            { props.entry.action }
+        </TableRowColumn>
+        <TableRowColumn >
             { props.entry.location.name }
-        </TableRowColumn>
-        <TableRowColumn >
-            { props.entry.text }
-        </TableRowColumn>
-        <TableRowColumn >
-            { props.entry.handled ? 'Yes' : 'No' }
         </TableRowColumn>
     </TableRow>
 )
@@ -29,7 +26,7 @@ const Rows = ( props ) => props.entries.map( e => (
     <Row entry={ e } key={ e.id } />
 ))
 
-const ReportsTable = ( props ) => (
+const ActionsTable = ( props ) => (
     <Table 
         fixedHeader={ true }
         selectable={ false }
@@ -41,9 +38,8 @@ const ReportsTable = ( props ) => (
         >
             <TableRow >
                 <TableHeaderColumn>Date</TableHeaderColumn>
+                <TableHeaderColumn>Action</TableHeaderColumn>
                 <TableHeaderColumn>Location</TableHeaderColumn>
-                <TableHeaderColumn>Issue</TableHeaderColumn>
-                <TableHeaderColumn>Handled</TableHeaderColumn>
             </TableRow>
         </TableHeader>
         <TableBody displayRowCheckbox={ false }>
@@ -52,4 +48,4 @@ const ReportsTable = ( props ) => (
     </Table>
 )
 
-export default ReportsTable
+export default ActionsTable
