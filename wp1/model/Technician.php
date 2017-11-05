@@ -6,12 +6,12 @@ class Technician implements \JsonSerializable {
     
     private $id;
     private $name;
-    private $location_id;
+    private $location;
 
-    function __construct( $name, $location_id, $id = null ) {
+    function __construct( $name, $location, $id = null ) {
         $this->setId( $id );
         $this->setName( $name );
-        $this->setLocationId( $location_id );
+        $this->setLocation( $location );
     }
 
     // Setters
@@ -23,8 +23,8 @@ class Technician implements \JsonSerializable {
         $this->name = $name;
     }
     
-    public function setLocationId( $location_id ) {
-        $this->location_id = $location_id;
+    public function setLocation( $location ) {
+        $this->location = $location;
     }
 
     // Getters
@@ -36,15 +36,15 @@ class Technician implements \JsonSerializable {
 		return $this->name;
     }
     
-    public function getLocationId() {
-        return $this->location_id;
+    public function getLocation() {
+        return $this->location;
     }
 
     public function jsonSerialize() {
         return [
             'id' => $this->getId(),
             'name' => $this->getName(),
-            'location_id' => $this->getLocationId()
+            'location' => $this->getLocation()
         ];
     }
 }
