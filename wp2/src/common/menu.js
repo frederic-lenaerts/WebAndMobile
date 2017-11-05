@@ -30,6 +30,10 @@ class View extends Component {
                     open={ this.state.open }
                     onRequestChange={( open ) => this.setState({ open })}
                 >
+                    <AppBar 
+                        title={ this.props.title } 
+                        onLeftIconButtonTouchTap={ this.handleToggle } 
+                    />
                     <MenuItem 
                         onClick={ this.handleClose } 
                         containerElement={ <Link to="/"></Link> } 
@@ -59,6 +63,12 @@ class View extends Component {
                         containerElement={ <Link to="/actions"></Link>} 
                     >
                         Actions
+                    </MenuItem>
+                    <MenuItem 
+                        onClick={ this.handleClose } 
+                        containerElement={ <Link to="/technicians"></Link> } 
+                    >
+                        Technicians
                     </MenuItem>
                 </Drawer>
             </div>

@@ -22,7 +22,7 @@ class TechnicianDAO implements ITechnicianDAO {
     public function findAll() {
         $query = function()  {
             $statement = $this->connection->prepare( 
-                'SELECT t.id, t.name, t.location_id, l.name
+                'SELECT t.id as t_id, t.name as t_name, t.location_id as l_id, l.name as l_name
                  FROM technicians t 
                  JOIN locations l ON t.location_id = l.id' 
             );
@@ -34,12 +34,12 @@ class TechnicianDAO implements ITechnicianDAO {
 
         $technicians = array();
         for ( $i = 0; $i < count( $rows ); $i++ ) {
-            $technicians[$i] = new Technician( $rows[$i]["name"],
+            $technicians[$i] = new Technician( $rows[$i]["t_name"],
                                             new Location(
-                                                $rows[$i]["name"],
-                                                $rows[$i]["location_id"]
+                                                $rows[$i]["l_name"],
+                                                $rows[$i]["l_id"]
                                             ),
-                                            $rows[$i]["id"]);
+                                            $rows[$i]["t_id"]);
         }
         
         return $technicians;
@@ -48,7 +48,7 @@ class TechnicianDAO implements ITechnicianDAO {
     public function find( $id ) {
         $query = function() use ( $id ) {
             $statement = $this->connection->prepare( 
-                'SELECT t.id, t.name, t.location_id, l.name
+                'SELECT t.id as t_id, t.name as t_name, t.location_id as l_id, l.name as l_name
                  FROM technicians t 
                  JOIN locations l ON t.location_id = l.id
                  WHERE t.id = :id'
@@ -63,12 +63,12 @@ class TechnicianDAO implements ITechnicianDAO {
 
         $technician = null;
         if ( count( $row ) > 0 ) {
-            $technician = new Technician( $row[0]["name"],
-                                            new Location(
-                                                $row[0]["name"],
-                                                $row[0]["location_id"]
-                                            ),
-                                            $row[0]["id"]);
+            $technician = new Technician( $row[0]["t_name"],
+                                        new Location(
+                                            $rows[$i]["l_name"],
+                                            $rows[$i]["l_id"]
+                                        ),
+                                        $rows[$i]["t_id"]);
         }
 
         return $technician;

@@ -8,6 +8,8 @@ import ReportAddPage from '../pages/report/report-add.page'
 import LocationPage from '../pages/location/location.page'
 import ActionPage from '../pages/action/action.page'
 import ActionAddPage from '../pages/action/action-add.page'
+import TechnicianPage from '../pages/technician/technician.page'
+import TechnicianAddPage from '../pages/technician/technician-add.page'
 
 class Pages extends Component {
     render() {
@@ -21,6 +23,8 @@ class Pages extends Component {
                 <Route path='/locations' component={ LocationPage } />
                 <Route exact={ true } path='/actions' component={ ActionPage } />
                 <Route path='/actions/add' component={ ActionAddPage } />
+                <Route exact={ true } path='/technicians' component={ TechnicianPage } />
+                <Route path='/technicians/add' component={ TechnicianAddPage } />
             </div>
         )
     }

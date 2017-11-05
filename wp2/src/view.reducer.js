@@ -3,7 +3,8 @@ const initialState = {
     statusEntries: [],
     locationEntries: [],
     reportEntries: [],
-    actionEntries: []
+    actionEntries: [],
+    technicianEntries: []
 }
 
 const viewreducer = ( state = initialState, action ) => {
@@ -24,6 +25,10 @@ const viewreducer = ( state = initialState, action ) => {
             return { ...state, ...{ actionEntries: action.payload }}
         case 'ADD_ACTIONENTRY':
             return { ...state, ...{ actionEntries: [...state.actionEntries, action.payload]}}
+        case 'SET_TECHNICIANENTRIES':
+            return { ...state, ...{ technicianEntries: action.payload }}
+        case 'ADD_TECHNICIANENTRY':
+            return { ...state, ...{ technicianEntries: [...state.technicianEntries, action.payload]}}
         default:
             return state
     }
