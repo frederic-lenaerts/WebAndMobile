@@ -2,9 +2,11 @@
 <html>
     <head>
         <meta charset="UTF-8" />
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700" rel="stylesheet">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        <link href="{{ asset('css/style.css') }}" rel="stylesheet" />
         <title>{% block title %}Web&amp;Mobile{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
@@ -18,24 +20,20 @@
                 <div class="collapse navbar-collapse" id="mainNavbar">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item active">
-                            <a class="nav-link" href="{{ path( 'home' ) }}">Home <span class="sr-only">(current)</span></a>
+                            <a class="nav-link" href="{{ path( 'home' ) }}">Backstage <span class="sr-only">(current)</span></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ path( 'location_all' ) }}">Location</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ path( 'report_all' ) }}">Report</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ path( 'status_all' ) }}">Status</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ path( 'technician_all' ) }}">Technician</a>
+                            <a class="nav-link" href="{{ path( 'status_all' ) }}">Manage</a>
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
+        <div class="jumbotron">
+            <div class="container">
+                {% block jumbotron %}{% endblock %}
+            </div>
+        </div>
         <div class="container">
             {% block body %}{% endblock %}
             <hr />

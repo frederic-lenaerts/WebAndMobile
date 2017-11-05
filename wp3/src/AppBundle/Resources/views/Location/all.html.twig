@@ -2,10 +2,23 @@
 
 {% block title %}Location management{% endblock %}
 
-{% block body %}
-    <h1>Location management <span class="float-right"><a class="btn btn-primary" href="{{ path( 'location_add' ) }}">New location</a></span></h1>
+{% block jumbotron %}
+    <h1>Manage</h1>
+    <div class="sub-nav">
+        <nav class="nav nav-inline">
+            <a class="nav-link" href="{{ path( 'report_all' ) }}">Reports</a>
+            <a class="nav-link" href="{{ path( 'status_all' ) }}">Statuses</a>
+            <a class="nav-link" href="{{ path( 'technician_all' ) }}">Technicians</a>
+            <a class="nav-link active" href="{{ path( 'location_all' ) }}">Locations</a>
+        </nav>
+    </div>
+{% endblock %}
 
-    <table class="table">
+{% block body %}
+    <div class="btn-toolbar">
+        <a class="btn btn-primary" href="{{ path( 'location_add' ) }}"><i class="fa fa-fw fa-plus"></i> New location</a>
+    </div>
+    <table class="table table-responsive-md">
         <thead>
             <tr>
                 <th>#</th>
@@ -19,7 +32,7 @@
                     <tr>
                         <td>{{location.getId()}}</td>
                         <td>{{location.getName()}}</td>
-                        <td><a href="{{ path( 'location_edit', {'location': location.id} ) }}" class="btn btn-primary">Edit</a></td>
+                        <td><a href="{{ path( 'location_edit', {'location': location.id} ) }}" class="btn btn-primary"><i class="fa fa-fw fa-pencil"></i> Edit</a></td>
                     </tr>
                 {% endfor %}
             {% else %}

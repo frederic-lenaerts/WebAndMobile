@@ -99,7 +99,7 @@ class StatusController extends Controller
     {
         $statuses = $this->getDoctrine()->getRepository( 'AppBundle:Status' )->findAll();
         
-        return $this->render( 'AppBundle:Status:all.html.twig', array( "statuses" => $statuses ) );
+        return $this->render( 'AppBundle:Status:all.html.twig', compact( "statuses" ) );
     }
 
     /**
