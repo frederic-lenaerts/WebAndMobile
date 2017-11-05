@@ -113,11 +113,9 @@ class TechnicianAddPage extends Component {
         if ( this.isValid( entry )) {
             HttpService.addTechnicianEntry( entry ).then( resp => {
                 if ( resp.status === 201 ) {
-                    console.log("success")
                     this.props.addTechnician( resp.data )
                     this.setState({ showSuccessDialog: true })
                 } else {
-                    console.log("fail")
                     this.setState({ showFailedMessage: true })
                 }      
             })
