@@ -5,7 +5,10 @@ import mapDispatchToProps from '../../common/title-dispatch-to-props';
 class DashboardPage extends Component {
     render(){
         return (
-            <h2>Dashboard</h2>
+            <div>
+                <h2>Welcome</h2>
+                <p>Have something to say? Then you have come to the right place! Give us feedback on your toilet experience.</p>
+            </div>
         )
     }
     componentDidMount() {
