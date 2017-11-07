@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.4.1deb2ubuntu2
--- http://www.phpmyadmin.net
+-- version 4.7.0
+-- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Nov 05, 2017 at 11:34 AM
--- Server version: 5.7.19-0ubuntu0.16.04.1
--- PHP Version: 7.0.22-0ubuntu0.16.04.1
+-- Host: 127.0.0.1
+-- Generation Time: Nov 07, 2017 at 02:50 PM
+-- Server version: 10.1.25-MariaDB
+-- PHP Version: 7.1.7
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -205,6 +207,7 @@ CREATE TABLE `technicians` (
 --
 
 INSERT INTO `technicians` (`id`, `name`, `location_id`) VALUES
+(0, 'Sam', 3),
 (1, 'Yannick', 4),
 (2, 'Frederic', 1),
 (3, 'Bert', 2),
@@ -272,6 +275,13 @@ ALTER TABLE `technicians`
   ADD UNIQUE KEY `id_UNIQUE` (`id`);
 
 --
+-- Indexes for table `user`
+--
+ALTER TABLE `user`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id` (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -299,35 +309,7 @@ ALTER TABLE `status`
 -- AUTO_INCREMENT for table `technicians`
 --
 ALTER TABLE `technicians`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
---
--- AUTO_INCREMENT for table `user`
---
-ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `reports`
---
-ALTER TABLE `reports`
-  ADD CONSTRAINT `FK_F11FA74564D218E` FOREIGN KEY (`location_id`) REFERENCES `locations` (`id`),
-  ADD CONSTRAINT `FK_F11FA745E6C5D496` FOREIGN KEY (`technician_id`) REFERENCES `technicians` (`id`);
-
---
--- Constraints for table `status`
---
-ALTER TABLE `status`
-  ADD CONSTRAINT `FK_7B00651C64D218E` FOREIGN KEY (`location_id`) REFERENCES `locations` (`id`);
-
---
--- Constraints for table `technicians`
---
-ALTER TABLE `technicians`
-  ADD CONSTRAINT `FK_63FB424064D218E` FOREIGN KEY (`location_id`) REFERENCES `locations` (`id`);
-COMMIT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
