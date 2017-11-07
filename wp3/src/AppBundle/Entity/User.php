@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\Entity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -19,7 +20,7 @@ class User implements UserInterface, \Serializable
     /**
      * @ORM\Column(name="userName", type="string", length=255)
      */
-    private $userName;
+    private $username;
 
     /**
      * @ORM\Column(name="password", type="string", length=255)
@@ -29,12 +30,12 @@ class User implements UserInterface, \Serializable
     /**
      * @ORM\Column(name="rolesString", type="string", length=255)
      */
-    private $rolesString;
+    private $rolesstring;
 
     //methodes uit UserInterface
 
     public function getUserName() {
-        return $this->userName;
+        return $this->username;
     }
 
     public function getPassword() {
@@ -45,7 +46,7 @@ class User implements UserInterface, \Serializable
     }
 
    	public function getRoles() {
-        return preg_split( "/[\s,]+/",$this->rolesString );
+        return preg_split( "/[\s,]+/", $this->rolesstring );
     }
 
    	public function getSalt() {
@@ -57,18 +58,18 @@ class User implements UserInterface, \Serializable
     public function serialize() {
         return serialize(array(
             $this->id,
-            $this->userName,
+            $this->username,
             $this->password,
-	        $this->rolesString
+	        $this->rolesstring
         ));
     }
 
     public function unserialize($serialized) {
         list (
             $this->id,
-            $this->userName,
+            $this->username,
             $this->password,
-            $this->rolesString
+            $this->rolesstring
         ) = unserialize( $serialized );
     }
 
@@ -77,8 +78,8 @@ class User implements UserInterface, \Serializable
         return $this->id;
     }
 
-    public function setUserName( $userName ) {
-        $this->userName = $userName;
+    public function setUserName( $username ) {
+        $this->username = $username;
 
         return $this;
     }
@@ -89,18 +90,18 @@ class User implements UserInterface, \Serializable
         return $this;
     }
 
-    public function setRolesString( $rolesString ) {
-        $this->rolesString = $rolesString;
+    public function setRolesString( $rolesstring ) {
+        $this->rolesstring = $rolesstring;
 
         return $this;
     }
 
     public function getRolesString() {
-        return $this->rolesString;
+        return $this->rolesstring;
     }
 
     //toString
     public function __toString() {
-        return "Entity User, username= " . $this->userName;
+        return "Entity User, username= " . $this->username;
     }
 }

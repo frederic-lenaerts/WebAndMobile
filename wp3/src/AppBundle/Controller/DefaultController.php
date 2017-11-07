@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Report;
 use AppBundle\Entity\Status;
 use AppBundle\Entity\Location;
+use AppBundle\Entity\User;
 
 class DefaultController extends Controller
 {
@@ -94,6 +95,43 @@ class DefaultController extends Controller
         }
 
         $em->persist( $result[0] );
+        $em->flush();
+        
+        return $this->redirectToRoute( 'home' );
+    }
+
+    /**
+    * @Route("/makeusers")
+    */
+    public function makeUsersAction()
+    {      
+        $em = $this->getDoctrine()->getManager();
+        $encoder = $this->container->get('security.password_encoder');
+
+        $admin = new User();
+        $admin->setUserName('Admin');
+        $admin->setRolesString('ROLE_ADMIN');
+        $password = 'admin1';
+        $encoded = $encoder->encodePassword($admin, $password);
+        $admin->setPassword($encoded);
+        $em->persist($admin);
+        
+        $technician = new User();
+        $technician->setUserName('Technician');
+        $technician->setRolesString('ROLE_TECHNICIAN');
+        $password = 'technician1';
+        $encoded = $encoder->encodePassword($technician, $password);
+        $technician->setPassword($encoded);
+        $em->persist($technician);
+        
+        $manager = new User();
+        $manager->setUserName('Manager');
+        $manager->setRolesString('ROLE_MANAGER');
+        $password = 'manager1';
+        $encoded = $encoder->encodePassword($manager, $password);
+        $manager->setPassword($encoded);
+        $em->persist($manager);
+        
         $em->flush();
         
         return $this->redirectToRoute( 'home' );

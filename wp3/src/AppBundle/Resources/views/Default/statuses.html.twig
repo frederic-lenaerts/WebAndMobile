@@ -2,7 +2,7 @@
 
 {% block jumbotron %}
     <h1>
-        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TECHNICIAN') or is_granted('ROLE_MANAGER') %}
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
             Hi {{ app.user.username }}
         {% else %}
             Nice to meet you
