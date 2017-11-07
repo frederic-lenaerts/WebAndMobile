@@ -12,9 +12,9 @@
     </h1>
     <div class="sub-nav">
         <nav class="nav nav-inline">
-            <a class="nav-link active" href="{{ path( 'home' ) }}">Reports</a>
+            <a class="nav-link" href="{{ path( 'home' ) }}">Reports</a>
             {% if is_granted('ROLE_TECHNICIAN') %}
-                <a class="nav-link" href="{{ path( 'myReports' ) }}">My reports</a>
+                <a class="nav-link active" href="{{ path( 'myReports' ) }}">My reports</a>
             {% endif %}
             <a class="nav-link" href="{{ path( 'statuses' ) }}">Statuses</a>
         </nav>
@@ -47,9 +47,9 @@
                 <tr>
                     <th>#</th>
                     <th>Date</th>
-                    <th>Technician</th>
                     <th>Location</th>
                     <th>Status</th>
+                    <th>Options</th>
                 <tr>
             </thead>
             <tbody>
@@ -58,15 +58,15 @@
                         <tr>
                             <td>{{report.getId()}}</td>
                             <td>{{report.getDate()|date('d-m-Y')}}</td>
-                            <td>
-                                {% if report.getTechnician() %}
-                                    {{report.getTechnician().getName()}}
-                                {% else %}
-                                    -
-                                {% endif %}
-                            </td>
                             <td>{{report.getLocation().getName()}}</td>
                             <td>{{report.getHandled( true )}}</td>
+                            <td>
+                                {% if report.getHandled() %}
+                                    <a href="{{ path( 'handled', {'report': report.getid()} ) }}" class="btn btn-danger">Unhandled</a>
+                                {% else %}
+                                    <a href="{{ path( 'handled', {'report': report.getid()} ) }}" class="btn btn-success">Handled</a>
+                                {% endif %}
+                            </td>
                         </tr>
                     {% endfor %}
                 {% else %}

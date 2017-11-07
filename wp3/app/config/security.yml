@@ -1,24 +1,30 @@
-# To get started with security, check out the documentation:
-# https://symfony.com/doc/current/security.html
 security:
-
-    # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
     providers:
         in_memory:
-            memory: ~
+            memory:
+                users:
+                    anonym: { password: anonym1, roles: ROLE_ANONYM }
+                    manager: { password: manager1, roles: ROLE_MANAGER }
+                    technician: { password: technician1, roles: ROLE_TECHNICIAN }
+                    admin: { password: admin1, roles: ROLE_ADMIN }
 
     firewalls:
-        # disables authentication for assets and the profiler, adapt it according to your needs
-        dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
-            security: false
-
-        main:
+        secured_area:
+            pattern: ^/
             anonymous: ~
-            # activate different ways to authenticate
+            anonymous: ~
+            form_login:
+                login_path:  /login
+                check_path:  /login_check
+            logout:
+                 path: /quit
+                 target: /
 
-            # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
-            #http_basic: ~
+    access_control:
+        - { path: ^/status/, roles: [ROLE_MANAGER,ROLE_ADMIN] }
+        - { path: ^/myreports/, roles: [ROLE_TECHNICIAN,ROLE_ADMIN] }
+        - { path: ^/report/, roles: [ROLE_MANAGER,ROLE_ADMIN] }
+        - { path: ^/technician/, roles: [ROLE_ADMIN] }
 
-            # https://symfony.com/doc/current/security/form_login_setup.html
-            #form_login: ~
+    encoders:
+        Symfony\Component\Security\Core\User\User: plaintext

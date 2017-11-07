@@ -19,12 +19,25 @@
 
                 <div class="collapse navbar-collapse" id="mainNavbar">
                     <ul class="navbar-nav mr-auto">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="{{ path( 'home' ) }}">Backstage <span class="sr-only">(current)</span></a>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path( 'home' ) }}">Backstage</a>
                         </li>
+                        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_MANAGER') %}
                         <li class="nav-item">
                             <a class="nav-link" href="{{ path( 'status_all' ) }}">Manage</a>
                         </li>
+                        {% endif %}
+                    </ul>
+                    <ul class="navbar-nav my-2 my-lg-0">
+                        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_MANAGER') or is_granted('ROLE_TECHNICIAN') %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path( 'quitroute' ) }}">Logout</a>
+                        </li>
+                        {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path( 'loginroute' ) }}">Login</a>
+                        </li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>

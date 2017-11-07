@@ -1,10 +1,21 @@
 {% extends 'base.html.twig' %}
 
 {% block jumbotron %}
-    <h1>Backstage</h1>
+    <h1>Hi
+        {% if is_granted('ROLE_ADMIN') %}
+            {{ app.user.username }}
+        {% elseif is_granted('ROLE_TECHNICIAN') %}
+            {{ app.user.username }}
+        {% else %}
+            Anonymous
+        {% endif %}
+    </h1>
     <div class="sub-nav">
         <nav class="nav nav-inline">
             <a class="nav-link" href="{{ path( 'home' ) }}">Reports</a>
+            {% if is_granted('ROLE_TECHNICIAN') %}
+                <a class="nav-link" href="{{ path( 'myReports' ) }}">My reports</a>
+            {% endif %}
             <a class="nav-link active" href="{{ path( 'statuses' ) }}">Statuses</a>
         </nav>
     </div>

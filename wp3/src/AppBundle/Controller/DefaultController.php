@@ -54,6 +54,28 @@ class DefaultController extends Controller
         
         return $this->render( 'AppBundle:Default:statuses.html.twig', compact( "locations", "statuses" ) );
     }
+
+    /**
+     * @Route("/myreports/", name="myReports")
+     * @Route("/myreports/{location}", name="myReportsFiltered")
+     */
+    public function myReportsAction( Request $request, $location = null, $page = null )
+    {
+        $em = $this->getDoctrine()->getManager();
+        $paginator = $this->get('knp_paginator');
+
+        $locations = $em->getRepository( 'AppBundle:Location' )->findAll();
+
+        if ( $location != null ) {
+            $reports = $em->getRepository( 'AppBundle:Report' )->findByTechnician( 0 )->findByLocation( $location, $page );
+        } else {
+            $reports = $em->getRepository( 'AppBundle:Report' )->findByTechnician( 0, $page );
+        }
+
+        $reports = $paginator->paginate( $reports, $request->query->getInt( 'page', 1 ), 10 );
+        
+        return $this->render( 'AppBundle:Default:myreports.html.twig', compact( "locations", "reports" ) );
+    }
     
     /**
      * @Route("/handled/{report}", name="handled")
