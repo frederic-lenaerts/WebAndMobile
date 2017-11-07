@@ -62,15 +62,17 @@ class DefaultController extends Controller
      */
     public function myReportsAction( Request $request, $location = null, $page = null )
     {
+        $technician_id = $this->get('security.token_storage')->getToken()->getUser()->getTechnicianId();
+
         $em = $this->getDoctrine()->getManager();
         $paginator = $this->get('knp_paginator');
 
         $locations = $em->getRepository( 'AppBundle:Location' )->findAll();
 
         if ( $location != null ) {
-            $reports = $em->getRepository( 'AppBundle:Report' )->findByTechnician( 0 )->findByLocation( $location, $page );
+            $reports = $em->getRepository( 'AppBundle:Report' )->findByTechnician( $technician_id )->findByLocation( $location, $page );
         } else {
-            $reports = $em->getRepository( 'AppBundle:Report' )->findByTechnician( 0, $page );
+            $reports = $em->getRepository( 'AppBundle:Report' )->findByTechnician( $technician_id, $page );
         }
 
         $reports = $paginator->paginate( $reports, $request->query->getInt( 'page', 1 ), 10 );
@@ -117,9 +119,46 @@ class DefaultController extends Controller
         $em->persist($admin);
         
         $technician = new User();
-        $technician->setUserName('Technician');
+        $technician->setUserName('Sam');
         $technician->setRolesString('ROLE_TECHNICIAN');
-        $password = 'technician1';
+        $technician->setTechnicianId(0);
+        $password = 'sam1';
+        $encoded = $encoder->encodePassword($technician, $password);
+        $technician->setPassword($encoded);
+        $em->persist($technician);
+        
+        $technician = new User();
+        $technician->setUserName('Yannick');
+        $technician->setRolesString('ROLE_TECHNICIAN');
+        $technician->setTechnicianId(1);
+        $password = 'yannick1';
+        $encoded = $encoder->encodePassword($technician, $password);
+        $technician->setPassword($encoded);
+        $em->persist($technician);
+        
+        $technician = new User();
+        $technician->setUserName('Frederic');
+        $technician->setRolesString('ROLE_TECHNICIAN');
+        $technician->setTechnicianId(2);
+        $password = 'frederic1';
+        $encoded = $encoder->encodePassword($technician, $password);
+        $technician->setPassword($encoded);
+        $em->persist($technician);
+        
+        $technician = new User();
+        $technician->setUserName('Bert');
+        $technician->setRolesString('ROLE_TECHNICIAN');
+        $technician->setTechnicianId(3);
+        $password = 'bert1';
+        $encoded = $encoder->encodePassword($technician, $password);
+        $technician->setPassword($encoded);
+        $em->persist($technician);
+        
+        $technician = new User();
+        $technician->setUserName('Piet');
+        $technician->setRolesString('ROLE_TECHNICIAN');
+        $technician->setTechnicianId(4);
+        $password = 'piet1';
         $encoded = $encoder->encodePassword($technician, $password);
         $technician->setPassword($encoded);
         $em->persist($technician);
@@ -133,7 +172,7 @@ class DefaultController extends Controller
         $em->persist($manager);
         
         $em->flush();
-        
+
         return $this->redirectToRoute( 'home' );
     }
 }
