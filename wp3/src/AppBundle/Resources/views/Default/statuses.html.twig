@@ -1,13 +1,11 @@
 {% extends 'base.html.twig' %}
 
 {% block jumbotron %}
-    <h1>Hi
-        {% if is_granted('ROLE_ADMIN') %}
-            {{ app.user.username }}
-        {% elseif is_granted('ROLE_TECHNICIAN') %}
-            {{ app.user.username }}
+    <h1>
+        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TECHNICIAN') or is_granted('ROLE_MANAGER') %}
+            Hi {{ app.user.username }}
         {% else %}
-            Anonymous
+            Nice to meet you
         {% endif %}
     </h1>
     <div class="sub-nav">
