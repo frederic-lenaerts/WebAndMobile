@@ -23,22 +23,27 @@
 <div class="row">
     <div class="col">
         <div class="btn-toolbar">
-            {% if locations %}
-                <div class="dropdown">
-                    <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownLocationSelection" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Locations
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownLocationSelection">
-                        {% for location in locations %}
-                            <a class="dropdown-item" href="{{ path( 'reportsFiltered', {'location': location.id} ) }}">{{location.name}}</a>
-                        {% endfor %}
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{{ path( 'home' ) }}">None</a>
+            <div class="btn-group mr-2">
+                {% if locations %}
+                    <div class="dropdown">
+                        <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownLocationSelection" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Locations
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownLocationSelection">
+                            {% for location in locations %}
+                                <a class="dropdown-item" href="{{ path( 'reportsFiltered', {'location': location.id} ) }}">{{location.name}}</a>
+                            {% endfor %}
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{{ path( 'home' ) }}">None</a>
+                        </div>
                     </div>
-                </div>
-            {% else %}
-                <p>No locations found</p>
-            {% endif %}
+                {% else %}
+                    <a href="btn btn-primary btn-disabled">No locations found</a>
+                {% endif %}
+            </div>
+            <div class="btn-group">
+                <a class="btn btn-primary" href="{{ path( 'mailReports' ) }}">Mail overview</a>
+            </div>
         </div>
         <table class="table table-responsive-md">
             <thead>

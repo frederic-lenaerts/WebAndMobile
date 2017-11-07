@@ -1,0 +1,24 @@
+<table class="table table-responsive-md">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Date</th>
+            <th>Location</th>
+        <tr>
+    </thead>
+    <tbody>
+        {% if reports %}
+            {% for report in reports %}
+                <tr>
+                    <td>{{report.getId()}}</td>
+                    <td>{{report.getDate()|date('d-m-Y')}}</td>
+                    <td>{{report.getLocation().getName()}}</td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="3">No reports found</td>
+            </tr>			
+        {% endif %}
+    </tbody>
+</table>

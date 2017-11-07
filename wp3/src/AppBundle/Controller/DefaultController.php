@@ -102,6 +102,35 @@ class DefaultController extends Controller
         return $this->redirectToRoute( 'home' );
     }
 
+    
+    /**
+     * @Route("/mail/", name="mailReports")
+     */
+    public function mailAction(\Swift_Mailer $mailer)
+    {
+
+        $technician_id = $this->get('security.token_storage')->getToken()->getUser()->getTechnicianId();
+        
+        $em = $this->getDoctrine()->getManager();
+        $reports = $em->getRepository( 'AppBundle:Report' )->findByTechnician( $technician_id );
+
+        $message = (new \Swift_Message('Your reports overview'))
+            ->setFrom('your.reports@backstage.com')
+            ->setTo('yannick.franssen@outlook.com')
+            ->setBody(
+                $this->renderView(
+                    'AppBundle:Default:email.html.twig',
+                    array( 'reports' => $reports )
+                ),
+                'text/html'
+            )
+        ;
+            
+        $mailer->send($message);
+
+        return $this->redirectToRoute( 'myReports' );
+    }
+
     /**
     * @Route("/makeusers")
     */
