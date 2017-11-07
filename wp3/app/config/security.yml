@@ -24,7 +24,8 @@ security:
         - { path: ^/status/, roles: [ROLE_MANAGER,ROLE_ADMIN] }
         - { path: ^/myreports/, roles: [ROLE_TECHNICIAN,ROLE_ADMIN] }
         - { path: ^/report/, roles: [ROLE_MANAGER,ROLE_ADMIN] }
-        - { path: ^/technician/, roles: [ROLE_ADMIN] }
+        - { path: ^/technician, roles: [ROLE_ADMIN] }
+        - { path: ^/location, roles: [ROLE_ADMIN] }
 
     encoders:
         AppBundle\Entity\User:

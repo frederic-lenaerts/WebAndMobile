@@ -83,16 +83,6 @@ class StatusController extends Controller
     }
 
     /**
-     * @Route("/status/find", name="status_find")
-     */
-    public function findAction()
-    {
-        return $this->render('AppBundle:Status:find.html.twig', array(
-            // ...
-        ));
-    }
-
-    /**
      * @Route("/status/all", name="status_all")
      */
     public function allAction()
@@ -100,16 +90,6 @@ class StatusController extends Controller
         $statuses = $this->getDoctrine()->getRepository( 'AppBundle:Status' )->findAll();
         
         return $this->render( 'AppBundle:Status:all.html.twig', compact( "statuses" ) );
-    }
-
-    /**
-     * @Route("/status/remove", name="status_remove")
-     */
-    public function removeAction()
-    {
-        return $this->render('AppBundle:Status:remove.html.twig', array(
-            // ...
-        ));
     }
     
     /**
