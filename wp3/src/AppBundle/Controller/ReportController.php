@@ -93,18 +93,6 @@ class ReportController extends Controller
     }
 
     /**
-     * @Route("/report/find", name="report_find")
-     */
-    public function findAction()
-    {
-        $this->logUserActivity( $request );
-
-        return $this->render('AppBundle:Report:find.html.twig', array(
-            // ...
-        ));
-    }
-
-    /**
      * @Route("/report/all", name="report_all")
      */
     public function allAction()
@@ -114,18 +102,6 @@ class ReportController extends Controller
         $reports = $this->getDoctrine()->getRepository( 'AppBundle:Report' )->findAll();
 
         return $this->render( 'AppBundle:Report:all.html.twig', compact( "reports" ) );
-    }
-
-    /**
-     * @Route("/report/remove", name="report_remove")
-     */
-    public function removeAction()
-    {
-        $this->logUserActivity( $request );
-
-        return $this->render('AppBundle:Report:remove.html.twig', array(
-            // ...
-        ));
     }
     
     /**

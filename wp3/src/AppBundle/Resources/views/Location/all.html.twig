@@ -8,8 +8,10 @@
         <nav class="nav nav-inline">
             <a class="nav-link" href="{{ path( 'report_all' ) }}">Reports</a>
             <a class="nav-link" href="{{ path( 'status_all' ) }}">Statuses</a>
-            <a class="nav-link" href="{{ path( 'technician_all' ) }}">Technicians</a>
-            <a class="nav-link active" href="{{ path( 'location_all' ) }}">Locations</a>
+            {% if is_granted('ROLE_ADMIN') %}
+                <a class="nav-link" href="{{ path( 'technician_all' ) }}">Technicians</a>
+                <a class="nav-link active" href="{{ path( 'location_all' ) }}">Locations</a>
+            {% endif %}
         </nav>
     </div>
 {% endblock %}

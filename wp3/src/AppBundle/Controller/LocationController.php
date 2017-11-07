@@ -97,18 +97,6 @@ class LocationController extends Controller
         
         return $this->render( 'AppBundle:Location:all.html.twig', compact( "locations" ) );
     }
-
-    /**
-     * @Route("/location/remove", name="location_remove")
-     */
-    public function removeAction()
-    {
-        $this->logUserActivity( $request );
-
-        return $this->render( 'AppBundle:Location:remove.html.twig', array(
-            // ...
-        ) );
-    }
     
     /**
      * @Route("/location/saved", name="location_saved")

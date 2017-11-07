@@ -84,18 +84,6 @@ class TechnicianController extends Controller
     }
 
     /**
-     * @Route("/technician/find", name="technician_find")
-     */
-    public function findAction()
-    {
-        $this->logUserActivity( $request );
-
-        return $this->render('AppBundle:Technician:find.html.twig', array(
-            // ...
-        ));
-    }
-
-    /**
      * @Route("/technician/all", name="technician_all")
      */
     public function allAction()

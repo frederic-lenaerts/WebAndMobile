@@ -31,6 +31,11 @@ class User implements UserInterface, \Serializable
      * @ORM\Column(name="rolesString", type="string", length=255)
      */
     private $rolesstring;
+    
+    /**
+     * @ORM\Column(name="technician_id", type="integer", nullable=true)
+     */
+    private $technician_id;
 
     //methodes uit UserInterface
 
@@ -40,6 +45,10 @@ class User implements UserInterface, \Serializable
 
     public function getPassword() {
         return $this->password;
+    }
+    
+    public function getTechnicianId() {
+        return $this->technician_id;
     }
 
   	public function eraseCredentials() {
@@ -96,8 +105,10 @@ class User implements UserInterface, \Serializable
         return $this;
     }
 
-    public function getRolesString() {
-        return $this->rolesstring;
+    public function setTechnicianId( $technician_id ) {
+        $this->technician_id = $technician_id;
+
+        return $this;
     }
 
     //toString
