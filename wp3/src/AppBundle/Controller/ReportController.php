@@ -19,6 +19,8 @@ class ReportController extends Controller
      */
     public function addAction( Request $request )
     {
+        $this->logUserActivity( $request );
+
         $report = new Report();
         
         $form = $this->createFormBuilder( $report )
@@ -52,6 +54,8 @@ class ReportController extends Controller
      */
     public function editAction( $report, Request $request )
     {
+        $this->logUserActivity( $request );
+
         $em = $this->getDoctrine()->getManager();
         $report = $em->getRepository( 'AppBundle:Report' )->findOneById( $report );
 
@@ -93,6 +97,8 @@ class ReportController extends Controller
      */
     public function findAction()
     {
+        $this->logUserActivity( $request );
+
         return $this->render('AppBundle:Report:find.html.twig', array(
             // ...
         ));
@@ -103,6 +109,8 @@ class ReportController extends Controller
      */
     public function allAction()
     {
+        $this->logUserActivity( $request );
+
         $reports = $this->getDoctrine()->getRepository( 'AppBundle:Report' )->findAll();
 
         return $this->render( 'AppBundle:Report:all.html.twig', compact( "reports" ) );
@@ -113,6 +121,8 @@ class ReportController extends Controller
      */
     public function removeAction()
     {
+        $this->logUserActivity( $request );
+
         return $this->render('AppBundle:Report:remove.html.twig', array(
             // ...
         ));
@@ -123,6 +133,15 @@ class ReportController extends Controller
      */
     public function savedAction()
     {
+        $this->logUserActivity( $request );
+
         return $this->render( 'AppBundle:Report:saved.html.twig' );
+    }
+
+    private function logUserActivity( Request $request ) {
+        $logger = $this->get('monolog.logger.user_activity');       
+        $user = $this->get( 'security.token_storage' )->getToken()->getUser();
+        $route = $request->get( '_route' );
+        $logger->info( $user.' visited '.$route.'.' );
     }
 }

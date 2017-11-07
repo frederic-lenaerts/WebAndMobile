@@ -18,6 +18,8 @@ class DefaultController extends Controller
      */
     public function indexAction( Request $request, $location = null, $page = null )
     {
+        $this->logUserActivity( $request );
+        
         $em = $this->getDoctrine()->getManager();
         $paginator = $this->get('knp_paginator');
 
@@ -40,6 +42,8 @@ class DefaultController extends Controller
      */
     public function statusAction( Request $request, $location = null, $page = null )
     {
+        $this->logUserActivity( $request );
+        
         $em = $this->getDoctrine()->getManager();
         $paginator = $this->get('knp_paginator');
 
@@ -62,6 +66,8 @@ class DefaultController extends Controller
      */
     public function myReportsAction( Request $request, $location = null, $page = null )
     {
+        $this->logUserActivity( $request );
+        
         $em = $this->getDoctrine()->getManager();
         $paginator = $this->get('knp_paginator');
 
@@ -83,6 +89,8 @@ class DefaultController extends Controller
      */
     public function handledAction( Request $request, $report )
     {
+        $this->logUserActivity( $request );
+        
         $em = $this->getDoctrine()->getManager();
         $paginator = $this->get('knp_paginator');
 
@@ -104,7 +112,7 @@ class DefaultController extends Controller
     * @Route("/makeusers")
     */
     public function makeUsersAction()
-    {      
+    {
         $em = $this->getDoctrine()->getManager();
         $encoder = $this->container->get('security.password_encoder');
 
@@ -135,5 +143,12 @@ class DefaultController extends Controller
         $em->flush();
         
         return $this->redirectToRoute( 'home' );
+    }
+
+    private function logUserActivity( Request $request ) {
+        $logger = $this->get('monolog.logger.user_activity');       
+        $user = $this->get( 'security.token_storage' )->getToken()->getUser();
+        $route = $request->get( '_route' );
+        $logger->info( $user.' visited '.$route.'.' );
     }
 }
