@@ -1,15 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.0
--- https://www.phpmyadmin.net/
+-- version 4.5.4.1deb2ubuntu2
+-- http://www.phpmyadmin.net
 --
--- Host: 127.0.0.1
--- Generation Time: Nov 07, 2017 at 02:38 PM
--- Server version: 10.1.25-MariaDB
--- PHP Version: 7.1.7
+-- Host: localhost
+-- Generation Time: Nov 05, 2017 at 11:34 AM
+-- Server version: 5.7.19-0ubuntu0.16.04.1
+-- PHP Version: 7.0.22-0ubuntu0.16.04.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -75,9 +73,10 @@ INSERT INTO `locations` (`id`, `name`) VALUES
 
 CREATE TABLE `reports` (
   `id` int(11) NOT NULL,
-  `location_id` int(11) DEFAULT NULL,
+  `location_id` int(11) NOT NULL,
   `date` date NOT NULL,
   `handled` tinyint(4) NOT NULL DEFAULT '0',
+  `text` text,
   `technician_id` int(11) DEFAULT NULL,
   `action_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -86,33 +85,33 @@ CREATE TABLE `reports` (
 -- Dumping data for table `reports`
 --
 
-INSERT INTO `reports` (`id`, `location_id`, `date`, `handled`, `technician_id`, `action_id`) VALUES
-(1, 2, '2017-09-28', 1, 3, 1),
-(4, 3, '2017-08-13', 0, 4, NULL),
-(5, 1, '2016-02-23', 1, NULL, NULL),
-(6, 2, '2017-02-23', 0, NULL, NULL),
-(7, 2, '2017-02-23', 0, NULL, NULL),
-(8, 2, '2017-02-23', 0, NULL, NULL),
-(9, 2, '2017-09-29', 1, 3, NULL),
-(10, 2, '2017-09-29', 1, NULL, NULL),
-(11, 2, '2017-09-15', 1, NULL, NULL),
-(12, 2, '2017-09-15', 1, 0, NULL),
-(13, 2, '2017-09-15', 1, NULL, NULL),
-(14, 2, '2017-09-15', 1, 0, NULL),
-(15, 2, '2017-09-15', 1, 0, NULL),
-(16, 2, '2017-09-15', 1, NULL, NULL),
-(17, 2, '2017-09-15', 1, 0, NULL),
-(18, 2, '2017-09-15', 1, 0, NULL),
-(19, 2, '2017-09-15', 1, 0, NULL),
-(20, 2, '2017-09-28', 1, 3, NULL),
-(21, 2, '2017-09-28', 1, 0, NULL),
-(22, 2, '2017-11-03', 0, 0, NULL),
-(23, 3, '2017-11-25', 1, 0, NULL),
-(24, 4, '2017-11-05', 1, 0, NULL),
-(25, 1, '2017-11-05', 1, 0, NULL),
-(26, 4, '2017-11-05', 0, 0, NULL),
-(27, 3, '2017-11-10', 0, 0, NULL),
-(28, 2, '2017-11-05', 1, 0, NULL);
+INSERT INTO `reports` (`id`, `location_id`, `date`, `handled`, `text`, `technician_id`, `action_id`) VALUES
+(1, 2, '2017-09-28', 1, NULL, 3, 1),
+(4, 3, '2017-08-13', 0, NULL, 4, NULL),
+(5, 1, '2016-02-23', 1, NULL, NULL, NULL),
+(6, 2, '2017-02-23', 0, NULL, NULL, NULL),
+(7, 2, '2017-02-23', 0, NULL, NULL, NULL),
+(8, 2, '2017-02-23', 0, NULL, NULL, NULL),
+(9, 2, '2017-09-29', 1, NULL, 3, NULL),
+(10, 2, '2017-09-29', 1, NULL, NULL, NULL),
+(11, 2, '2017-09-15', 1, NULL, NULL, NULL),
+(12, 2, '2017-09-15', 1, NULL, 0, NULL),
+(13, 2, '2017-09-15', 1, NULL, NULL, NULL),
+(14, 2, '2017-09-15', 1, NULL, 0, NULL),
+(15, 2, '2017-09-15', 1, NULL, 0, NULL),
+(16, 2, '2017-09-15', 1, NULL, NULL, NULL),
+(17, 2, '2017-09-15', 1, NULL, 0, NULL),
+(18, 2, '2017-09-15', 1, NULL, 0, NULL),
+(19, 2, '2017-09-15', 1, NULL, 0, NULL),
+(20, 2, '2017-09-28', 1, NULL, 3, NULL),
+(21, 2, '2017-09-28', 1, NULL, 0, NULL),
+(22, 2, '2017-11-03', 0, NULL, 0, NULL),
+(23, 3, '2017-11-25', 1, NULL, 0, NULL),
+(24, 4, '2017-11-05', 1, NULL, 0, NULL),
+(25, 1, '2017-11-05', 1, NULL, 0, NULL),
+(26, 4, '2017-11-05', 0, 'Test', 0, NULL),
+(27, 3, '2017-11-10', 0, 'stinky', 0, NULL),
+(28, 2, '2017-11-05', 1, 'blabla', 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -122,7 +121,7 @@ INSERT INTO `reports` (`id`, `location_id`, `date`, `handled`, `technician_id`, 
 
 CREATE TABLE `status` (
   `id` int(11) NOT NULL,
-  `location_id` int(11) DEFAULT NULL,
+  `location_id` int(11) NOT NULL,
   `status` int(11) NOT NULL,
   `date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -198,7 +197,7 @@ INSERT INTO `status` (`id`, `location_id`, `status`, `date`) VALUES
 CREATE TABLE `technicians` (
   `id` int(11) NOT NULL,
   `name` varchar(45) NOT NULL,
-  `location_id` int(11) DEFAULT NULL
+  `location_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -206,7 +205,6 @@ CREATE TABLE `technicians` (
 --
 
 INSERT INTO `technicians` (`id`, `name`, `location_id`) VALUES
-(0, 'Sam', 2),
 (1, 'Yannick', 4),
 (2, 'Frederic', 1),
 (3, 'Bert', 2),
@@ -257,31 +255,21 @@ ALTER TABLE `locations`
 --
 ALTER TABLE `reports`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id_UNIQUE` (`id`),
-  ADD KEY `location_id` (`location_id`),
-  ADD KEY `technician_id` (`technician_id`);
+  ADD UNIQUE KEY `id_UNIQUE` (`id`);
 
 --
 -- Indexes for table `status`
 --
 ALTER TABLE `status`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id_UNIQUE` (`id`),
-  ADD KEY `location_id` (`location_id`);
+  ADD UNIQUE KEY `id_UNIQUE` (`id`);
 
 --
 -- Indexes for table `technicians`
 --
 ALTER TABLE `technicians`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id_UNIQUE` (`id`),
-  ADD KEY `location_id` (`location_id`);
-
---
--- Indexes for table `user`
---
-ALTER TABLE `user`
-  ADD PRIMARY KEY (`id`);
+  ADD UNIQUE KEY `id_UNIQUE` (`id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -311,7 +299,7 @@ ALTER TABLE `status`
 -- AUTO_INCREMENT for table `technicians`
 --
 ALTER TABLE `technicians`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `user`
 --
