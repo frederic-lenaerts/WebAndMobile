@@ -18,6 +18,8 @@ class StatusController extends Controller
      */
     public function addAction( Request $request )
     {
+        $this->logUserActivity( $request );
+
         $status = new Status();
 
         $form = $this->createFormBuilder( $status )
@@ -52,6 +54,8 @@ class StatusController extends Controller
      */
     public function editAction( $status, Request $request )
     {
+        $this->logUserActivity( $request );
+
         $em = $this->getDoctrine()->getManager();
         $status = $em->getRepository( 'AppBundle:Status' )->findOneById( $status );
 
@@ -87,6 +91,8 @@ class StatusController extends Controller
      */
     public function allAction()
     {
+        $this->logUserActivity( $request );
+
         $statuses = $this->getDoctrine()->getRepository( 'AppBundle:Status' )->findAll();
         
         return $this->render( 'AppBundle:Status:all.html.twig', compact( "statuses" ) );
@@ -97,6 +103,15 @@ class StatusController extends Controller
      */
     public function savedAction()
     {
+        $this->logUserActivity( $request );
+
         return $this->render( 'AppBundle:Status:saved.html.twig' );
+    }
+
+    private function logUserActivity( Request $request ) {
+        $logger = $this->get('monolog.logger.user_activity');       
+        $user = $this->get( 'security.token_storage' )->getToken()->getUser();
+        $route = $request->get( '_route' );
+        $logger->info( $user.' visited '.$route.'.' );
     }
 }

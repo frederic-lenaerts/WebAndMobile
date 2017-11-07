@@ -17,6 +17,8 @@ class TechnicianController extends Controller
      */
     public function addAction( Request $request )
     {
+        $this->logUserActivity( $request );
+        
         $technician = new Technician();
 
         $form = $this->createFormBuilder( $technician )
@@ -50,6 +52,8 @@ class TechnicianController extends Controller
      */
     public function editAction( $technician, Request $request )
     {
+        $this->logUserActivity( $request );
+
         $em = $this->getDoctrine()->getManager();
         $technician = $em->getRepository( 'AppBundle:Technician' )->findOneById( $technician );
 
@@ -84,6 +88,8 @@ class TechnicianController extends Controller
      */
     public function allAction()
     {
+        $this->logUserActivity( $request );
+
         $technicians = $this->getDoctrine()->getRepository( 'AppBundle:Technician' )->findAll();
         
         return $this->render( 'AppBundle:Technician:all.html.twig', compact( "technicians" ) );
@@ -94,6 +100,8 @@ class TechnicianController extends Controller
      */
     public function removeAction( Technician $technician )
     {
+        $this->logUserActivity( $request );
+
         if ( !$technician ) {
             throw $this->createNotFoundException( 'No technician found' );
         }
@@ -110,6 +118,15 @@ class TechnicianController extends Controller
      */
     public function savedAction()
     {
+        $this->logUserActivity( $request );
+
         return $this->render( 'AppBundle:Technician:saved.html.twig' );
+    }
+
+    private function logUserActivity( Request $request ) {
+        $logger = $this->get('monolog.logger.user_activity');       
+        $user = $this->get( 'security.token_storage' )->getToken()->getUser();
+        $route = $request->get( '_route' );
+        $logger->info( $user.' visited '.$route.'.' );
     }
 }

@@ -16,6 +16,8 @@ class LocationController extends Controller
      */
     public function addAction( Request $request )
     {
+        $this->logUserActivity( $request );
+
         $location = new Location();
 
         $form = $this->createFormBuilder( $location )
@@ -45,6 +47,8 @@ class LocationController extends Controller
      */
     public function editAction( $location, Request $request )
     {
+        $this->logUserActivity( $request );
+
         $em = $this->getDoctrine()->getManager();
         $location = $em->getRepository( 'AppBundle:Location' )->findOneById( $location );
 
@@ -75,6 +79,8 @@ class LocationController extends Controller
      */
     public function findAction()
     {
+        $this->logUserActivity( $request );
+
         $locations = $this->getDoctrine()->getRepository( 'AppBundle:Location' )->findAll();
 
         return $this->render( 'AppBundle:Location:find.html.twig', compact( "locations" ) );
@@ -85,6 +91,8 @@ class LocationController extends Controller
      */
     public function allAction()
     {
+        $this->logUserActivity( $request );
+
         $locations = $this->getDoctrine()->getRepository( 'AppBundle:Location' )->findAll();
         
         return $this->render( 'AppBundle:Location:all.html.twig', compact( "locations" ) );
@@ -95,6 +103,15 @@ class LocationController extends Controller
      */
     public function savedAction()
     {
+        $this->logUserActivity( $request );
+        
         return $this->render( 'AppBundle:Location:saved.html.twig' );
+    }
+
+    private function logUserActivity( Request $request ) {
+        $logger = $this->get('monolog.logger.user_activity');       
+        $user = $this->get( 'security.token_storage' )->getToken()->getUser();
+        $route = $request->get( '_route' );
+        $logger->info( $user.' visited '.$route.'.' );
     }
 }
