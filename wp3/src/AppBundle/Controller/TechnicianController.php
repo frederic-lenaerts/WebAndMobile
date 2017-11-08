@@ -3,21 +3,22 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Technician;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
+use AppBundle\Controller\LoggableController;
 
-class TechnicianController extends Controller
+class TechnicianController extends LoggableController
 {
     /**
      * @Route("/technician/add", name="technician_add")
      */
     public function addAction( Request $request )
     {
-        $this->logUserActivity( $request );
+        $route = $request->get( '_route' );
+        parent::logUserVisitAt( $route );
         
         $technician = new Technician();
 
@@ -52,7 +53,8 @@ class TechnicianController extends Controller
      */
     public function editAction( $technician, Request $request )
     {
-        $this->logUserActivity( $request );
+        $route = $request->get( '_route' );
+        parent::logUserVisitAt( $route );
 
         $em = $this->getDoctrine()->getManager();
         $technician = $em->getRepository( 'AppBundle:Technician' )->findOneById( $technician );
@@ -88,7 +90,8 @@ class TechnicianController extends Controller
      */
     public function allAction()
     {
-        $this->logUserActivity( $request );
+        $route = $request->get( '_route' );
+        parent::logUserVisitAt( $route );
 
         $technicians = $this->getDoctrine()->getRepository( 'AppBundle:Technician' )->findAll();
         
@@ -100,7 +103,8 @@ class TechnicianController extends Controller
      */
     public function removeAction( Technician $technician )
     {
-        $this->logUserActivity( $request );
+        $route = $request->get( '_route' );
+        parent::logUserVisitAt( $route );
 
         if ( !$technician ) {
             throw $this->createNotFoundException( 'No technician found' );
@@ -118,15 +122,9 @@ class TechnicianController extends Controller
      */
     public function savedAction()
     {
-        $this->logUserActivity( $request );
+        $route = $request->get( '_route' );
+        parent::logUserVisitAt( $route );
 
         return $this->render( 'AppBundle:Technician:saved.html.twig' );
-    }
-
-    private function logUserActivity( Request $request ) {
-        $logger = $this->get('monolog.logger.user_activity');       
-        $user = $this->get( 'security.token_storage' )->getToken()->getUser();
-        $route = $request->get( '_route' );
-        $logger->info( $user.' visited '.$route.'.' );
     }
 }

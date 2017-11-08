@@ -3,22 +3,23 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Status;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
+use AppBundle\Controller\LoggableController;
 
-class StatusController extends Controller
+class StatusController extends LoggableController
 {
     /**
      * @Route("/status/add", name="status_add")
      */
     public function addAction( Request $request )
     {
-        $this->logUserActivity( $request );
+        $route = $request->get( '_route' );
+        parent::logUserVisitAt( $route );
 
         $status = new Status();
 
@@ -54,7 +55,8 @@ class StatusController extends Controller
      */
     public function editAction( $status, Request $request )
     {
-        $this->logUserActivity( $request );
+        $route = $request->get( '_route' );
+        parent::logUserVisitAt( $route );
 
         $em = $this->getDoctrine()->getManager();
         $status = $em->getRepository( 'AppBundle:Status' )->findOneById( $status );
@@ -91,7 +93,8 @@ class StatusController extends Controller
      */
     public function allAction()
     {
-        $this->logUserActivity( $request );
+        $route = $request->get( '_route' );
+        parent::logUserVisitAt( $route );
 
         $statuses = $this->getDoctrine()->getRepository( 'AppBundle:Status' )->findAll();
         
@@ -103,15 +106,9 @@ class StatusController extends Controller
      */
     public function savedAction()
     {
-        $this->logUserActivity( $request );
+        $route = $request->get( '_route' );
+        parent::logUserVisitAt( $route );
 
         return $this->render( 'AppBundle:Status:saved.html.twig' );
-    }
-
-    private function logUserActivity( Request $request ) {
-        $logger = $this->get('monolog.logger.user_activity');       
-        $user = $this->get( 'security.token_storage' )->getToken()->getUser();
-        $route = $request->get( '_route' );
-        $logger->info( $user.' visited '.$route.'.' );
     }
 }

@@ -3,7 +3,6 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Report;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -11,15 +10,17 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
+use AppBundle\Controller\LoggableController;
 
-class ReportController extends Controller
+class ReportController extends LoggableController
 {
     /**
      * @Route("/report/add", name="report_add")
      */
     public function addAction( Request $request )
     {
-        $this->logUserActivity( $request );
+        $route = $request->get( '_route' );
+        parent::logUserVisitAt( $route );
 
         $report = new Report();
         
@@ -54,7 +55,8 @@ class ReportController extends Controller
      */
     public function editAction( $report, Request $request )
     {
-        $this->logUserActivity( $request );
+        $route = $request->get( '_route' );
+        parent::logUserVisitAt( $route );
 
         $em = $this->getDoctrine()->getManager();
         $report = $em->getRepository( 'AppBundle:Report' )->findOneById( $report );
@@ -97,7 +99,8 @@ class ReportController extends Controller
      */
     public function allAction()
     {
-        $this->logUserActivity( $request );
+        $route = $request->get( '_route' );
+        parent::logUserVisitAt( $route );
 
         $reports = $this->getDoctrine()->getRepository( 'AppBundle:Report' )->findAll();
 
@@ -109,15 +112,9 @@ class ReportController extends Controller
      */
     public function savedAction()
     {
-        $this->logUserActivity( $request );
+        $route = $request->get( '_route' );
+        parent::logUserVisitAt( $route );
 
         return $this->render( 'AppBundle:Report:saved.html.twig' );
-    }
-
-    private function logUserActivity( Request $request ) {
-        $logger = $this->get('monolog.logger.user_activity');       
-        $user = $this->get( 'security.token_storage' )->getToken()->getUser();
-        $route = $request->get( '_route' );
-        $logger->info( $user.' visited '.$route.'.' );
     }
 }

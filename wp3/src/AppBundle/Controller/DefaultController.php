@@ -3,14 +3,14 @@
 namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Report;
 use AppBundle\Entity\Status;
 use AppBundle\Entity\Location;
 use AppBundle\Entity\User;
+use AppBundle\Controller\LoggableController;
 
-class DefaultController extends Controller
+class DefaultController extends LoggableController
 {
     /**
      * @Route("/", name="home")
@@ -18,7 +18,8 @@ class DefaultController extends Controller
      */
     public function indexAction( Request $request, $location = null, $page = null )
     {
-        $this->logUserActivity( $request );
+        $route = $request->get( '_route' );
+        parent::logUserVisitAt( $route );
         
         $em = $this->getDoctrine()->getManager();
         $paginator = $this->get('knp_paginator');
@@ -42,7 +43,8 @@ class DefaultController extends Controller
      */
     public function statusAction( Request $request, $location = null, $page = null )
     {
-        $this->logUserActivity( $request );
+        $route = $request->get( '_route' );
+        parent::logUserVisitAt( $route );
         
         $em = $this->getDoctrine()->getManager();
         $paginator = $this->get('knp_paginator');
@@ -66,7 +68,8 @@ class DefaultController extends Controller
      */
     public function myReportsAction( Request $request, $location = null, $page = null )
     {
-        $this->logUserActivity( $request );
+        $route = $request->get( '_route' );
+        parent::logUserVisitAt( $route );
         
         $technician_id = $this->get('security.token_storage')->getToken()->getUser()->getTechnicianId();
 
@@ -91,7 +94,8 @@ class DefaultController extends Controller
      */
     public function handledAction( Request $request, $report )
     {
-        $this->logUserActivity( $request );
+        $route = $request->get( '_route' );
+        parent::logUserVisitAt( $route );
         
         $em = $this->getDoctrine()->getManager();
         $paginator = $this->get('knp_paginator');
@@ -211,12 +215,5 @@ class DefaultController extends Controller
         $em->flush();
 
         return $this->redirectToRoute( 'home' );
-    }
-
-    private function logUserActivity( Request $request ) {
-        $logger = $this->get('monolog.logger.user_activity');       
-        $user = $this->get( 'security.token_storage' )->getToken()->getUser();
-        $route = $request->get( '_route' );
-        $logger->info( $user.' visited '.$route.'.' );
     }
 }

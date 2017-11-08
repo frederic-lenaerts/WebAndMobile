@@ -3,20 +3,21 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Location;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
+use AppBundle\Controller\LoggableController;
 
-class LocationController extends Controller
+class LocationController extends LoggableController
 {
     /**
      * @Route("/location/add", name="location_add")
      */
     public function addAction( Request $request )
     {
-        $this->logUserActivity( $request );
+        $route = $request->get( '_route' );
+        parent::logUserVisitAt( $route );
 
         $location = new Location();
 
@@ -47,7 +48,8 @@ class LocationController extends Controller
      */
     public function editAction( $location, Request $request )
     {
-        $this->logUserActivity( $request );
+        $route = $request->get( '_route' );
+        parent::logUserVisitAt( $route );
 
         $em = $this->getDoctrine()->getManager();
         $location = $em->getRepository( 'AppBundle:Location' )->findOneById( $location );
@@ -79,7 +81,8 @@ class LocationController extends Controller
      */
     public function findAction()
     {
-        $this->logUserActivity( $request );
+        $route = $request->get( '_route' );
+        parent::logUserVisitAt( $route );
 
         $locations = $this->getDoctrine()->getRepository( 'AppBundle:Location' )->findAll();
 
@@ -91,7 +94,8 @@ class LocationController extends Controller
      */
     public function allAction()
     {
-        $this->logUserActivity( $request );
+        $route = $request->get( '_route' );
+        parent::logUserVisitAt( $route );
 
         $locations = $this->getDoctrine()->getRepository( 'AppBundle:Location' )->findAll();
         
@@ -103,15 +107,9 @@ class LocationController extends Controller
      */
     public function savedAction()
     {
-        $this->logUserActivity( $request );
+        $route = $request->get( '_route' );
+        parent::logUserVisitAt( $route );
         
         return $this->render( 'AppBundle:Location:saved.html.twig' );
-    }
-
-    private function logUserActivity( Request $request ) {
-        $logger = $this->get('monolog.logger.user_activity');       
-        $user = $this->get( 'security.token_storage' )->getToken()->getUser();
-        $route = $request->get( '_route' );
-        $logger->info( $user.' visited '.$route.'.' );
     }
 }
