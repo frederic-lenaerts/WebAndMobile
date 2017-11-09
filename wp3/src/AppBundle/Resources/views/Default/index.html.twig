@@ -2,7 +2,7 @@
 
 {% block jumbotron %}
     <h1>
-        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        {% if is_granted('IS_AUTHENTICATED_FULLY') or is_granted('IS_AUTHENTICATED_REMEMBERED') %}
             Hi {{ app.user.username }}
         {% else %}
             Nice to meet you
