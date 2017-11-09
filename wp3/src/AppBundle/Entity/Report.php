@@ -84,6 +84,10 @@ class Report
     public function setLocationId( $locationId ) {
         $this->locationId = $locationId;
     }
+    
+    public function setLocation( $location ) {
+        $this->location = $location;
+    }
 
     public function setDate( $date ) {
         $this->date = $date;
