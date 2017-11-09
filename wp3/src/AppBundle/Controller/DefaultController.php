@@ -120,7 +120,6 @@ class DefaultController extends LoggableController
      */
     public function mailAction(\Swift_Mailer $mailer)
     {
-
         $technician_id = $this->get('security.token_storage')->getToken()->getUser()->getTechnicianId();
         
         $em = $this->getDoctrine()->getManager();
@@ -138,7 +137,7 @@ class DefaultController extends LoggableController
             )
         ;
             
-        $mailer->send($message);
+        $mailer->send( $message );
 
         return $this->redirectToRoute( 'myReports' );
     }

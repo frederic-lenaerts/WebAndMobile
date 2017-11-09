@@ -1,5 +1,15 @@
 // Variable
 $accent: #e52262;
+$danger: #e54822;
+$warning: #ffc000;
+$success: #50c236;
+$info: #0098df;
+
+// General
+* {
+    border-radius: 0 !important;
+}
+
 
 // Jumbotron
 .jumbotron {
@@ -21,6 +31,82 @@ $accent: #e52262;
     &.bg-primary {
         background-color: $accent !important;
     }
+}
+
+// Pager
+.page-item {
+    color: $accent;
+
+    &:hover,
+    &:focus {
+        .page-link {
+            color: darken($accent, 5);
+        }
+    }
+
+    .page-link {
+        color: $accent;
+    }
+
+    &.active {
+        .page-link {
+            background-color: $accent;
+            border-color: $accent;
+        }
+    }
+}
+
+// Buttons
+.btn {
+    &.btn-primary {
+        background-color: $accent;
+        border-color: $accent;
+
+        &:active,
+        &:hover,
+        &:focus,
+        &:hover:focus {
+            background-color: darken($accent, 5) !important;
+            border-color: darken($accent, 5) !important;
+        }
+    }
+    
+    &.btn-success {
+        background-color: $success;
+        border-color: $success;
+
+        &:active,
+        &:hover,
+        &:focus,
+        &:hover:focus {
+            background-color: darken($success, 5) !important;
+            border-color: darken($success, 5) !important;
+        }
+    }
+    
+    &.btn-danger {
+        background-color: $danger;
+        border-color: $danger;
+
+        &:active,
+        &:hover,
+        &:focus,
+        &:hover:focus {
+            background-color: darken($danger, 5) !important;
+            border-color: darken($danger, 5) !important;
+        }
+    }
+}
+
+:not([disabled]):not(.disabled).btn-primary.active,
+:not([disabled]):not(.disabled).btn-primary:active,
+.show > .btn-primary.dropdown-toggle {
+    background-color: $accent;
+    border-color: $accent;
+}
+
+.dropdown-item.active, .dropdown-item:active {
+    background-color: $accent;
 }
 
 // Nav tabs
