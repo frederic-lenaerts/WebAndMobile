@@ -82,7 +82,7 @@ class TechnicianDAO implements ITechnicianDAO {
             );
             $name = $technician->getName();
             $statement->bindParam( ':name', $name, PDO::PARAM_STR );
-            $locationId = $technician->getLocationId();
+            $locationId = $technician->getLocation()->getId();
             $statement->bindParam( ':location_id', $locationId, PDO::PARAM_INT );
             $success = $statement->execute();
 

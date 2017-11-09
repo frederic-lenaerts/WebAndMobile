@@ -48,16 +48,16 @@ class ReportDAO implements IReportDAO {
                                            $rows[$i]["l_id"]
                                        ),
                                        null,
-                                       $rows[$i]["id"]
+                                       intval( $rows[$i]["id"] )
             );
             if ( $rows[$i]["t_id"] ) {
                 $reports[$i]->setTechnician( new Technician(
-                                             $rows[$i]["t_name"],
-                                             new Location(
-                                                 $rows[$i]["l_t_name"],
-                                                 $rows[$i]["l_t_id"]
-                                             ),
-                                             $rows[$i]["t_id"] 
+                                                 $rows[$i]["t_name"],
+                                                 new Location(
+                                                     $rows[$i]["l_t_name"],
+                                                     $rows[$i]["l_t_id"]
+                                                ),
+                                                $rows[$i]["t_id"] 
                 ));
             }
                                        
@@ -96,7 +96,7 @@ class ReportDAO implements IReportDAO {
                                       $row[0]["l_id"]
                                   ),
                                   null,
-                                  $row[0]["id"]
+                                  intval($row[0]["id"])
             );
             if ( $row[0]["t_id"] ) {
                 $report->setTechnician( new Technician( $row[0]["t_name"],

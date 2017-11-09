@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 class HttpService {
-    //baseUrl = 'http://192.168.2.250/wp/';
-    baseUrl = 'http://localhost/webandmobile/wp1/';
+    baseUrl = 'http://192.168.2.250/wp1/';
+    //baseUrl = 'http://localhost/webandmobile/wp1/';
 
     getAllStatus() {
         return axios.get( `${ this.baseUrl }status/` ).then( r => r.data );

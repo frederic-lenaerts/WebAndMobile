@@ -4,17 +4,27 @@ require_once('vendor/autoload.php');
 
 use PHPUnit\Framework\TestCase;
 use model\Action;
+use model\Location;
 use model\dao\ActionDAO;
+use tests\util\GUID;
 
 class ActionDAOTests extends TestCase {
 
     public function setUp() {
         $this->connection = new \PDO('sqlite::memory:');
-        $this->connection->exec( 'CREATE TABLE actions (
-                        id INTEGER, 
-                        action TEXT,
-                        date TEXT,
-                        PRIMARY KEY (id))'
+        $this->connection->exec( 
+            'CREATE TABLE actions (
+            id INTEGER, 
+            action TEXT,
+            date TEXT,
+            location_id INTEGER,
+            PRIMARY KEY (id))'
+        );
+        $this->connection->exec( 
+            'CREATE TABLE locations (
+            id INTEGER, 
+            name TEXT,
+            PRIMARY KEY (id))'
         );
     }
 
@@ -25,10 +35,7 @@ class ActionDAOTests extends TestCase {
     public function testFind_IdExists_ActionObject() {
         //Arrange
         $action = $this->createAction();
-        $this->connection->exec(
-            "INSERT INTO actions (id, action, date) 
-            VALUES (".$action->getId().",'".$action->getAction()."','".$action->getDate()."');"
-        );
+        $this->addToTable( $action );
         $actionDAO = new ActionDAO($this->connection);
         //Act
         $actualAction = $actionDAO->find( $action->getId() );
@@ -38,10 +45,9 @@ class ActionDAOTests extends TestCase {
 
     public function testFind_IdDoesNotExist_Null() {
         //Arrange
-        $action = $this->createAction();
-        $actionDAO=new ActionDAO( $this->connection );
+        $actionDAO = new ActionDAO( $this->connection );
         //Act
-        $actualAction = $actionDAO->find( $action->id );
+        $actualAction = $actionDAO->find( rand() );
         //Assert
         $this->assertNull( $actualAction );
     }
@@ -58,16 +64,10 @@ class ActionDAOTests extends TestCase {
     public function testFindAll_MultipleActionsExist_ActionObjectArray() {
         //Arrange
         $actions = array();
-        $actions[0] = $action = $this->createAction();
-        $this->connection->exec(
-            "INSERT INTO actions (id, action, date) 
-            VALUES (".$actions[0]->getId().",'".$actions[0]->getAction()."','".$actions[0]->getDate()."');"
-        );
-        $actions[1] = $action = $this->createAction();
-        $this->connection->exec(
-            "INSERT INTO actions (id, action, date) 
-            VALUES (".$actions[1]->getId().",'".$actions[1]->getAction()."','".$actions[1]->getDate()."');"
-        );
+        $actions[0] = $this->createAction();
+        $this->addToTable( $actions[0] );
+        $actions[1] = $this->createAction();
+        $this->addToTable( $actions[1] );
         $actionDAO = new ActionDAO( $this->connection );
         //Act
         $actualActions = $actionDAO->findAll();
@@ -106,44 +106,25 @@ class ActionDAOTests extends TestCase {
         $createdAction = $actionDAO->create( $action );
     }
 
+    private function addToTable( $action ) {
+        $this->connection->exec(
+            "INSERT INTO actions (id, action, date, location_id) 
+            VALUES (".$action->getId().",'".$action->getAction()."','".$action->getDate()."', ".$action->getLocation()->getId().");"
+        );
+        $location = $action->getLocation();
+        $this->connection->exec(
+            "INSERT INTO locations (id, name) 
+            VALUES (".$location->getId().",'".$location->getName()."');"
+        );
+    }
+
     private function createAction() {
-        $actionString = $this->getGUID();
+        $text = GUID::create();
         $dateArray = getdate();
         $date = $dateArray['year'].'-'.$dateArray['mon'].'-'.$dateArray['mday'];
         $id = rand();
-        return new Action( $actionString, $date, $id );
+        $location = new Location( GUID::create(), rand() );
+        return new Action( $text, $date, $location, $id );
     }
 
-    private function getGUID() {
-        // Windows
-        if (function_exists('com_create_guid') === true) {
-            if ($trim === true)
-                return trim(com_create_guid(), '{}');
-            else
-                return com_create_guid();
-        }
-
-        // OSX/Linux
-        if (function_exists('openssl_random_pseudo_bytes') === true) {
-            $data = openssl_random_pseudo_bytes(16);
-            $data[6] = chr(ord($data[6]) & 0x0f | 0x40);    // set version to 0100
-            $data[8] = chr(ord($data[8]) & 0x3f | 0x80);    // set bits 6-7 to 10
-            return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
-        }
-
-        // Fallback (PHP 4.2+)
-        mt_srand((double)microtime() * 10000);
-        $charid = strtolower(md5(uniqid(rand(), true)));
-        $hyphen = chr(45);                  // "-"
-        $lbrace = $trim ? "" : chr(123);    // "{"
-        $rbrace = $trim ? "" : chr(125);    // "}"
-        $guidv4 = $lbrace.
-                substr($charid,  0,  8).$hyphen.
-                substr($charid,  8,  4).$hyphen.
-                substr($charid, 12,  4).$hyphen.
-                substr($charid, 16,  4).$hyphen.
-                substr($charid, 20, 12).
-                $rbrace;
-        return $guidv4;
-    }
 }

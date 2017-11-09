@@ -72,7 +72,7 @@ class StatusDAO implements IStatusDAO {
                                ),
                                $row[0]["id"]);
         } 
-        return status;
+        return $status;
     }
 
     public function create( $status ) {
