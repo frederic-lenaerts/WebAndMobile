@@ -1,5 +1,7 @@
 <?php
 
+namespace tests\model\dao;
+
 require_once('vendor/autoload.php');
 
 use PHPUnit\Framework\TestCase;
@@ -26,6 +28,7 @@ class StatusDAOTests extends TestCase {
             name TEXT,
             PRIMARY KEY (id))'
         );
+        $this->statusDAO = new StatusDAO($this->connection);
     }
 
     public function tearDown() {
@@ -36,61 +39,57 @@ class StatusDAOTests extends TestCase {
         //Arrange
         $status = $this->createStatus();
         $this->addToTable( $status );
-        $statusDAO = new StatusDAO($this->connection);
         //Act
-        $actualStatus = $statusDAO->find( $status->getId() );
+        $actualStatus = $this->statusDAO->find( $status->getId() );
         //Assert
         $this->assertEquals( $status, $actualStatus );
     }
 
     public function testFind_IdDoesNotExist_Null() {
         //Arrange
-        $statusDAO = new StatusDAO( $this->connection );
         //Act
-        $actualStatus = $statusDAO->find( rand() );
+        $actualStatus = $this->statusDAO->find( rand() );
         //Assert
         $this->assertNull( $actualStatus );
     }
 
     public function testFind_TableStatusDoesntExist_Exception() {
         //Arrange
-        $this->expectException( Error::class );
+        $this->expectException( \Error::class );
         $this->connection->exec( "DROP TABLE status" );
-        $statusDAO = new StatusDAO( $this->connection );
         //Act
-        $statusDAO->find( 1 );
+        $this->statusDAO->find( 1 );
+        //Assert
     }
 
-    public function testFindAll_MultiplestatusExist_StatusObjectArray() {
+    public function testFindAll_MultipleStatusExist_StatusObjectArray() {
         //Arrange
         $status = array();
         $status[0] = $this->createStatus();
         $this->addToTable( $status[0] );
         $status[1] = $this->createStatus();
         $this->addToTable( $status[1] );
-        $statusDAO = new StatusDAO( $this->connection );
         //Act
-        $actualStatus = $statusDAO->findAll();
+        $actualStatus = $this->statusDAO->findAll();
         //Assert
         $this->assertEquals( sort( $status ), sort( $actualStatus ));
     }
     
     public function testFindAll_TableStatusDoesntExist_Exception() {
         //Arrange
-        $this->expectException( Error::class );
+        $this->expectException( \Error::class );
         $this->connection->exec( "DROP TABLE status" );
-        $statusDAO = new StatusDAO( $this->connection );
         //Act
-        $statusDAO->findAll();
+        $this->statusDAO->findAll();
+        //Assert
     }
 
     public function testCreate_ValidStatusObjectWithoutIdProvided_StatusObjectWithId() {
         //Arrange
         $status = $this->createStatus();
         $status->setId( null );
-        $statusDAO = new StatusDAO( $this->connection );
         //Act
-        $createdStatus = $statusDAO->create( $status );
+        $createdStatus = $this->statusDAO->create( $status );
         //Assert
         $this->assertNotNull( $createdStatus->getId() );
         $this->assertEquals( $status->getStatusAsString(), $createdStatus->getStatusAsString() );
@@ -99,11 +98,11 @@ class StatusDAOTests extends TestCase {
 
     public function testCreate_NullStatusObject_Exception() {
         //Arrange
-        $this->expectException( Error::class );
+        $this->expectException( \Error::class );
         $status = null;
-        $statusDAO = new StatusDAO( $this->connection );
         //Act
-        $createdStatus = $statusDAO->create( $status );
+        $createdStatus = $this->statusDAO->create( $status );
+        //Assert
     }
 
     private function addToTable( $status ) {
@@ -126,5 +125,4 @@ class StatusDAOTests extends TestCase {
         $status = rand(0, 2);
         return new Status( $status, $date, $location, $id );
     }
-
 }

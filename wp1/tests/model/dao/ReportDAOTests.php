@@ -1,5 +1,7 @@
 <?php
 
+namespace tests\model\dao;
+
 require_once('vendor/autoload.php');
 
 use PHPUnit\Framework\TestCase;
@@ -36,85 +38,86 @@ class ReportDAOTests extends TestCase {
             location_id INTEGER,
             PRIMARY KEY (id))'
         );
+        $this->reportDAO = new ReportDAO( $this->connection );
     }
 
     public function tearDown() {
         $this->connection = null;
+        $this->reportDAO = null;
     }
 
     public function testFind_IdExists_ReportObject() {
-        $this->markTestSkipped('Throws an error for an unknow reasons');
+        $this->markTestSkipped('Throws an \error for an unknow reasons');
         //Arrange
         $report = $this->createReport();
         $this->addToTable( $report );
-        $reportDAO = new ReportDAO( $this->connection );
         //Act
-        $actualReport = $reportDAO->find( $report->getId() );
+        $actualReport = $this->reportDAO->find( $report->getId() );
         //Assert
         $this->assertEquals( $report, $actualReport );
     }
 
     public function testFind_IdDoesNotExist_Null() {
         //Arrange
-        $reportDAO = new ReportDAO( $this->connection );
         //Act
-        $actualReport = $reportDAO->find( rand() );
+        $actualReport = $this->reportDAO->find( rand() );
         //Assert
         $this->assertNull( $actualReport );
     }
 
     public function testFind_TableReportsDoesntExist_Exception() {
         //Arrange
-        $this->expectException( Error::class );
+        $this->expectException( \Error::class );
         $this->connection->exec( "DROP TABLE reports" );
-        $reportDAO = new ReportDAO( $this->connection );
         //Act
-        $reportDAO->find( 1 );
+        $this->reportDAO->find( 1 );
+        //Assert
     }
 
-    public function testFindAll_MultipleStatusExist_ReportObjectArray() {
+    public function testFindAll_MultipleReportExist_ReportObjectArray() {
         //Arrange
         $reports = array();
         $reports[0] = $this->createReport();
         $this->addToTable( $reports[0] );
         $reports[1] = $this->createReport();
         $this->addToTable( $reports[1] );
-        $reportDAO = new ReportDAO( $this->connection );
         //Act
-        $actualReports = $reportDAO->findAll();
+        $actualReports = $this->reportDAO->findAll();
         //Assert
         $this->assertEquals( sort( $reports ), sort( $actualReports ));
     }
     
     public function testFindAll_TableReportsDoesntExist_Exception() {
         //Arrange
-        $this->expectException( Error::class );
+        $this->expectException( \Error::class );
         $this->connection->exec( "DROP TABLE reports" );
-        $reportDAO = new ReportDAO( $this->connection );
         //Act
-        $reportDAO->findAll();
+        $this->reportDAO->findAll();
+        //Assert
     }
 
     public function testCreate_ValidReportObjectWithoutIdProvided_ReportObjectWithId() {
         //Arrange
         $report = $this->createReport();
         $report->setId( null );
-        $reportDAO = new ReportDAO( $this->connection );
         //Act
-        $createdAction = $reportDAO->create( $report );
+        $createdReport = $this->reportDAO->create( $report );
         //Assert
-        $this->assertNotNull( $createdAction->getId() );
-        $this->assertEquals( $report->getText(), $createdAction->getText() );
-        $this->assertEquals( $report->getDate(), $createdAction->getDate() );
+        $this->assertNotNull( $createdReport->getId() );
+        $this->assertEquals( $report->getText(), $createdReport->getText() );
+        $this->assertEquals( $report->getDate(), $createdReport->getDate() );
+        $this->assertEquals( $report->isHandled(), $createdReport->isHandled() );
+        $this->assertEquals( $report->getLocation(), $createdReport->getLocation() );
+        $this->assertEquals( $report->getTechnician(), $createdReport->getTechnician() );
     }
 
     public function testCreate_NullReportObject_Exception() {
         //Arrange
-        $this->expectException( Error::class );
+        $this->expectException( \Error::class );
         $report = null;
-        $reportDAO = new ReportDAO( $this->connection );
         //Act
-        $createdAction = $reportDAO->create( $report );
+        $createdReport = $this->reportDAO->create( $report );
+        //Assert
     }
 
     private function addToTable( $report ) {
@@ -148,5 +151,4 @@ class ReportDAOTests extends TestCase {
     private function createRandomBoolean() {
         return rand() % 2 == 0;
     }
-
 }

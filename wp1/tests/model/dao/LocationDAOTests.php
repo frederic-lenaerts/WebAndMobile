@@ -1,5 +1,7 @@
 <?php
 
+namespace tests\model\dao;
+
 require_once('vendor/autoload.php');
 
 use PHPUnit\Framework\TestCase;
@@ -17,39 +19,38 @@ class LocationDAOTests extends TestCase {
             name TEXT,
             PRIMARY KEY (id))'
         );
+        $this->locationDAO = new LocationDAO( $this->connection );
     }
 
     public function tearDown() {
         $this->connection = null;
+        $this->locationDAO = null;
     }
 
     public function testFind_IdExists_ActionObject() {
         //Arrange
         $location = $this->createLocation();
         $this->addToTable( $location );
-        $locationDAO = new LocationDAO($this->connection);
         //Act
-        $actualAction = $locationDAO->find( $location->getId() );
+        $actualAction = $this->locationDAO->find( $location->getId() );
         //Assert
         $this->assertEquals( $location, $actualAction );
     }
 
     public function testFind_IdDoesNotExist_Null() {
         //Arrange
-        $locationDAO = new LocationDAO( $this->connection );
         //Act
-        $actualAction = $locationDAO->find( rand() );
+        $actualAction = $this->locationDAO->find( rand() );
         //Assert
         $this->assertNull( $actualAction );
     }
 
     public function testFind_TableLocationsDoesntExist_Exception() {
         //Arrange
-        $this->expectException( Error::class );
+        $this->expectException( \Error::class );
         $this->connection->exec( "DROP TABLE locations" );
-        $locationDAO = new LocationDAO( $this->connection );
         //Act
-        $locationDAO->find( 1 );
+        $this->locationDAO->find( 1 );
     }
 
     public function testFindAll_MultipleLocationsExist_ActionObjectArray() {
@@ -59,29 +60,26 @@ class LocationDAOTests extends TestCase {
         $this->addToTable( $locations[0] );
         $locations[1] = $this->createLocation();
         $this->addToTable( $locations[1] );
-        $locationDAO = new LocationDAO( $this->connection );
         //Act
-        $actualLocations = $locationDAO->findAll();
+        $actualLocations = $this->locationDAO->findAll();
         //Assert
         $this->assertEquals( sort( $locations ), sort( $actualLocations ));
     }
     
     public function testFindAll_TableLocationsDoesntExist_Exception() {
         //Arrange
-        $this->expectException( Error::class );
+        $this->expectException( \Error::class );
         $this->connection->exec( "DROP TABLE locations" );
-        $locationDAO = new LocationDAO( $this->connection );
         //Act
-        $locationDAO->findAll();
+        $this->locationDAO->findAll();
     }
 
     public function testCreate_ValidActionObjectWithoutIdProvided_ActionObjectWithId() {
         //Arrange
         $location = $this->createLocation();
         $location->setId( null );
-        $locationDAO = new LocationDAO( $this->connection );
         //Act
-        $createdLocation = $locationDAO->create( $location );
+        $createdLocation = $this->locationDAO->create( $location );
         //Assert
         $this->assertNotNull( $createdLocation->getId() );
         $this->assertEquals( $location->getName(), $createdLocation->getName() );
@@ -89,11 +87,10 @@ class LocationDAOTests extends TestCase {
 
     public function testCreate_NullActionObject_Exception() {
         //Arrange
-        $this->expectException( Error::class );
+        $this->expectException( \Error::class );
         $location = null;
-        $locationDAO = new LocationDAO( $this->connection );
         //Act
-        $createdLocation = $locationDAO->create( $location );
+        $createdLocation = $this->locationDAO->create( $location );
     }
 
     private function addToTable( $location ) {
@@ -108,5 +105,4 @@ class LocationDAOTests extends TestCase {
         $name = GUID::create();
         return new Location( $name, $id );
     }
-
 }

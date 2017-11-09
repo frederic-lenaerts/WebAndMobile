@@ -13,6 +13,7 @@ use model\Location;
 use model\Report;
 use model\Action;
 use model\Technician;
+use util\Parser;
 
 // Dirty hack to allow Yannick to work without Vagrant
 if ( file_exists( 'C:\dontvagrant.txt' ) ) {
@@ -107,13 +108,17 @@ try {
 
 	$router->map('POST', 'action/',
 		function() {
+			$action = null;
 			$json = file_get_contents( 'php://input' );
 			$data = json_decode( $json, true );
-			$action = new Action( $data["action"],
-								  $data["date"],
-								  new Location(
-									  $data["location"]["name"], 
-									  $data["location"]["id"] ));
+			if ( Parser::hasValidActionKeys( $data )) {
+				$action = new Action( $data["action"],
+									  $data["date"],
+									  new Location(
+									      $data["location"]["name"], 
+										  $data["location"]["id"] 
+				));
+			}
 			$controller = new ActionController();
 			$controller->handleCreate( $action );
 		}
@@ -121,14 +126,17 @@ try {
 
 	$router->map('POST', 'status/',
 		function() {
+			$status = null;
 			$json = file_get_contents( 'php://input' );
 			$data = json_decode( $json, true );
-			var_dump( $data );
-			$status = new Status( $data["status"],
-								  $data["date"],
-								  new Location(
-									  $data["location"]["name"], 
-									  $data["location"]["id"] ));
+			if ( Parser::hasValidStatusKeys( $data )) {
+				$status = new Status( $data["status"],
+									  $data["date"],
+									  new Location(
+										  $data["location"]["name"], 
+										  $data["location"]["id"] 
+				));
+			}
 			$controller = new StatusController();
 			$controller->handleCreate( $status );
 		}
@@ -136,20 +144,25 @@ try {
 	
 	$router->map('POST', 'report/',
 		function() {
+			$report = null;
 			$json = file_get_contents( 'php://input' );
 			$data = json_decode( $json, true );
-			$report = new Report( $data["date"],
-								  $data["text"],
-								  $data["handled"],
-								  new Location(
-								      $data["location"]["name"],
-									  $data["location"]["id"] ));
-			if ( array_key_exists( "technician", $data )) {
-				$report->setTechnician( new Technician( $data["technician"]["name"],
-														new Location(
-															$data["technician"]["location"]["name"],
-															$data["technician"]["location"]["id"] ),
-														$data["technician"]["id"] ));
+			if ( Parser::hasValidReportKeys( $data )) {
+				$report = new Report( $data["date"],
+									  $data["text"],
+									  $data["handled"],
+									  new Location(
+										  $data["location"]["name"],
+										  $data["location"]["id"] 
+				));
+				if ( Parser::hasValidTechnicianKeys( $data["technician"] )) {
+					$report->setTechnician( new Technician( $data["technician"]["name"],
+															new Location(
+																$data["technician"]["location"]["name"],
+																$data["technician"]["location"]["id"] ),
+															$data["technician"]["id"] 
+					));
+				}
 			}
 			$controller = new ReportController();
 			$controller->handleCreate( $report );
@@ -158,9 +171,11 @@ try {
 		
 	$router->map('POST', 'location/',
 		function() {
+			$location = null;
 			$json = file_get_contents( 'php://input' );
 			$data = json_decode( $json, true );
-			$location = new Location( $data["name"] );
+			if ( Parser::hasValidLocationKeys( $data ))
+				$location = new Location( $data["name"] );
 			$controller = new LocationController();
 			$controller->handleCreate( $location );
 		}
