@@ -49,6 +49,7 @@
                     <th>Date</th>
                     <th>Technician</th>
                     <th>Location</th>
+                    <th>Info</th>
                     <th>Status</th>
                 <tr>
             </thead>
@@ -66,6 +67,7 @@
                                 {% endif %}
                             </td>
                             <td>{{report.getLocation().getName()}}</td>
+                            <td>{{report.getText()}}</td>
                             <td>{{report.getHandled( true )}}</td>
                         </tr>
                     {% endfor %}

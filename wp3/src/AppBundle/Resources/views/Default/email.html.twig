@@ -14,6 +14,7 @@
             <th>#</th>
             <th>Date</th>
             <th>Location</th>
+            <th>Info</th>
             <th>Handled</th>
         <tr>
     </thead>
@@ -24,7 +25,8 @@
                     <td>{{report.getId()}}</td>
                     <td>{{report.getDate()|date('d-m-Y')}}</td>
                     <td>{{report.getLocation().getName()}}</td>
-                            <td>{{report.getHandled( true )}}</td>
+                    <td>{{report.getText()}}</td>
+                    <td>{{report.getHandled( true )}}</td>
                 </tr>
             {% endfor %}
         {% else %}

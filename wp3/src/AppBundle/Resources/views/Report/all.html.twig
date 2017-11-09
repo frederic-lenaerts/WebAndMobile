@@ -27,6 +27,7 @@
                 <th>Date</th>
                 <th>Technician</th>
                 <th>Location</th>
+                <th>Info</th>
                 <th>Status</th>
                 <th>Options</th>
             <tr>
@@ -43,6 +44,7 @@
                             <td>-</td>
                         {% endif %}
                         <td>{{report.getLocation().getName()}}</td>
+                        <td>{{report.getText()}}</td>
                         <td>{{report.getHandled( true )}}</td>
                         <td>
                             <a href="{{ path( 'report_edit', {'report': report.getid()} ) }}" class="btn btn-primary"><i class="fa fa-fw fa-pencil"></i> Edit</a>

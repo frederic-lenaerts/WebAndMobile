@@ -27,7 +27,7 @@ class StatusController extends LoggableController
             ->add( 'location', EntityType::class, array(
                 'class' => 'AppBundle:Location',
                 'choice_label' => 'name'
-            ))
+            ) )
             ->add( 'status', TextType::class )
             ->add( 'date', DateType::class )
             ->add( 'save', SubmitType::class, array( 'label' => 'Save status' ) )
@@ -65,7 +65,7 @@ class StatusController extends LoggableController
             ->add( 'location', EntityType::class, array(
                 'class' => 'AppBundle:Location',
                 'choice_label' => 'name'
-            ))
+            ) )
             ->add( 'status', TextType::class )
             ->add( 'date', DateType::class )
             ->add( 'save', SubmitType::class, array( 'label' => 'Save status' ) )

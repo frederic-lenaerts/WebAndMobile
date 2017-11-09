@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,8 +29,9 @@ class ReportController extends LoggableController
             ->add( 'location', EntityType::class, array(
                 'class' => 'AppBundle:Location',
                 'choice_label' => 'name'
-            ) )
+            ))
             ->add( 'date', DateType::class )
+            ->add( 'text', TextareaType::class )
             ->add( 'save', SubmitType::class, array( 'label' => 'Save report' ) )
             ->getForm();
 
@@ -65,8 +67,9 @@ class ReportController extends LoggableController
             ->add( 'location', EntityType::class, array(
                 'class' => 'AppBundle:Location',
                 'choice_label' => 'name'
-            ) )
+            ))
             ->add( 'date', DateType::class )
+            ->add( 'text', TextareaType::class )
             ->add( 'handled', CheckboxType::class, array(
                 'required' => false,
             ) )

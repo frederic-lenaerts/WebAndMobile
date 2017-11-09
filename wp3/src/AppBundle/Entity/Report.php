@@ -44,11 +44,11 @@ class Report
     private $technician;
 
     /**
-     * @var integer
+     * @var string
      *
-     * @ORM\Column(name="action_id", type="integer", nullable=true)
+     * @ORM\Column(name="text", type="text", nullable=true)
      */
-    private $actionId;
+    private $text;
 
     /**
      * @var integer
@@ -58,7 +58,7 @@ class Report
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
-
+    
     /**
      * @var \AppBundle\Entity\Location
      *
@@ -92,6 +92,10 @@ class Report
     public function setDate( $date ) {
         $this->date = $date;
     }
+    
+    public function setText( $text ) {
+        $this->text = $text;
+    }
 
     public function setHandled( $handled ) {
         $this->handled = $handled;
@@ -120,6 +124,10 @@ class Report
 
     public function getDate() {
         return $this->date;
+    }
+    
+    public function getText() {
+        return $this->text;
     }
 
     public function getHandled( $readable = false ) {
