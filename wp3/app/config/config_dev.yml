@@ -38,8 +38,10 @@ monolog:
         #    level: info
 
 swiftmailer:
-    transport: '%mailer_transport%'
-    host: '%mailer_host%'
-    username: '%mailer_user%'
-    password: '%mailer_password%'
-    delivery_addresses: ['yannick.franssen@outlook.com']
+    spool:     { type: memory }
+    transport: smtp
+    host:      smtp.mailtrap.io
+    username:  758075752fdea4
+    password:  bf00891a13c5e8
+    auth_mode: cram-md5
+    port: 2525
