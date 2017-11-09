@@ -97,7 +97,7 @@ class ReportController extends LoggableController
     /**
      * @Route("/report/all", name="report_all")
      */
-    public function allAction()
+    public function allAction( Request $request )
     {
         $route = $request->get( '_route' );
         parent::logUserVisitAt( $route );
@@ -110,7 +110,7 @@ class ReportController extends LoggableController
     /**
      * @Route("/report/saved", name="report_saved")
      */
-    public function savedAction()
+    public function savedAction( Request $request )
     {
         $route = $request->get( '_route' );
         parent::logUserVisitAt( $route );

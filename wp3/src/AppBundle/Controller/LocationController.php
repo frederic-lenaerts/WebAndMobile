@@ -79,7 +79,7 @@ class LocationController extends LoggableController
     /**
      * @Route("/location/find", name="location_find")
      */
-    public function findAction()
+    public function findAction( Request $request )
     {
         $route = $request->get( '_route' );
         parent::logUserVisitAt( $route );
@@ -92,7 +92,7 @@ class LocationController extends LoggableController
     /**
      * @Route("/location/all", name="location_all")
      */
-    public function allAction()
+    public function allAction( Request $request )
     {
         $route = $request->get( '_route' );
         parent::logUserVisitAt( $route );
@@ -105,7 +105,7 @@ class LocationController extends LoggableController
     /**
      * @Route("/location/saved", name="location_saved")
      */
-    public function savedAction()
+    public function savedAction( Request $request )
     {
         $route = $request->get( '_route' );
         parent::logUserVisitAt( $route );

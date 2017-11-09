@@ -91,7 +91,7 @@ class StatusController extends LoggableController
     /**
      * @Route("/status/all", name="status_all")
      */
-    public function allAction()
+    public function allAction( Request $request )
     {
         $route = $request->get( '_route' );
         parent::logUserVisitAt( $route );
@@ -104,7 +104,7 @@ class StatusController extends LoggableController
     /**
      * @Route("/status/saved", name="status_saved")
      */
-    public function savedAction()
+    public function savedAction( Request $request )
     {
         $route = $request->get( '_route' );
         parent::logUserVisitAt( $route );

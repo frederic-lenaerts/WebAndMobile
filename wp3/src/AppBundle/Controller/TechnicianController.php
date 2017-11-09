@@ -88,7 +88,7 @@ class TechnicianController extends LoggableController
     /**
      * @Route("/technician/all", name="technician_all")
      */
-    public function allAction()
+    public function allAction( Request $request )
     {
         $route = $request->get( '_route' );
         parent::logUserVisitAt( $route );
@@ -101,7 +101,7 @@ class TechnicianController extends LoggableController
     /**
      * @Route("/technician/remove/{technician}", name="technician_remove")
      */
-    public function removeAction( Technician $technician )
+    public function removeAction( Request $request, Technician $technician )
     {
         $route = $request->get( '_route' );
         parent::logUserVisitAt( $route );
@@ -120,7 +120,7 @@ class TechnicianController extends LoggableController
     /**
      * @Route("/technician/saved", name="technician_saved")
      */
-    public function savedAction()
+    public function savedAction( Request $request )
     {
         $route = $request->get( '_route' );
         parent::logUserVisitAt( $route );
