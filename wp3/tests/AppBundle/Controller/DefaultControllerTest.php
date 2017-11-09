@@ -91,7 +91,29 @@ class DefaultControllerTest extends WebTestCase
         $this->assertEquals( 0, $crawler->filter('td:contains("Tokyo")')->count() );
     }
     
-    public function testIfSelectingLocationFilterPerformsRequest()
+    public function testIfSelectingLocationFilterPerformsRequestOnReports()
+    {
+        $client = static::createClient();
+
+        $crawler = $client->request('GET', '/reports/4');
+        
+        // Test for the correct HTTP response
+        $this->assertTrue($client->getResponse()->isSuccessful(), 'response status is 2xx');
+        
+        // London appears only once, Bree appears more than once
+        $this->assertEquals( 0, $crawler->filter('td:contains("London")')->count() );
+        $this->assertGreaterThanOrEqual( 1, $crawler->filter('td:contains("Bree")')->count() );
+        
+        // Find the first (and only) link with "London" as text and click it
+        $link = $crawler->filter('a:contains("London")')->eq(0)->link();
+        $crawler = $client->click($link);
+        
+        // Bree appears only once, London appears more than once
+        $this->assertEquals( 0, $crawler->filter('td:contains("Bree")')->count() );
+        $this->assertGreaterThanOrEqual( 1, $crawler->filter('td:contains("London")')->count() );
+    }
+    
+    public function testIfSelectingLocationFilterPerformsRequestOnStatuses()
     {
         $client = static::createClient();
 
@@ -133,7 +155,30 @@ class DefaultControllerTest extends WebTestCase
         $this->assertContains('Login', $crawler->filter('h1')->text());
     }
     
-    public function testIfPaginationDoesNotResetLocationFilter()
+    public function testIfPaginationDoesNotResetLocationFilterOnReports()
+    {
+        $client = static::createClient();
+
+        $crawler = $client->request('GET', '/reports/2');
+        
+        // Test for the correct HTTP response
+        $this->assertTrue($client->getResponse()->isSuccessful(), 'response status is 2xx');
+        
+        // Check if New York City appears multiple times
+        $this->assertGreaterThanOrEqual( 1, $crawler->filter('td:contains("New York City")')->count() );
+        
+        // Find a link with "2" - the paginater - and click it
+        $link = $crawler->filter('a:contains("2")')->eq(0)->link();
+        $crawler = $client->click($link);
+        
+        // Check if New York City is still the only city to appear
+        $this->assertGreaterThanOrEqual( 1, $crawler->filter('td:contains("New York City")')->count() );
+        $this->assertEquals( 0, $crawler->filter('td:contains("London")')->count() );
+        $this->assertEquals( 0, $crawler->filter('td:contains("Bree")')->count() );
+        $this->assertEquals( 0, $crawler->filter('td:contains("Tokyo")')->count() );
+    }
+    
+    public function testIfPaginationDoesNotResetLocationFilterOnStatuses()
     {
         $client = static::createClient();
 
@@ -156,11 +201,31 @@ class DefaultControllerTest extends WebTestCase
         $this->assertEquals( 0, $crawler->filter('td:contains("Tokyo")')->count() );
     }
     
-    public function testIfLocationDoesResetPagination()
+    public function testIfLocationDoesResetPaginationOnReports()
     {
         $client = static::createClient();
 
         $crawler = $client->request('GET', '/?page=2');
+        
+        // Test for the correct HTTP response
+        $this->assertTrue($client->getResponse()->isSuccessful(), 'response status is 2xx');
+        
+        // Check if the current active page is 2
+        $this->assertEquals( 1, $crawler->filter('span.page-link:contains("2")')->count() );
+        
+        // Find a link with "2" - the paginater - and click it
+        $link = $crawler->filter('a:contains("New York City")')->eq(0)->link();
+        $crawler = $client->click($link);
+        
+        // Check if we're back on page 1
+        $this->assertEquals( 1, $crawler->filter('span.page-link:contains("1")')->count() );
+    }
+    
+    public function testIfLocationDoesResetPaginationOnStatuses()
+    {
+        $client = static::createClient();
+
+        $crawler = $client->request('GET', '/statuses?page=2');
         
         // Test for the correct HTTP response
         $this->assertTrue($client->getResponse()->isSuccessful(), 'response status is 2xx');
