@@ -37,7 +37,7 @@
                         <td>{{status.getId()}}</td>
                         <td>{{status.getDate()|date('H:i d-m-Y')}}</td>
                         <td>{{status.getLocation().getName()}}</td>
-                        <td>{{status.getStatus()}}</td>
+                        <td>{{status.getStatus( true )}}</td>
                         <td><a class="btn btn-primary" href="{{ path( 'status_edit', {'status': status.id} ) }}"><i class="fa fa-fw fa-pencil"></i> Edit</a></td>
                     </tr>			
                 {% endfor %}
