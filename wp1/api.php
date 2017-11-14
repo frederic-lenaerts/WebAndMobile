@@ -2,7 +2,6 @@
 
 require_once('vendor/autoload.php');
 
-use model\factories\TechnicianFactory;
 use controller\ActionController;
 use controller\StatusController;
 use controller\TechnicianController;
@@ -183,9 +182,16 @@ try {
 			
 	$router->map('POST', 'technician/',
 		function() {
+			$technician = null;
 			$json = file_get_contents( 'php://input' );
 			$data = json_decode( $json, true );
-			$technician = TechnicianFactory::CreateFromArray( $data );
+			if ( Parser::hasValidTechnicianKeys( $data )) {
+				$technician = new Technician( $data["name"],
+									new Location(
+										$data["location"]["name"], 
+										$data["location"]["id"] 
+				));
+			}
 			$controller = new TechnicianController();
 			$controller->handleCreate( $technician );
 		}

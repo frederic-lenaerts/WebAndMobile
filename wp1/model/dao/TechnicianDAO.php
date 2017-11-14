@@ -63,14 +63,13 @@ class TechnicianDAO implements ITechnicianDAO {
 
         $technician = null;
         if ( count( $row ) > 0 ) {
-            $technician = new Technician( $row[0]["t_name"],
-                                        new Location(
-                                            $rows[$i]["l_name"],
-                                            $rows[$i]["l_id"]
-                                        ),
-                                        $rows[$i]["t_id"]);
-        }
-
+            return new Technician( $row[0]["t_name"],
+                               new Location(
+                                   $row[0]["l_name"],
+                                   $row[0]["l_id"]
+                               ),
+                               $row[0]["t_id"]);
+        } 
         return $technician;
     }
 

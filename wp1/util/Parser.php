@@ -36,7 +36,7 @@ abstract class Parser {
     }
 
     public static function hasValidTechnicianKeys( $array ) {
-        return $array && array_key_exists( "name ", $array )
+        return $array && array_key_exists( "name", $array )
                       && array_key_exists( "location", $array )
                       && self::hasValidLocationKeysWithId( $array["location"] );
     }
