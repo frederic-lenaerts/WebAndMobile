@@ -111,7 +111,7 @@ class DefaultController extends LoggableController
         $em->persist( $result[0] );
         $em->flush();
         
-        return $this->redirectToRoute( 'home' );
+        return $this->redirectToRoute( 'myReports' );
     }
 
     
