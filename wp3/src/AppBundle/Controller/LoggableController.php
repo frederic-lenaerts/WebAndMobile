@@ -9,7 +9,7 @@ abstract class LoggableController extends Controller {
 
     protected function logUserVisitAt( $route ) {
         $logger = $this->get('monolog.logger.user_activity');       
-        $user = $this->get( 'security.token_storage' )->getToken()->getUser();
+        $user = $this->get( 'security.token_storage' )->getToken()->getUser()->getUsername();
         $logger->info( $user.' visited '.$route.'.' );
     }
 }
